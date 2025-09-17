@@ -6,6 +6,7 @@ import os
 input_folder = "/Users/lauraponoran/Downloads"
 
 # CSV files and output GeoJSON names
+# CSV files and output GeoJSON names
 trips = {
     "602DE_14_09_2025_17_28_46.csv": "602DE_Trip1.geojson",
     "602DE_14_09_2025_17_08_41.csv": "602DE_Trip2.geojson",
@@ -21,14 +22,14 @@ for csv_file, geojson_file in trips.items():
     output_path = os.path.join(input_folder, geojson_file)
 
     features = []
-    metadata = {}
+    coords = []
+    last_lat, last_lon = None, None
 
+    # Step 1: Read CSV with DictReader
     with open(input_path, newline='') as csvfile:
         reader = list(csv.DictReader(csvfile))
-        last_lat, last_lon = None, None
-        coords = []
 
-        # First pass: compute coordinates, interpolate if needed
+        # Collect coordinates (interpolate if missing)
         for row in reader:
             lat = row.get('latitude')
             lon = row.get('longitude')
@@ -38,56 +39,72 @@ for csv_file, geojson_file in trips.items():
                 last_lat, last_lon = lat_float, lon_float
                 coords.append((last_lat, last_lon))
             except (ValueError, TypeError):
-                # Not a numeric GPS row
+                # Interpolate / reuse last coordinate
                 if last_lat is not None and last_lon is not None:
                     coords.append((last_lat, last_lon))
                 else:
                     coords.append(None)
 
-        # Second pass: build LineString segments
-        for i in range(len(reader)-1):
-            row1 = reader[i]
-            row2 = reader[i+1]
-            coord1 = coords[i]
-            coord2 = coords[i+1]
+        # Build LineString features
+        for i in range(len(reader) - 1):
+            row1, row2 = reader[i], reader[i + 1]
+            coord1, coord2 = coords[i], coords[i + 1]
 
-            if coord1 is None or coord2 is None:
+            if coord1 and coord2:
+                # Keep all columns except latitude & longitude
+                properties = {k: v for k, v in row1.items() if k not in ['latitude', 'longitude']}
+
+                feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [coord1[1], coord1[0]],
+                            [coord2[1], coord2[0]]
+                        ]
+                    },
+                    "properties": properties
+                }
+                features.append(feature)
+
+    # Step 2: Extract bottom metadata manually
+    metadata = {}
+    with open(input_path) as f:
+        lines = f.readlines()
+
+    # Find last GPS line
+    last_gps_line = 0
+    for i, line in enumerate(lines):
+        parts = line.strip().split(',')
+        if len(parts) >= 2:
+            try:
+                float(parts[0])
+                float(parts[1])
+                last_gps_line = i
+            except ValueError:
                 continue
 
-            # Copy all columns except latitude & longitude
-            properties = {k: v for k, v in row1.items() if k not in ['latitude', 'longitude']}
+    # Process remaining lines as metadata
+    for line in lines[last_gps_line + 1:]:
+        line = line.strip()
+        if not line:
+            continue
+        if ':' in line:
+            key, val = line.split(':', 1)
+            metadata[key.strip()] = val.strip()
+        else:
+            metadata[line] = line
 
-            feature = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [coord1[1], coord1[0]],
-                        [coord2[1], coord2[0]]
-                    ]
-                },
-                "properties": properties
-            }
-            features.append(feature)
+    # Add metadata as a single feature at the end
+    if metadata:
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": None},
+            "properties": metadata
+        })
 
-        # Collect metadata rows (rows without numeric latitude/longitude at the end)
-        for row, coord in zip(reader, coords):
-            if coord is None:
-                # Include all non-empty columns as metadata
-                for k, v in row.items():
-                    if v:
-                        metadata[k] = v
-
-        if metadata:
-            # Add metadata as a separate feature
-            features.append({
-                "type": "Feature",
-                "geometry": {"type": "Point", "coordinates": None},
-                "properties": metadata
-            })
-
+    # Write GeoJSON
     geojson = {"type": "FeatureCollection", "features": features}
-
     with open(output_path, "w") as f:
         json.dump(geojson, f, indent=2)
 
