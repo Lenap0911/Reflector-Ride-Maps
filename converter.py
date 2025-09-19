@@ -8,7 +8,7 @@ input_folder = "/Users/lauraponoran/Downloads"
 # CSV files and output GeoJSON names
 # CSV files and output GeoJSON names
 trips = {
-    "602DE_17_09_2025_19_28_37.csv": "602DE_Trip6.geojson",
+    "604E9_19_09_2025_14_51_22.csv": "604E9_Trip1.geojson",
 }
 
 for csv_file, geojson_file in trips.items():
