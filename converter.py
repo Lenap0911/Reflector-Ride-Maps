@@ -7,9 +7,10 @@ input_folder = "/Users/lauraponoran/Downloads"
 
 # CSV files and output GeoJSON names
 trips = {
-    "604F1_20_09_2025_22_46_05_2.csv": "604F1_Trip1.geojson",
-    "604F1_20_09_2025_22_46_05_3.csv": "604F1_Trip2.geojson",
-    "604E9_22_09_2025_18_07_15.csv": "604E9_Trip8.geojson",
+    "602D3_23_09_2025_09_22_06.csv": "602D3_Trip1.geojson",
+    "602D3_22_09_2025_13_10_41.csv": "602D3_Trip2.geojson",
+    "602D3_22_09_2025_12_46_08.csv": "602D3_Trip3.geojson",
+    "604E9_23_09_2025_09_16_07.csv": "604E9_Trip9.geojson",
 }
 
 for csv_file, geojson_file in trips.items():
