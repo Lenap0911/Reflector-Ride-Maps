@@ -6,7 +6,6 @@
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <script src="https://unpkg.com/pmtiles@2.7.1/dist/index.js"></script>
   <style>
     html, body { margin:0; padding:0; height:100%; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -14,11 +13,12 @@
 </head>
 <body>
 <div id="map"></div>
+
+<!-- Load generated JS file -->
+<script src="geojson_files.js"></script>
+
 <script>
 mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN_HERE';
-
-const protocol = new pmtiles.Protocol();
-mapboxgl.addProtocol("pmtiles", protocol.tile);
 
 const map = new mapboxgl.Map({
   container: 'map',
@@ -27,55 +27,44 @@ const map = new mapboxgl.Map({
   zoom: 12
 });
 
-// Load PMTiles and determine first layer
-const pmtilesUrl = 'pmtiles://sensor_data/trips.pmtiles';
-
-fetch(pmtilesUrl.replace('pmtiles://', ''))
-  .then(resp => resp.arrayBuffer())
-  .then(buffer => {
-    const pmtilesFile = new pmtiles.PMTiles(buffer);
-    const layerName = pmtilesFile.layers[0]; // Use the first layer automatically
-
-    map.on('load', () => {
-      map.addSource('trips', {
-        type: 'vector',
-        url: pmtilesUrl
-      });
-
-      map.addLayer({
-        id: 'trip-lines',
-        type: 'line',
-        source: 'trips',
-        'source-layer': layerName,
-        paint: {
-          'line-width': 3,
-          'line-color': [
-            'interpolate', ['linear'], ['get', 'Speed'],
-            0, '#4575b4',
-            20, '#fee090',
-            40, '#d73027'
-          ]
-        }
-      });
-
-      // Popup on click
-      map.on('click', 'trip-lines', (e) => {
-        const props = e.features[0].properties;
-        let content = '';
-        for (const [k,v] of Object.entries(props)) {
-          content += `<strong>${k}:</strong> ${v}<br>`;
-        }
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(content)
-          .addTo(map);
-      });
-
-      map.on('mouseenter', 'trip-lines', () => map.getCanvas().style.cursor = 'pointer');
-      map.on('mouseleave', 'trip-lines', () => map.getCanvas().style.cursor = '');
+map.on('load', () => {
+  geojsonFiles.forEach((url, idx) => {
+    map.addSource('trip' + idx, {
+      type: 'geojson',
+      data: url
     });
-  })
-  .catch(err => console.error('Error loading PMTiles:', err));
+
+    map.addLayer({
+      id: 'trip-line-' + idx,
+      type: 'line',
+      source: 'trip' + idx,
+      paint: {
+        'line-width': 3,
+        'line-color': [
+          'interpolate', ['linear'], ['get', 'Speed'],
+          0, '#4575b4',
+          20, '#fee090',
+          40, '#d73027'
+        ]
+      }
+    });
+
+    map.on('click', 'trip-line-' + idx, (e) => {
+      const props = e.features[0].properties;
+      let content = '';
+      for (const [k,v] of Object.entries(props)) {
+        content += `<strong>${k}:</strong> ${v}<br>`;
+      }
+      new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(content)
+        .addTo(map);
+    });
+
+    map.on('mouseenter', 'trip-line-' + idx, () => map.getCanvas().style.cursor = 'pointer');
+    map.on('mouseleave', 'trip-line-' + idx, () => map.getCanvas().style.cursor = '');
+  });
+});
 </script>
 </body>
 </html>
