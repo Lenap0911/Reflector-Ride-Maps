@@ -1,14 +1,13 @@
 import csv
 import json
 import os
-from pathlib import Path
 import re
 
-INPUT_ROOT = "csv_data"
-OUTPUT_ROOT = "cleaned_output"
+INPUT_ROOT = "csv_data"       # where CSVs live
+OUTPUT_ROOT = "sensor_data"   # where cleaned GeoJSONs + metadata go
 
 def get_next_trip_number(sensor_id_folder):
-    """Find the next available trip number for a sensor folder."""
+    """Find the next available trip number inside a sensor_data/{sensor_id} folder."""
     if not os.path.exists(sensor_id_folder):
         return 1
     existing = [
@@ -23,32 +22,24 @@ def process_csv(input_path, sensor_id, trip_num):
     coords = []
     last_lat, last_lon = None, None
 
-    # Step 1: read CSV
     with open(input_path, newline='') as csvfile:
         reader = list(csv.DictReader(csvfile))
 
-        # Collect coordinates
         for row in reader:
-            lat = row.get('latitude')
-            lon = row.get('longitude')
+            lat, lon = row.get('latitude'), row.get('longitude')
             try:
-                lat_f = float(lat)
-                lon_f = float(lon)
+                lat_f, lon_f = float(lat), float(lon)
                 last_lat, last_lon = lat_f, lon_f
-                coords.append((last_lat, last_lon))
+                coords.append((lat_f, lon_f))
             except (ValueError, TypeError):
-                if last_lat is not None and last_lon is not None:
-                    coords.append((last_lat, last_lon))
-                else:
-                    coords.append(None)
+                coords.append((last_lat, last_lon) if last_lat and last_lon else None)
 
-        # Build LineString features
         for i in range(len(reader) - 1):
             row1, row2 = reader[i], reader[i + 1]
             coord1, coord2 = coords[i], coords[i + 1]
             if coord1 and coord2:
-                properties = {k: v for k, v in row1.items() if k not in ['latitude', 'longitude']}
-                properties["trip_id"] = f"{sensor_id}_Trip{trip_num}"
+                props = {k: v for k, v in row1.items() if k not in ['latitude', 'longitude']}
+                props["trip_id"] = f"{sensor_id}_Trip{trip_num}"
                 feature = {
                     "type": "Feature",
                     "geometry": {
@@ -58,11 +49,10 @@ def process_csv(input_path, sensor_id, trip_num):
                             [coord2[1], coord2[0]]
                         ]
                     },
-                    "properties": properties
+                    "properties": props
                 }
                 features.append(feature)
 
-    # Step 2: extract metadata (lines after last valid GPS row)
     metadata = {}
     with open(input_path, "r") as f:
         lines = f.readlines()
@@ -72,8 +62,7 @@ def process_csv(input_path, sensor_id, trip_num):
         parts = line.strip().split(',')
         if len(parts) >= 2:
             try:
-                float(parts[0])
-                float(parts[1])
+                float(parts[0]); float(parts[1])
                 last_gps_line = i
             except ValueError:
                 continue
@@ -112,29 +101,29 @@ def main():
             sensor_id = file[:5]
             input_file = os.path.join(folder_path, file)
 
-            # Create sensor-specific output folder
+            # Ensure sensor subfolder exists under sensor_data
             sensor_output = os.path.join(OUTPUT_ROOT, sensor_id)
             os.makedirs(sensor_output, exist_ok=True)
 
-            # Determine next trip number
             trip_num = get_next_trip_number(sensor_output)
             trip_id = f"{sensor_id}_Trip{trip_num}"
 
-            # Process
             features, metadata = process_csv(input_file, sensor_id, trip_num)
 
-            # Save GeoJSON
             geojson = {"type": "FeatureCollection", "features": features}
             out_geojson = os.path.join(sensor_output, f"{trip_id}_clean.geojson")
             with open(out_geojson, "w", encoding="utf-8") as f:
                 json.dump(geojson, f, indent=2)
 
-            # Update metadata index
-            all_metadata[trip_id] = metadata
+            # Keep mapping of original CSV → metadata
+            all_metadata[trip_id] = {
+                "source_file": file,
+                "metadata": metadata
+            }
             with open(metadata_index_file, "w", encoding="utf-8") as f:
                 json.dump(all_metadata, f, indent=2)
 
-            print(f"✅ {file} → {trip_id}_clean.geojson (Trip #{trip_num})")
+            print(f"✅ {file} → {trip_id}_clean.geojson in {sensor_output}")
 
 if __name__ == "__main__":
     main()
