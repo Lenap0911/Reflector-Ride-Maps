@@ -89,19 +89,23 @@ def main():
     else:
         all_metadata = {}
 
-    for folder in os.listdir(INPUT_ROOT):
-        folder_path = os.path.join(INPUT_ROOT, folder)
-        if not os.path.isdir(folder_path):
+    for entry in os.listdir(INPUT_ROOT):
+        entry_path = os.path.join(INPUT_ROOT, entry)
+
+        # If it's a folder, look for CSVs inside it
+        if os.path.isdir(entry_path):
+            csv_files = [os.path.join(entry_path, f) for f in os.listdir(entry_path) if f.lower().endswith(".csv")]
+        # If it's a CSV directly in csv_data/, process it directly
+        elif entry.lower().endswith(".csv"):
+            csv_files = [entry_path]
+        else:
             continue
 
-        for file in os.listdir(folder_path):
-            if not file.lower().endswith(".csv"):
-                continue
-
+        for input_file in csv_files:
+            file = os.path.basename(input_file)
             sensor_id = file[:5]
-            input_file = os.path.join(folder_path, file)
 
-            # Ensure sensor subfolder exists under sensor_data
+            # Create output folder per sensor ID
             sensor_output = os.path.join(OUTPUT_ROOT, sensor_id)
             os.makedirs(sensor_output, exist_ok=True)
 
@@ -115,7 +119,6 @@ def main():
             with open(out_geojson, "w", encoding="utf-8") as f:
                 json.dump(geojson, f, indent=2)
 
-            # Keep mapping of original CSV → metadata
             all_metadata[trip_id] = {
                 "source_file": file,
                 "metadata": metadata
