@@ -6151,5 +6151,24 @@
       "SENSOR": ",31:30,10:55,5.92,11.3,17.3,26.4,-2.76,9.34,--,18",
       "GNSS": ",31:30,08:06,6.254,12,16,29,,,,,399"
     }
+  },
+  "602B3_Trip9": {
+    "source_file": "602B3_07_10_2025_09_21_18.csv",
+    "metadata": {
+      "Charge(start | stop)": ", 73 | 73%",
+      "WheelDiam": ", 26.0 inch",
+      "Frequency": ", 50.0 Hz",
+      "Trip stop code": ", 5 (BLE device search timer expired after trip started)",
+      "BLE Device Information Service": "BLE Device Information Service",
+      "Hardware": ", 304",
+      "Firmware": ",9.1.0",
+      "SystemID": ", DC8E95FFFE7602B3",
+      "App version": ", 1.1.0+17",
+      "Sensor's connection": ", 2025-10-07 09:21:14.062, 2025-10-07 09:28:47.076",
+      "Trip start/end": ", 2025-10-07 09:21:18.048, 2025-10-07 09:28:47.181",
+      ",Duration,Stops,Dist km,AVG km/h,AVGWOS km/h,MAX km/h,MAX- m/s\u00b2,MAX+ m/s\u00b2,Falls,Bamps,Elevation m": ",Duration,Stops,Dist km,AVG km/h,AVGWOS km/h,MAX km/h,MAX- m/s\u00b2,MAX+ m/s\u00b2,Falls,Bamps,Elevation m",
+      "SENSOR": ",07:08,01:07,1.59,13.4,15.8,22.4,-1.16,3.53,--,0",
+      "GNSS": ",07:29,02:19,1.627,13,19,25,,,,,50"
+    }
   }
 }
