@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Trips + Ambulance Map</title>
+  <title>Trips + Ambulance Heatmap</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
@@ -26,7 +26,7 @@ const map = new mapboxgl.Map({
 });
 
 map.on('load', async () => {
-  // 1️⃣ Add PMTiles vector source
+  // 1️⃣ Add PMTiles trips
   map.addSource('trips', {
     type: 'vector',
     url: 'http://localhost:8080/data/pmtiles.json'
@@ -49,27 +49,34 @@ map.on('load', async () => {
     });
   });
 
-  // 2️⃣ Add ambulance grid GeoJSON source
+  // 2️⃣ Add ambulance grid GeoJSON
   map.addSource('ambulance_calls', {
     type: 'geojson',
     data: 'http://localhost:8000/sensor_data/ambulance_calls.geojson'
   });
 
-  // 3️⃣ Add fill layer for ambulance grid
+  // 3️⃣ Add color-scaled fill layer (heatmap effect)
   map.addLayer({
     id: 'ambulance-layer',
     type: 'fill',
     source: 'ambulance_calls',
     paint: {
-      'fill-color': '#1E90FF',
+      'fill-color': [
+        'interpolate',
+        ['linear'],
+        ['get', 'c28992r1000'],  // attribute representing number of calls
+        0, '#f2f0f7',             // light = low
+        50, '#91bfdb',            // medium
+        200, '#045a8d'            // dark = high
+      ],
       'fill-opacity': 0.6,
       'fill-outline-color': '#0000FF'
     }
   });
 
-  // 4️⃣ Fit map to the ambulance grid bounds
+  // 4️⃣ Fit map to ambulance grid
   map.getSource('ambulance_calls').once('data', (e) => {
-    if (e.sourceDataType === 'metadata') return; // wait for actual data
+    if (e.sourceDataType === 'metadata') return;
     const bbox = turf.bbox(map.getSource('ambulance_calls')._data);
     map.fitBounds(bbox, { padding: 20 });
   });
