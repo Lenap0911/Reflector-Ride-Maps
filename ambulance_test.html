@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ambulance Grid Test</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <style>
+    html, body { margin:0; padding:0; height:100%; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtZ2U5d2U1dDFvazAybHM3a3Z1MWV0NmoifQ.lkO31BX5zlftfC2w412m2Q';
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v11',
+  center: [4.895, 52.37],
+  zoom: 12
+});
+
+map.on('load', () => {
+  // Add ambulance GeoJSON
+  map.addSource('ambulance_calls', {
+    type: 'geojson',
+    data: 'http://localhost:8000/sensor_data/ambulance_calls.geojson'
+  });
+
+  map.addLayer({
+    id: 'ambulance-layer',
+    type: 'fill', // polygon grid
+    source: 'ambulance_calls',
+    paint: {
+      'fill-color': '#1E90FF',
+      'fill-opacity': 0.6,
+      'fill-outline-color': '#0000FF'
+    }
+  });
+
+  // Fit map to ambulance grid bounds
+  map.getSource('ambulance_calls').once('data', (e) => {
+    if (e.sourceDataType === 'metadata') return;
+    const bbox = turf.bbox(map.getSource('ambulance_calls')._data);
+    map.fitBounds(bbox, { padding: 20 });
+  });
+});
+</script>
+</body>
+</html>
