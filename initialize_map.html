@@ -36,19 +36,36 @@
 <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtZ2U5d2U1dDFvazAybHM3a3Z1MWV0NmoifQ.lkO31BX5zlftfC2w412m2Q';
 
-  // 1️⃣ Initialize Mapbox map using your TileServer GL style
+  // Initialize Mapbox map with Mapbox base style
   const map = new mapboxgl.Map({
     container: 'map',
-    style: 'http://localhost:8080/styles/bright/style.json', // <- your TileServer GL PMTiles style
+    style: 'mapbox://styles/mapbox/light-v11', // Mapbox base map
     center: [4.9, 52.37], // Amsterdam
     zoom: 11
   });
 
   map.on('load', function() {
-    // 2️⃣ Add Amsterdam GeoJSON overlay
+    // 1️⃣ Add PMTiles vector layer (routes)
+    map.addSource('trips', {
+      type: 'vector',
+      url: 'http://localhost:8080/trips.pmtiles'
+    });
+
+    map.addLayer({
+      id: 'trips-layer',
+      type: 'line',
+      source: 'trips',
+      'source-layer': 'trips', // adjust if necessary
+      paint: {
+        'line-color': '#FF5733',
+        'line-width': 1
+      }
+    });
+
+    // 2️⃣ Add Amsterdam polygons overlay
     map.addSource('amsterdam', {
       type: 'geojson',
-      data: 'http://localhost:8080/amsterdam_grid_wgs84.geojson' // make sure this file is accessible via TileServer GL
+      data: 'http://localhost:8080/amsterdam_grid_wgs84.geojson'
     });
 
     map.addLayer({
@@ -69,7 +86,7 @@
       }
     });
 
-    // 3️⃣ Add slider filter
+    // 3️⃣ Slider filter
     const slider = document.getElementById('densitySlider');
     const sliderValue = document.getElementById('sliderValue');
 
