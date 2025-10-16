@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Amsterdam PMTiles + Grid Overlay</title>
+  <title>Amsterdam PMTiles + Ambulance Filter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Mapbox GL JS CSS -->
@@ -32,24 +32,23 @@
   <input type="range" id="densitySlider" min="0" max="500" value="0">
 </div>
 
-<!-- Mapbox GL JS -->
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.22.0/mapbox-gl.js"></script>
 <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtZ2U5d2U1dDFvazAybHM3a3Z1MWV0NmoifQ.lkO31BX5zlftfC2w412m2Q';
 
-  // Initialize the map using your PMTiles style from TileServer GL
+  // 1️⃣ Initialize Mapbox map using your TileServer GL style
   const map = new mapboxgl.Map({
     container: 'map',
-    style: 'http://localhost:8080/styles/bright/style.json', // replace with your TileServer GL style URL
+    style: 'http://localhost:8080/styles/bright/style.json', // <- your TileServer GL PMTiles style
     center: [4.9, 52.37], // Amsterdam
     zoom: 11
   });
 
   map.on('load', function() {
-    // --- 1. Add Amsterdam GeoJSON overlay ---
+    // 2️⃣ Add Amsterdam GeoJSON overlay
     map.addSource('amsterdam', {
       type: 'geojson',
-      data: 'http://localhost:8000/amsterdam_grid_wgs84.geojson'
+      data: 'http://localhost:8080/amsterdam_grid_wgs84.geojson' // make sure this file is accessible via TileServer GL
     });
 
     map.addLayer({
@@ -70,7 +69,7 @@
       }
     });
 
-    // --- 2. Add slider filter ---
+    // 3️⃣ Add slider filter
     const slider = document.getElementById('densitySlider');
     const sliderValue = document.getElementById('sliderValue');
 
@@ -80,7 +79,7 @@
       map.setFilter('amsterdam-layer', ['>=', ['get', 'omgevingsadressendichtheid'], value]);
     });
 
-    // Optional: initialize filter at 0
+    // Initialize filter at 0
     map.setFilter('amsterdam-layer', ['>=', ['get', 'omgevingsadressendichtheid'], 0]);
   });
 </script>
