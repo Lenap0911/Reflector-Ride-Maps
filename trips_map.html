@@ -2,11 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Amsterdam PMTiles + Ambulance Filter</title>
+  <title>Amsterdam Scaled Grid + Trips</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.22.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.22.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
   <style>
     body { margin:0; padding:0; }
@@ -37,36 +38,42 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtZ2U5d2U1dDFvazAyb
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/light-v11',
+  style: 'mapbox://styles/mapbox/dark-v11',
   center: [4.9, 52.37],
   zoom: 11
 });
 
-map.on('load', async function() {
-
-  // ✅ PMTiles source (use .json descriptor)
+map.on('load', async () => {
+  // PMTiles trips
   map.addSource('trips', {
     type: 'vector',
     url: 'http://localhost:8080/data/pmtiles.json'
   });
 
-  map.addLayer({
-    id: 'trips-layer',
-    type: 'line',
-    source: 'trips',
-    'source-layer': 'trips',
-    paint: {
-      'line-color': '#FF5733',
-      'line-width': 1
-    }
+  const response = await fetch('http://localhost:8080/data/pmtiles.json');
+  const tileJSON = await response.json();
+  const tripLayers = tileJSON.vector_layers.map(layer => layer.id);
+
+  tripLayers.forEach(layerId => {
+    map.addLayer({
+      id: layerId,
+      type: 'line',
+      source: 'trips',
+      'source-layer': layerId,
+      paint: {
+        'line-color': '#FF6600',
+        'line-width': 1
+      }
+    });
   });
 
-  // ✅ Amsterdam density polygons
+  // Amsterdam scaled GeoJSON
   map.addSource('amsterdam', {
     type: 'geojson',
     data: 'http://localhost:8080/amsterdam_grid_wgs84.geojson'
   });
 
+  // Green → Yellow → Red color scale for scaled_Total
   map.addLayer({
     id: 'amsterdam-layer',
     type: 'fill',
@@ -75,7 +82,7 @@ map.on('load', async function() {
       'fill-color': [
         'interpolate',
         ['linear'],
-        ['get', 'omgevingsadressendichtheid'],
+        ['get', 'scaled_Total'],
         0.0051, '#2ECC71',
         2.0, '#F1C40F',
         5.0, '#E67E22',
@@ -86,36 +93,23 @@ map.on('load', async function() {
     }
   });
 
-  // ✅ Filter slider
+  // Zoom to Amsterdam grid bounds
+  map.getSource('amsterdam').once('data', (e) => {
+    if (e.sourceDataType === 'metadata') return;
+    const bbox = turf.bbox(map.getSource('amsterdam')._data);
+    map.fitBounds(bbox, { padding: 20 });
+  });
+
+  // Slider filter
   const slider = document.getElementById('densitySlider');
   const sliderValue = document.getElementById('sliderValue');
-
   slider.addEventListener('input', function(e) {
     const value = parseFloat(e.target.value);
     sliderValue.textContent = value.toFixed(2);
-    map.setFilter('amsterdam-layer', ['>=', ['get', 'omgevingsadressendichtheid'], value]);
+    map.setFilter('amsterdam-layer', ['>=', ['get', 'scaled_Total'], value]);
   });
 
-  map.setFilter('amsterdam-layer', ['>=', ['get', 'omgevingsadressendichtheid'], 0.0051]);
-
-  // ✅ Ambulance points
-  map.addSource('ambulance_calls', {
-    type: 'geojson',
-    data: 'http://localhost:8000/sensor_data/ambulance_calls.geojson'
-  });
-
-  map.addLayer({
-    id: 'ambulance-layer',
-    type: 'circle',
-    source: 'ambulance_calls',
-    paint: {
-      'circle-radius': 4,
-      'circle-color': '#1E90FF',
-      'circle-opacity': 0.7,
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#ffffff'
-    }
-  });
+  map.setFilter('amsterdam-layer', ['>=', ['get', 'scaled_Total'], 0.0051]);
 });
 </script>
 </body>
