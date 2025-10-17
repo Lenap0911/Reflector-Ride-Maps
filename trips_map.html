@@ -181,14 +181,21 @@ map.on('load', async () => {
     console.log('Available properties:', Object.keys(geojsonData.features[0].properties));
 
     // Check which property to use for color coding
-    if ('rate_per_1000' in geojsonData.features[0].properties) {
+    const availableProps = geojsonData.features[0].properties;
+    if ('rate_per_1000' in availableProps) {
       propertyName = 'rate_per_1000';
-    } else if ('Total_scaled' in geojsonData.features[0].properties) {
+    } else if ('Total_scaled' in availableProps) {
       propertyName = 'Total_scaled';
-    } else if ('Total' in geojsonData.features[0].properties) {
+    } else if ('Total' in availableProps) {
       propertyName = 'Total';
     }
     console.log('Using property:', propertyName);
+    
+    // Get min/max values for this property to set slider range
+    const values = geojsonData.features.map(f => f.properties[propertyName] || 0);
+    const minVal = Math.min(...values);
+    const maxVal = Math.max(...values);
+    console.log(`${propertyName} range: ${minVal.toFixed(4)} to ${maxVal.toFixed(4)}`);
 
     map.addSource('ambulance_calls', {
       type: 'geojson',
@@ -197,6 +204,10 @@ map.on('load', async () => {
 
     // --- Add color-coded layer based on RATE per 1000 residents ---
     // Color scale will auto-adjust based on property
+    const colorStops = propertyName === 'Total' 
+      ? [0, '#2ECC71', 0.3, '#F1C40F', 0.6, '#E67E22', 1.0, '#E74C3C']
+      : [0, '#2ECC71', 0.2, '#F1C40F', 0.5, '#E67E22', 1.0, '#E74C3C'];
+    
     map.addLayer({
       id: 'ambulance-layer',
       type: 'fill',
@@ -206,10 +217,7 @@ map.on('load', async () => {
           'interpolate',
           ['linear'],
           ['get', propertyName],
-          0, '#2ECC71',      // Green: low 
-          0.2, '#F1C40F',    // Yellow: medium
-          0.5, '#E67E22',    // Orange: high
-          1.0, '#E74C3C'     // Red: very high
+          ...colorStops
         ],
         'fill-opacity': 0.6,
         'fill-outline-color': '#333'
