@@ -99,8 +99,8 @@
       Ambulance Calls
     </label>
     <div class="slider-section active" id="ambulanceSlider">
-      <label for="densitySlider" id="sliderLabel">
-        Loading...
+      <label for="densitySlider">
+        Min Value: <span id="sliderValue">0.0</span>
       </label>
       <input type="range" id="densitySlider" min="0" max="1.0" step="0.01" value="0">
     </div>
@@ -127,10 +127,11 @@ function showError(msg) {
 }
 
 map.on('load', async () => {
-  let propertyName = 'Total';
+  // Define propertyName at the top so it's available everywhere
+  let propertyName = 'Total';  // Default, will update after checking the data
   
   try {
-    // --- Load trips ---
+    // --- Load trips via tile server (like your working version) ---
     map.addSource('trips', {
       type: 'vector',
       url: 'http://localhost:8080/data/pmtiles.json'
@@ -153,8 +154,9 @@ map.on('load', async () => {
       });
     });
 
-    console.log('✅ Trip layers loaded:', tripLayers);
+    console.log('Trip layers loaded:', tripLayers);
     
+    // Toggle trips visibility
     const tripsCheckbox = document.getElementById('tripsCheckbox');
     tripsCheckbox.addEventListener('change', (e) => {
       const visibility = e.target.checked ? 'visible' : 'none';
@@ -170,14 +172,15 @@ map.on('load', async () => {
 
   try {
     // --- Load ambulance GeoJSON ---
+    // Change filename to match your actual file
     const geojsonResponse = await fetch('http://localhost:8000/sensor_data/ambulance_calls.geojson');
     const geojsonData = await geojsonResponse.json();
     
-    console.log('✅ GeoJSON loaded');
-    console.log('📊 Sample feature:', geojsonData.features[0]);
-    console.log('📋 Available properties:', Object.keys(geojsonData.features[0].properties));
+    console.log('GeoJSON loaded');
+    console.log('Sample feature:', geojsonData.features[0]);
+    console.log('Available properties:', Object.keys(geojsonData.features[0].properties));
 
-    // Detect which property to use
+    // Check which property to use for color coding
     const availableProps = geojsonData.features[0].properties;
     if ('rate_per_1000' in availableProps) {
       propertyName = 'rate_per_1000';
@@ -186,24 +189,21 @@ map.on('load', async () => {
     } else if ('Total' in availableProps) {
       propertyName = 'Total';
     }
-    console.log('🎯 Using property:', propertyName);
+    console.log('Using property:', propertyName);
     
-    // Calculate min/max for slider
+    // Get min/max values for this property to set slider range
     const values = geojsonData.features.map(f => f.properties[propertyName] || 0);
     const minVal = Math.min(...values);
     const maxVal = Math.max(...values);
-    console.log(`📈 ${propertyName} range: ${minVal.toFixed(4)} to ${maxVal.toFixed(4)}`);
+    console.log(`${propertyName} range: ${minVal.toFixed(4)} to ${maxVal.toFixed(4)}`);
 
     map.addSource('ambulance_calls', {
       type: 'geojson',
       data: geojsonData
     });
 
-    // Color scale based on property type
-    const colorStops = propertyName === 'Total' 
-      ? [0, '#2ECC71', 0.3, '#F1C40F', 0.6, '#E67E22', 1.0, '#E74C3C']
-      : [0, '#2ECC71', 0.2, '#F1C40F', 0.5, '#E67E22', 1.0, '#E74C3C'];
-    
+    // --- Add color-coded layer based on RATE per 1000 residents ---
+    // Color scale will auto-adjust based on property
     map.addLayer({
       id: 'ambulance-layer',
       type: 'fill',
@@ -213,57 +213,42 @@ map.on('load', async () => {
           'interpolate',
           ['linear'],
           ['get', propertyName],
-          ...colorStops
+          0, '#2ECC71',      // Green: low 
+          0.2, '#F1C40F',    // Yellow: medium
+          0.5, '#E67E22',    // Orange: high
+          1.0, '#E74C3C'     // Red: very high
         ],
         'fill-opacity': 0.6,
         'fill-outline-color': '#333'
       }
     });
 
+    // --- Fit to bounds ---
     const bbox = turf.bbox(geojsonData);
     map.fitBounds(bbox, { padding: 20 });
 
-    // --- UPDATED SLIDER CODE ---
+    // --- Slider filter ---
     const slider = document.getElementById('densitySlider');
-    const sliderLabel = document.getElementById('sliderLabel');
-    
-    // Set slider range to actual data range
-    slider.min = minVal;
-    slider.max = maxVal;
-    slider.step = (maxVal - minVal) / 100;
-    slider.value = minVal;
-    
-    // Create readable label
-    const propertyLabel = {
-      'rate_per_1000': 'Calls per 1000 residents',
-      'Total_scaled': 'Scaled value',
-      'Total': 'Total ambulance calls'
-    }[propertyName] || 'Value';
-    
-    // Update label with current value
-    function updateSliderLabel(value) {
-      sliderLabel.innerHTML = `Min ${propertyLabel}: <strong>${value.toFixed(3)}</strong>`;
-    }
-    
-    updateSliderLabel(minVal);
+    const sliderValue = document.getElementById('sliderValue');
     
     slider.addEventListener('input', function(e) {
       const value = parseFloat(e.target.value);
-      updateSliderLabel(value);
+      sliderValue.textContent = value.toFixed(2);
       map.setFilter('ambulance-layer', ['>=', ['get', propertyName], value]);
     });
 
-    map.setFilter('ambulance-layer', ['>=', ['get', propertyName], minVal]);
+    map.setFilter('ambulance-layer', ['>=', ['get', propertyName], 0]);
 
-    console.log('✅ Ambulance layer loaded successfully');
+    console.log('Ambulance layer loaded successfully');
 
-    // Toggle visibility
+    // Toggle ambulance layer visibility
     const ambulanceCheckbox = document.getElementById('ambulanceCheckbox');
     const ambulanceSlider = document.getElementById('ambulanceSlider');
     
     ambulanceCheckbox.addEventListener('change', (e) => {
       const isChecked = e.target.checked;
       map.setLayoutProperty('ambulance-layer', 'visibility', isChecked ? 'visible' : 'none');
+      // Show/hide slider when checkbox is toggled
       ambulanceSlider.classList.toggle('active', isChecked);
     });
 
