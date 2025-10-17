@@ -4,15 +4,9 @@
   <meta charset="utf-8">
   <title>Amsterdam Trips + Ambulance Grid</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Mapbox GL -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-
-  <!-- Turf + PMTiles -->
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-  <script src="https://unpkg.com/pmtiles@3.0.2/dist/pmtiles.js"></script>
-
   <style>
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -26,16 +20,27 @@
       border-radius: 5px;
       font-family: sans-serif;
     }
+    #error {
+      position: absolute;
+      z-index: 2;
+      top: 70px;
+      left: 10px;
+      background: rgba(255,0,0,0.9);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: sans-serif;
+      display: none;
+    }
   </style>
 </head>
 <body>
-
 <div id="map"></div>
-
 <div id="sliderContainer">
   <label for="densitySlider">Min Scaled Value: <span id="sliderValue">0.005</span></label><br>
   <input type="range" id="densitySlider" min="0.005" max="8.8769" step="0.01" value="0.005">
 </div>
+<div id="error"></div>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtZ2U5d2U1dDFvazAybHM3a3Z1MWV0NmoifQ.lkO31BX5zlftfC2w412m2Q';
@@ -47,82 +52,107 @@ const map = new mapboxgl.Map({
   zoom: 11
 });
 
+function showError(msg) {
+  const errorDiv = document.getElementById('error');
+  errorDiv.textContent = msg;
+  errorDiv.style.display = 'block';
+  console.error(msg);
+}
+
 map.on('load', async () => {
-  // --- 1️⃣ Initialize PMTiles protocol ---
-  const protocol = new pmtiles.Protocol();
-  mapboxgl.addProtocol("pmtiles", protocol.tile);
+  try {
+    // --- Load trips via tile server (like your working version) ---
+    map.addSource('trips', {
+      type: 'vector',
+      url: 'http://localhost:8080/data/pmtiles.json'
+    });
 
-  // --- 2️⃣ Load trips.pmtiles (no need for tileserver-gl-light) ---
-  const pmtilesURL = "http://localhost:8000/sensor_data/trips.pmtiles";
-  const p = new pmtiles.PMTiles(pmtilesURL);
+    const response = await fetch('http://localhost:8080/data/pmtiles.json');
+    const tileJSON = await response.json();
+    const tripLayers = tileJSON.vector_layers.map(layer => layer.id);
 
-  map.addSource('trips', {
-    type: 'vector',
-    url: `pmtiles://${pmtilesURL}`
-  });
+    tripLayers.forEach(layerId => {
+      map.addLayer({
+        id: layerId,
+        type: 'line',
+        source: 'trips',
+        'source-layer': layerId,
+        paint: {
+          'line-color': '#FF6600',
+          'line-width': 1
+        }
+      });
+    });
 
-  const metadata = await p.getMetadata();
-  const tripLayers = metadata.vector_layers.map(layer => layer.id);
+    console.log('Trip layers loaded:', tripLayers);
+  } catch (err) {
+    showError('Error loading trips: ' + err.message);
+    console.error(err);
+  }
 
-  tripLayers.forEach(layerId => {
+  try {
+    // --- Load ambulance GeoJSON ---
+    const geojsonResponse = await fetch('http://localhost:8000/sensor_data/ambulance_calls.geojson');
+    const geojsonData = await geojsonResponse.json();
+    
+    console.log('GeoJSON loaded');
+    console.log('Sample feature:', geojsonData.features[0]);
+    console.log('Available properties:', Object.keys(geojsonData.features[0].properties));
+
+    map.addSource('ambulance_calls', {
+      type: 'geojson',
+      data: geojsonData
+    });
+
+    // --- Add color-coded layer ---
+    // Check console to see if property is 'Total_scaled' or 'scaled_Total'
+    const propertyName = 'Total_scaled'; // Change to 'scaled_Total' if needed
+    
     map.addLayer({
-      id: layerId,
-      type: 'line',
-      source: 'trips',
-      'source-layer': layerId,
+      id: 'ambulance-layer',
+      type: 'fill',
+      source: 'ambulance_calls',
       paint: {
-        'line-color': '#FF6600',
-        'line-width': 1
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['get', propertyName],
+          0.005, '#2ECC71',
+          2.0, '#F1C40F',
+          5.0, '#E67E22',
+          8.8769, '#E74C3C'
+        ],
+        'fill-opacity': 0.7,
+        'fill-outline-color': '#555'
       }
     });
-  });
 
-  // --- 3️⃣ Load ambulance_calls.geojson (scaled values) ---
-  map.addSource('ambulance_calls', {
-    type: 'geojson',
-    data: 'http://localhost:8000/sensor_data/ambulance_calls.geojson'
-  });
-
-  // --- 4️⃣ Add scaled color-coded layer ---
-  map.addLayer({
-    id: 'ambulance-layer',
-    type: 'fill',
-    source: 'ambulance_calls',
-    paint: {
-      'fill-color': [
-        'interpolate',
-        ['linear'],
-        ['get', 'Total_scaled'],
-        0.005, '#2ECC71',   // green (low)
-        2.0, '#F1C40F',     // yellow
-        5.0, '#E67E22',     // orange
-        8.8769, '#E74C3C'   // red (high)
-      ],
-      'fill-opacity': 0.7,
-      'fill-outline-color': '#555'
-    }
-  });
-
-  // --- 5️⃣ Fit map to GeoJSON bounds ---
-  map.getSource('ambulance_calls').once('data', (e) => {
-    if (e.sourceDataType === 'metadata') return;
-    const bbox = turf.bbox(map.getSource('ambulance_calls')._data);
+    // --- Fit to bounds ---
+    const bbox = turf.bbox(geojsonData);
     map.fitBounds(bbox, { padding: 20 });
-  });
 
-  // --- 6️⃣ Slider filter ---
-  const slider = document.getElementById('densitySlider');
-  const sliderValue = document.getElementById('sliderValue');
+    // --- Slider filter ---
+    const slider = document.getElementById('densitySlider');
+    const sliderValue = document.getElementById('sliderValue');
+    
+    slider.addEventListener('input', function(e) {
+      const value = parseFloat(e.target.value);
+      sliderValue.textContent = value.toFixed(3);
+      map.setFilter('ambulance-layer', ['>=', ['get', propertyName], value]);
+    });
 
-  slider.addEventListener('input', function(e) {
-    const value = parseFloat(e.target.value);
-    sliderValue.textContent = value.toFixed(3);
-    map.setFilter('ambulance-layer', ['>=', ['get', 'Total_scaled'], value]);
-  });
+    map.setFilter('ambulance-layer', ['>=', ['get', propertyName], 0.005]);
 
-  map.setFilter('ambulance-layer', ['>=', ['get', 'Total_scaled'], 0.005]);
+    console.log('Ambulance layer loaded successfully');
+  } catch (err) {
+    showError('Error loading ambulance data: ' + err.message);
+    console.error(err);
+  }
+});
+
+map.on('error', (e) => {
+  showError('Map error: ' + (e.error ? e.error.message : 'Unknown error'));
 });
 </script>
-
 </body>
 </html>
