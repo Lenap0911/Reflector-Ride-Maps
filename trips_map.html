@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Amsterdam Ambulance Calls - Heatmap</title>
+  <title>Amsterdam Ambulance Calls - Grid View</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
@@ -19,7 +19,7 @@
       background: rgba(255,255,255,0.95);
       padding: 15px;
       border-radius: 8px;
-      min-width: 240px;
+      min-width: 260px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     
@@ -32,11 +32,23 @@
     }
     
     .control-group {
-      margin-bottom: 12px;
+      margin-bottom: 15px;
     }
     
-    .control-group:last-child {
-      margin-bottom: 0;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
+    
+    select {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
     }
     
     .checkbox-label {
@@ -55,17 +67,63 @@
       cursor: pointer;
     }
     
-    .nested-controls {
-      margin-left: 24px;
-      padding-left: 12px;
-      border-left: 2px solid #e0e0e0;
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
     }
     
-    .nested-controls .checkbox-label {
-      font-weight: 500;
-      font-size: 13px;
-      margin-bottom: 6px;
-      color: #555;
+    .slider-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    .legend {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .legend h4 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .legend-scale {
+      height: 200px;
+      width: 30px;
+      background: linear-gradient(to top, 
+        rgba(0, 0, 255, 0.1),
+        rgba(65, 105, 225, 0.3),
+        rgba(0, 255, 255, 0.5),
+        rgba(0, 255, 0, 0.6),
+        rgba(255, 255, 0, 0.7),
+        rgba(255, 0, 0, 0.9)
+      );
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      position: relative;
+    }
+    
+    .legend-labels {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 200px;
+      margin-left: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .legend-content {
+      display: flex;
     }
     
     #stats {
@@ -112,19 +170,28 @@
   <div class="control-group">
     <label class="checkbox-label">
       <input type="checkbox" id="ambulanceCheckbox" checked>
-      🚑 Ambulance Calls
+      🚑 Ambulance Grid
     </label>
-    
-    <div class="nested-controls">
-      <label class="checkbox-label">
-        <input type="checkbox" id="heatmapCheckbox" checked>
-        Heatmap
-      </label>
-      
-      <label class="checkbox-label">
-        <input type="checkbox" id="pointsCheckbox">
-        Individual Points
-      </label>
+  </div>
+  
+  <div class="control-group">
+    <label>Time Filter:</label>
+    <select id="timeFilter">
+      <option value="all">All Times</option>
+      <option value="night">🌙 Night (11pm-5am)</option>
+      <option value="morning">🌅 Morning (5am-11am)</option>
+      <option value="afternoon">☀️ Afternoon (11am-5pm)</option>
+      <option value="evening">🌆 Evening (5pm-11pm)</option>
+    </select>
+  </div>
+  
+  <div class="control-group">
+    <label>Intensity Scale:</label>
+    <input type="range" id="intensitySlider" min="1" max="10" step="0.5" value="5">
+    <div class="slider-info">
+      <span>Low</span>
+      <span id="intensityValue">5x</span>
+      <span>High</span>
     </div>
   </div>
 </div>
@@ -132,8 +199,25 @@
 <div id="stats">
   <h4>Statistics</h4>
   <div class="stat-row">
+    <span class="stat-label">Showing:</span>
+    <span class="stat-value" id="statShowing">—</span>
+  </div>
+  <div class="stat-row">
     <span class="stat-label">Total calls:</span>
     <span class="stat-value" id="statTotal">—</span>
+  </div>
+</div>
+
+<div class="legend">
+  <h4>Call Intensity</h4>
+  <div class="legend-content">
+    <div class="legend-scale"></div>
+    <div class="legend-labels">
+      <div>High</div>
+      <div></div>
+      <div></div>
+      <div>Low</div>
+    </div>
   </div>
 </div>
 
@@ -147,7 +231,10 @@ const map = new mapboxgl.Map({
   zoom: 11
 });
 
-let ambulanceData = null;
+let gridData = null;
+let maxCalls = 0;
+let currentTimeFilter = 'all';
+let currentIntensity = 5;
 
 map.on('load', async () => {
   
@@ -185,78 +272,57 @@ map.on('load', async () => {
     console.warn('Trips not available:', err);
   }
 
-  // Load ambulance point data
+  // Load ambulance grid data
   try {
-    const response = await fetch('http://localhost:8000/sensor_data/amsterdam_ambulance_points_from_grid.geojson');
-    ambulanceData = await response.json();
+    const response = await fetch('http://localhost:8000/sensor_data/amsterdam_ambulance_grid.geojson');
+    gridData = await response.json();
     
-    console.log('✅ Loaded', ambulanceData.features.length, 'ambulance calls');
+    console.log('✅ Loaded', gridData.features.length, 'grid cells');
     
-    map.addSource('ambulance-points', {
+    // Calculate max calls for normalization
+    maxCalls = Math.max(...gridData.features.map(f => f.properties.total_calls));
+    console.log('📊 Max calls in a cell:', maxCalls);
+    
+    map.addSource('ambulance-grid', {
       type: 'geojson',
-      data: ambulanceData
+      data: gridData
     });
 
-    // Heatmap layer - cleaner color scheme like the example
+    // Grid fill layer
     map.addLayer({
-      id: 'ambulance-heatmap',
-      type: 'heatmap',
-      source: 'ambulance-points',
+      id: 'ambulance-grid-fill',
+      type: 'fill',
+      source: 'ambulance-grid',
       paint: {
-        'heatmap-weight': 1,
-        'heatmap-intensity': [
+        'fill-color': [
           'interpolate',
           ['linear'],
-          ['zoom'],
-          0, 1,
-          15, 1.5
+          ['/', ['get', 'total_calls'], maxCalls],
+          0, 'rgba(0, 0, 255, 0.1)',
+          0.2, 'rgba(65, 105, 225, 0.3)',
+          0.4, 'rgba(0, 255, 255, 0.5)',
+          0.6, 'rgba(0, 255, 0, 0.6)',
+          0.8, 'rgba(255, 255, 0, 0.7)',
+          1, 'rgba(255, 0, 0, 0.9)'
         ],
-        'heatmap-color': [
-          'interpolate',
-          ['linear'],
-          ['heatmap-density'],
-          0, 'rgba(0, 0, 255, 0)',
-          0.1, 'rgba(65, 105, 225, 0.6)',
-          0.3, 'rgba(0, 255, 255, 0.7)',
-          0.5, 'rgba(0, 255, 0, 0.8)',
-          0.7, 'rgba(255, 255, 0, 0.9)',
-          1, 'rgba(255, 0, 0, 1)'
-        ],
-        'heatmap-radius': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          0, 2,
-          9, 20,
-          15, 40
-        ],
-        'heatmap-opacity': 0.8
+        'fill-opacity': 0.7
       }
     });
 
-    // Circle layer for individual points - cleaner design
+    // Grid outline layer
     map.addLayer({
-      id: 'ambulance-points-layer',
-      type: 'circle',
-      source: 'ambulance-points',
+      id: 'ambulance-grid-outline',
+      type: 'line',
+      source: 'ambulance-grid',
       paint: {
-        'circle-radius': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          7, 2,
-          14, 6
-        ],
-        'circle-color': '#ff4444',
-        'circle-opacity': 0,
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#ffffff',
-        'circle-stroke-opacity': 0
+        'line-color': '#ffffff',
+        'line-width': 0.5,
+        'line-opacity': 0.2
       }
     });
 
     // Fit map to data
-    const bbox = turf.bbox(ambulanceData);
+    const bbox = turf.bbox(gridData);
     map.fitBounds(bbox, { padding: 50 });
 
     // Setup controls
@@ -266,67 +332,100 @@ map.on('load', async () => {
     console.log('✅ Map ready');
 
   } catch (err) {
-    console.error('Error loading ambulance data:', err);
+    console.error('Error loading grid data:', err);
   }
 });
 
 function setupControls() {
-  // Main ambulance toggle
+  // Ambulance toggle
   document.getElementById('ambulanceCheckbox').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
-    map.setLayoutProperty('ambulance-heatmap', 'visibility', visibility);
-    
-    // Also handle points if they're enabled
-    const pointsChecked = document.getElementById('pointsCheckbox').checked;
-    if (pointsChecked) {
-      map.setPaintProperty('ambulance-points-layer', 'circle-opacity', e.target.checked ? 0.7 : 0);
-      map.setPaintProperty('ambulance-points-layer', 'circle-stroke-opacity', e.target.checked ? 0.9 : 0);
-    }
+    map.setLayoutProperty('ambulance-grid-fill', 'visibility', visibility);
+    map.setLayoutProperty('ambulance-grid-outline', 'visibility', visibility);
   });
 
-  // Heatmap toggle
-  document.getElementById('heatmapCheckbox').addEventListener('change', (e) => {
-    map.setLayoutProperty('ambulance-heatmap', 'visibility', 
-      e.target.checked ? 'visible' : 'none');
+  // Time filter
+  document.getElementById('timeFilter').addEventListener('change', (e) => {
+    currentTimeFilter = e.target.value;
+    updateGridColors();
+    updateStats();
   });
 
-  // Points toggle
-  document.getElementById('pointsCheckbox').addEventListener('change', (e) => {
-    const ambulanceEnabled = document.getElementById('ambulanceCheckbox').checked;
-    map.setPaintProperty('ambulance-points-layer', 'circle-opacity', 
-      e.target.checked && ambulanceEnabled ? 0.7 : 0);
-    map.setPaintProperty('ambulance-points-layer', 'circle-stroke-opacity', 
-      e.target.checked && ambulanceEnabled ? 0.9 : 0);
+  // Intensity slider
+  document.getElementById('intensitySlider').addEventListener('input', (e) => {
+    currentIntensity = parseFloat(e.target.value);
+    document.getElementById('intensityValue').textContent = currentIntensity + 'x';
+    updateGridColors();
   });
+}
+
+function updateGridColors() {
+  const propertyKey = currentTimeFilter === 'all' ? 'total_calls' : 
+                      currentTimeFilter + '_calls';
+  
+  // Calculate max for current filter
+  const currentMax = Math.max(...gridData.features.map(f => f.properties[propertyKey]));
+  
+  // Adjust max based on intensity slider
+  const adjustedMax = currentMax / currentIntensity;
+  
+  map.setPaintProperty('ambulance-grid-fill', 'fill-color', [
+    'interpolate',
+    ['linear'],
+    ['/', ['get', propertyKey], adjustedMax],
+    0, 'rgba(0, 0, 255, 0.1)',
+    0.2, 'rgba(65, 105, 225, 0.3)',
+    0.4, 'rgba(0, 255, 255, 0.5)',
+    0.6, 'rgba(0, 255, 0, 0.6)',
+    0.8, 'rgba(255, 255, 0, 0.7)',
+    1, 'rgba(255, 0, 0, 0.9)'
+  ]);
 }
 
 function updateStats() {
-  if (!ambulanceData) return;
-  document.getElementById('statTotal').textContent = ambulanceData.features.length;
+  if (!gridData) return;
+  
+  const propertyKey = currentTimeFilter === 'all' ? 'total_calls' : 
+                      currentTimeFilter + '_calls';
+  
+  const totalCalls = gridData.features.reduce(
+    (sum, f) => sum + f.properties[propertyKey], 0
+  );
+  
+  document.getElementById('statShowing').textContent = totalCalls.toFixed(0);
+  document.getElementById('statTotal').textContent = 
+    gridData.features.reduce((sum, f) => sum + f.properties.total_calls, 0).toFixed(0);
 }
 
-// Click on points to show info
-map.on('click', 'ambulance-points-layer', (e) => {
+// Click on grid to show info
+map.on('click', 'ambulance-grid-fill', (e) => {
   const props = e.features[0].properties;
+  
+  const propertyKey = currentTimeFilter === 'all' ? 'total_calls' : 
+                      currentTimeFilter + '_calls';
   
   new mapboxgl.Popup()
     .setLngLat(e.lngLat)
     .setHTML(`
-      <strong>Ambulance Call</strong><br>
-      📍 ${props.location || 'Unknown location'}<br>
-      🕐 ${props.time || 'Unknown time'}<br>
-      📅 ${props.date || 'Unknown date'}<br>
-      ${props.message ? `💬 ${props.message}` : ''}
+      <strong>Grid Cell ${props.grid_id}</strong><br>
+      👥 Population: ${props.population}<br>
+      📞 Total calls: ${props.total_calls.toFixed(1)}<br>
+      <br>
+      <strong>By Time Period:</strong><br>
+      🌙 Night: ${props.night_calls.toFixed(1)}<br>
+      🌅 Morning: ${props.morning_calls.toFixed(1)}<br>
+      ☀️ Afternoon: ${props.afternoon_calls.toFixed(1)}<br>
+      🌆 Evening: ${props.evening_calls.toFixed(1)}
     `)
     .addTo(map);
 });
 
 // Change cursor on hover
-map.on('mouseenter', 'ambulance-points-layer', () => {
+map.on('mouseenter', 'ambulance-grid-fill', () => {
   map.getCanvas().style.cursor = 'pointer';
 });
 
-map.on('mouseleave', 'ambulance-points-layer', () => {
+map.on('mouseleave', 'ambulance-grid-fill', () => {
   map.getCanvas().style.cursor = '';
 });
 </script>
