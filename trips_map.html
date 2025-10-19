@@ -186,12 +186,12 @@
   </div>
   
   <div class="control-group">
-    <label>Intensity Scale:</label>
-    <input type="range" id="intensitySlider" min="1" max="10" step="0.5" value="5">
+    <label>Minimum Calls to Show:</label>
+    <input type="range" id="minCallsSlider" min="0" max="50" step="1" value="0">
     <div class="slider-info">
-      <span>Low</span>
-      <span id="intensityValue">5x</span>
-      <span>High</span>
+      <span>0</span>
+      <span id="minCallsValue">0 calls</span>
+      <span>50+</span>
     </div>
   </div>
 </div>
@@ -234,7 +234,7 @@ const map = new mapboxgl.Map({
 let gridData = null;
 let maxCalls = 0;
 let currentTimeFilter = 'all';
-let currentIntensity = 5;
+let currentMinCalls = 0;
 
 map.on('load', async () => {
   
@@ -347,39 +347,28 @@ function setupControls() {
   // Time filter
   document.getElementById('timeFilter').addEventListener('change', (e) => {
     currentTimeFilter = e.target.value;
-    updateGridColors();
+    updateGridFilter();
     updateStats();
   });
 
-  // Intensity slider
-  document.getElementById('intensitySlider').addEventListener('input', (e) => {
-    currentIntensity = parseFloat(e.target.value);
-    document.getElementById('intensityValue').textContent = currentIntensity + 'x';
-    updateGridColors();
+  // Minimum calls slider
+  document.getElementById('minCallsSlider').addEventListener('input', (e) => {
+    currentMinCalls = parseFloat(e.target.value);
+    document.getElementById('minCallsValue').textContent = currentMinCalls + ' calls';
+    updateGridFilter();
+    updateStats();
   });
 }
 
-function updateGridColors() {
+function updateGridFilter() {
   const propertyKey = currentTimeFilter === 'all' ? 'total_calls' : 
                       currentTimeFilter + '_calls';
   
-  // Calculate max for current filter
-  const currentMax = Math.max(...gridData.features.map(f => f.properties[propertyKey]));
+  // Filter cells based on minimum calls threshold
+  const filter = ['>=', ['get', propertyKey], currentMinCalls];
   
-  // Adjust max based on intensity slider
-  const adjustedMax = currentMax / currentIntensity;
-  
-  map.setPaintProperty('ambulance-grid-fill', 'fill-color', [
-    'interpolate',
-    ['linear'],
-    ['/', ['get', propertyKey], adjustedMax],
-    0, 'rgba(0, 0, 255, 0.1)',
-    0.2, 'rgba(65, 105, 225, 0.3)',
-    0.4, 'rgba(0, 255, 255, 0.5)',
-    0.6, 'rgba(0, 255, 0, 0.6)',
-    0.8, 'rgba(255, 255, 0, 0.7)',
-    1, 'rgba(255, 0, 0, 0.9)'
-  ]);
+  map.setFilter('ambulance-grid-fill', filter);
+  map.setFilter('ambulance-grid-outline', filter);
 }
 
 function updateStats() {
@@ -388,13 +377,17 @@ function updateStats() {
   const propertyKey = currentTimeFilter === 'all' ? 'total_calls' : 
                       currentTimeFilter + '_calls';
   
+  // Count calls in visible cells only
+  const visibleCalls = gridData.features
+    .filter(f => f.properties[propertyKey] >= currentMinCalls)
+    .reduce((sum, f) => sum + f.properties[propertyKey], 0);
+  
   const totalCalls = gridData.features.reduce(
-    (sum, f) => sum + f.properties[propertyKey], 0
+    (sum, f) => sum + f.properties.total_calls, 0
   );
   
-  document.getElementById('statShowing').textContent = totalCalls.toFixed(0);
-  document.getElementById('statTotal').textContent = 
-    gridData.features.reduce((sum, f) => sum + f.properties.total_calls, 0).toFixed(0);
+  document.getElementById('statShowing').textContent = visibleCalls.toFixed(0);
+  document.getElementById('statTotal').textContent = totalCalls.toFixed(0);
 }
 
 // Click on grid to show info
