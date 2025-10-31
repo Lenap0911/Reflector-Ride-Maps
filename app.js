@@ -3,7 +3,7 @@ import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
 
-mapboxgl.accessToken = CONFIG.MAPBOX_TOKEN;
+mapboxgl.accessToken = pk.eyJ1IjoibGF1cmFwb25vcmFuIiwiYSI6ImNtaGRzeGNpcTA2YjQyaXNqbGw5Z21jMGQifQ.o2DvN6MoLC9JNvCr_GOrKg;
 
 const map = new mapboxgl.Map({
   container: 'map',
