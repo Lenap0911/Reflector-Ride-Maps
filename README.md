@@ -16,18 +16,14 @@ Reflector-Ride-Maps/
 ├── csv_data/                       # Raw CSV files from sensors (you create this)
 ├── sensor_data/                    # Cleaned GeoJSON files (generated)
 ├── processed_sensor_data/          # Speed-calculated trips (generated)
-├── public/
-│   ├── trips.pmtiles               # Compressed trip data for map
+├── trips.pmtiles                   # Compressed trip data for map
 ├── csv_to_geojson_converter.py     # Step 1: Convert CSVs to GeoJSON
 ├── combined_processor.py           # Step 2: Calculate speeds from sensor data
 ├── build_pmtiles.py                # Step 3: Build PMTiles for web
 ├── index.html                      # Main visualization page
 ├── app.js                          # Map logic and interactions
 ├── config.js                       # Configuration (uses .env)
-├── styles.css                      # Styling
-├── vite.config.js                  # Vite bundler config
-├── package.json                    # Node dependencies
-└── .env                            # Your Mapbox token (keep secret!)
+└── styles.css                      # Styling
 ```
 
 ## 🚀 Quick Start
@@ -35,31 +31,10 @@ Reflector-Ride-Maps/
 ### Prerequisites
 
 - **Python 3.x** for data processing
-- **Node.js & npm** for web development
 - **Tippecanoe** for PMTiles generation:
   ```bash
   brew install tippecanoe  # macOS
   ```
-- **MapLibre token** (free at [mapbox.com](https://account.mapbox.com))
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/tomvanarman/Reflector-Ride-Maps.git
-   cd Reflector-Ride-Maps
-   ```
-
-2. **Install Node dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up your environment:**
-   ```bash
-   # Create .env file
-   echo "VITE_MAPBOX_TOKEN=pk.YOUR_TOKEN_HERE" > .env
-   ```
 
 ## 📋 Data Processing Workflow
 
@@ -155,13 +130,7 @@ python build_pmtiles.py
 
 ## 🌐 Running the Web Visualization
 
-### Start the development server:
-
-```bash
-npx vite
-```
-
-The map will open at `http://localhost:5173/`
+Visit https://tomvanarman.github.io/Reflector-Ride-Maps/
 
 ### Features:
 
@@ -236,22 +205,6 @@ The map will open at `http://localhost:5173/`
 - **`app.js`**: Map initialization, data loading, speed coloring, click handlers
 - **`config.js`**: Configuration (Mapbox token, file paths, map style)
 - **`styles.css`**: UI styling for controls, legend, and stats panel
-- **`vite.config.js`**: Vite configuration for loading .env variables
-
-### Configuration Files
-
-- **`.env`**: Your Mapbox token (DO NOT commit to Git!)
-- **`.gitignore`**: Prevents committing sensitive files and generated data
-- **`package.json`**: Node.js dependencies and scripts
-- **`package-lock.json`**: Locked dependency versions
-
-### Generated Files (Not in Git)
-
-- **`generate-config.js`**: Alternative script to generate config from .env (not currently used)
-- **`sensor_data/`**: Cleaned GeoJSON from CSV conversion
-- **`processed_sensor_data/`**: Speed-calculated trips
-- **`public/trips.pmtiles`**: Compressed trip data
-- **`public/aggregated_routes.geojson`**: Aggregated speed routes
 
 ## 🔧 Configuration
 
