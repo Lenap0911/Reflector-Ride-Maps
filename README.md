@@ -72,7 +72,7 @@ python combined_processor.py
 **What it does:**
 - Reads cleaned GeoJSON files from `sensor_data/`
 - Calculates speed using **wheel rotation (HRot)** data:
-  - Uses 660mm (26") wheel diameter
+  - Uses 711mm wheel diameter
   - Formula: `speed = (wheel_rotations × circumference) / time`
 - Creates line segments only where the wheel actually moved
 - Filters out stopped periods and anomalies
@@ -117,10 +117,6 @@ Visit https://tomvanarman.github.io/Reflector-Ride-Maps/
 - 🎨 Color segments by speed (gradient or categories)
 - 🖱️ Click segments to see speed details
 
-**Aggregated Routes:**
-- 📊 See average speeds across all trips
-- 🔢 Filter by minimum sample count (2-20 trips)
-- 📈 View speed statistics per segment
 
 **Speed Legend:**
 - 🟦 Gray: Stopped (0-2 km/h)
@@ -132,49 +128,12 @@ Visit https://tomvanarman.github.io/Reflector-Ride-Maps/
 - 🟢 Darkest Green: Extreme (25-30 km/h)
 - 🟩 Super Fast (30+ km/h)
 
-## 🛠️ Why We Use Each Technology
-
-### Vite
-**Purpose:** Modern development server and build tool
-
-**Benefits:**
-- ⚡ Lightning-fast hot module reloading (instant updates)
-- 📦 Handles ES modules natively (no webpack config)
-- 🔄 Injects `.env` variables into your code
-- 🏗️ Optimized production builds
-- 🎯 Simple setup, zero configuration needed
-
-**Alternative:** You could use plain HTML + file:// protocol, but:
-- ❌ No `.env` file support (token visible in code)
-- ❌ No hot reloading (manual refresh needed)
-- ❌ Module imports don't work
-- ❌ No CORS handling for local files
-
-### MapLibre GL JS
-**Purpose:** Open-source map rendering library
-
-**Why not Mapbox GL JS?**
-- ✅ MapLibre is free and open source
-- ✅ Has `addProtocol` for PMTiles (Mapbox v3 removed it)
-- ✅ 100% API-compatible with Mapbox v2
-- ✅ No usage limits or pricing tiers
-
-### PMTiles
-**Purpose:** Efficient vector tile format
-
-**Benefits:**
-- 📦 Single file (no tile server needed)
-- 🚀 90% smaller than GeoJSON
-- ⚡ Only loads visible map tiles
-- 🌐 Works with static hosting (GitHub Pages, S3, etc.)
-
 ## 📁 File Explanations
 
 ### Python Scripts
 
 - **`csv_to_geojson_converter.py`**: Converts raw sensor CSVs to GeoJSON LineStrings
 - **`combined_processor.py`**: Calculates speeds from wheel rotation data (HRot)
-- **`aggregate_routes.py`**: Aggregates speeds across trips to show typical speeds per road
 - **`build_pmtiles.py`**: Compresses GeoJSON into PMTiles using Tippecanoe
 
 ### JavaScript/Web Files
@@ -189,7 +148,7 @@ Visit https://tomvanarman.github.io/Reflector-Ride-Maps/
 ### Wheel Settings (in `combined_processor.py`):
 
 ```python
-WHEEL_DIAMETER_MM = 660  # 26 inch wheel
+WHEEL_DIAMETER_MM = 711  
 WHEEL_CIRCUMFERENCE_M = (660 / 1000) * math.pi  # ~2.073m
 ```
 
@@ -214,17 +173,11 @@ Modify the `getSpeedColorExpression()` function to adjust color thresholds.
 
 ### "Map is blank"
 - Check browser console for errors
-- Verify `.env` has correct token: `VITE_MAPBOX_TOKEN=pk.ey...`
-- Restart Vite: `Ctrl+C` then `npx vite`
 
 ### "No data showing"
-- Ensure `public/trips.pmtiles` exists
+- Ensure `trips.pmtiles` exists
 - Check file paths in `config.js`
 - Verify trips have coordinates in Amsterdam area
-
-### "Import errors in browser"
-- Make sure scripts have `type="module"` in `index.html`
-- Check that Vite is running (not just opening HTML file)
 
 ## 🤝 Contributing
 
@@ -243,7 +196,6 @@ ISC License - See package.json for details
 - **MapLibre GL JS**: Open-source mapping library
 - **Tippecanoe**: PMTiles generation by Mapbox
 - **CartoDB**: Free basemap styles
-- **Vite**: Modern build tooling
 
 ## 📧 Contact
 
