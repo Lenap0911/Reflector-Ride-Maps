@@ -89,29 +89,7 @@ python combined_processor.py
 - `time_diff_s`: Time between points
 - `gps_distance_m`: GPS distance (for validation)
 
-### Step 3: Aggregate Routes Across Trips
-
-```bash
-python aggregate_routes.py
-```
-
-**What it does:**
-- Reads all processed trips
-- Groups segments by road location (rounded coordinates)
-- Calculates statistics per road segment:
-  - Average speed
-  - Min/max speeds
-  - Sample count (how many trips)
-  - Speed variance
-- Filters out low-quality segments (stopped, large gaps)
-- **Output:** `public/aggregated_routes.geojson`
-
-**Quality filters:**
-- Skip speeds < 3 km/h with GPS distance > 50m
-- Skip time gaps > 5 seconds
-- Require minimum 2 samples per segment
-
-### Step 4: Build PMTiles for Web
+### Step 3: Build PMTiles for Web
 
 ```bash
 python build_pmtiles.py
