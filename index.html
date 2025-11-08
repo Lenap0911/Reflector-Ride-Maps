@@ -101,6 +101,16 @@
 </div>
 
 <script>
+  // Close all popups helper function
+  window.closeAllPopups = function() {
+    const popups = document.getElementsByClassName('mapboxgl-popup');
+    if (popups.length) {
+      while(popups[0]) {
+        popups[0].remove();
+      }
+    }
+  };
+
   // Fullscreen functionality
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   const mapContainer = document.getElementById('mapContainer');

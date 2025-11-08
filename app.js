@@ -187,6 +187,14 @@ function resetSelection() {
   console.log('Resetting selection');
   selectedTrip = null;
   
+  // Close any open popups
+  const popups = document.getElementsByClassName('mapboxgl-popup');
+  if (popups.length) {
+    while(popups[0]) {
+      popups[0].remove();
+    }
+  }
+  
   // Reset all layers to normal appearance
   tripLayers.forEach(layerId => {
     try {
