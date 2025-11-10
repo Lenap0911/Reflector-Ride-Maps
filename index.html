@@ -5,13 +5,361 @@
   <title>Bike Sensor Data Visualization</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
-  <link href="styles.css" rel="stylesheet" />
   <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
   <script src="https://unpkg.com/pmtiles@3.0.4/dist/pmtiles.js"></script>
-  <script>
-    var mapboxgl = maplibregl;
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>var mapboxgl = maplibregl;</script>
+  
+  <style>
+    body { 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    }
+
+    #map { 
+      position: absolute; 
+      top: 0; 
+      bottom: 0; 
+      width: 100%; 
+    }
+
+    /* Controls Panel */
+    #controls {
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 15px;
+      border-radius: 8px;
+      min-width: 260px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    h3 {
+      margin: 0 0 15px 0;
+      font-size: 17px;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+    }
+
+    .control-group { margin-bottom: 15px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .radio-group {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    #resetButton {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      margin-top: 20px;
+      background: #E67E22;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      transition: background 0.2s;
+    }
+
+    #resetButton:hover { background: #D35400; }
+
+    /* Stats Panel */
+    #stats {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 13px;
+    }
+
+    #stats h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+      min-width: 200px;
+    }
+
+    .stat-label { color: #666; }
+    .stat-value { font-weight: 700; color: #E67E22; }
+    #selectedTripRow { display: none; }
+
+    /* Speed Legend */
+    .legend {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: none;
+    }
+
+    .legend h4 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .speed-legend-item {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+      font-size: 12px;
+    }
+
+    .speed-color-box {
+      width: 30px;
+      height: 4px;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
+
+    /* Analytics Panel */
+    #analyticsPanel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      height: 70vh;
+      transform: translateY(calc(100% - 50px));
+    }
+
+    #analyticsPanel.open {
+      transform: translateY(0);
+    }
+
+    #panelHandle {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      border-radius: 16px 16px 0 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #666;
+      border-bottom: 1px solid #eee;
+    }
+
+    #panelHandle:hover {
+      background: #f9f9f9;
+    }
+
+    .panel-tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      overflow-x: auto;
+      background: white;
+    }
+
+    .panel-tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      font-size: 14px;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .panel-tab:hover {
+      background: #f9f9f9;
+    }
+
+    .panel-tab.active {
+      color: #E67E22;
+      border-bottom-color: #E67E22;
+      background: #fff5f0;
+    }
+
+    .panel-content {
+      padding: 20px;
+      overflow-y: auto;
+      height: calc(70vh - 100px);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .chart-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-card-label {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .stat-card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #E67E22;
+    }
+
+    .sensor-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sensor-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: #E67E22;
+    }
+
+    .sensor-card-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .sensor-stat {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .time-bar {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .time-segment {
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .time-segment-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .time-segment-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    #fullscreenBtn {
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.95);
+      border: none;
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 20px;
+    }
+  </style>
 </head>
 <body>
 <div id="mapContainer">
@@ -98,65 +446,81 @@
       <span>Extreme (25+)</span>
     </div>
   </div>
-</div>
 
-<script>
-  // Fullscreen functionality
-  const fullscreenBtn = document.getElementById('fullscreenBtn');
-  const mapContainer = document.getElementById('mapContainer');
-  
-  fullscreenBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement && 
-        !document.webkitFullscreenElement && 
-        !document.mozFullScreenElement && 
-        !document.msFullscreenElement) {
-      // Enter fullscreen
-      if (mapContainer.requestFullscreen) {
-        mapContainer.requestFullscreen();
-      } else if (mapContainer.webkitRequestFullscreen) {
-        mapContainer.webkitRequestFullscreen();
-      } else if (mapContainer.mozRequestFullScreen) {
-        mapContainer.mozRequestFullScreen();
-      } else if (mapContainer.msRequestFullscreen) {
-        mapContainer.msRequestFullscreen();
-      }
-      fullscreenBtn.textContent = '⛶'; // Exit fullscreen icon
-    } else {
-      // Exit fullscreen
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-      fullscreenBtn.textContent = '⛶'; // Enter fullscreen icon
-    }
-  });
-  
-  // Update button when fullscreen changes
-  document.addEventListener('fullscreenchange', updateFullscreenButton);
-  document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-  document.addEventListener('mozfullscreenchange', updateFullscreenButton);
-  document.addEventListener('MSFullscreenChange', updateFullscreenButton);
-  
-  function updateFullscreenButton() {
-    if (document.fullscreenElement || 
-        document.webkitFullscreenElement || 
-        document.mozFullScreenElement || 
-        document.msFullscreenElement) {
-      fullscreenBtn.textContent = '⛶';
-      fullscreenBtn.title = 'Exit Fullscreen';
-    } else {
-      fullscreenBtn.textContent = '⛶';
-      fullscreenBtn.title = 'Enter Fullscreen';
-    }
-  }
-</script>
+  <!-- Analytics Panel -->
+  <div id="analyticsPanel">
+    <div id="panelHandle">
+      <span id="panelToggleIcon">▲</span>
+      <span id="panelToggleText">Show Analytics & Visualizations</span>
+    </div>
+
+    <div class="panel-tabs">
+      <div class="panel-tab active" data-tab="speed">📊 Speed Analysis</div>
+      <div class="panel-tab" data-tab="time">⏰ Time Patterns</div>
+      <div class="panel-tab" data-tab="sensors">👁️ By Sensor</div>
+      <div class="panel-tab" data-tab="trips">🗺️ Trip Details</div>
+    </div>
+
+    <div class="panel-content">
+      <!-- Speed Analysis Tab -->
+      <div class="tab-pane active" id="tab-speed">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-label">Average Speed</div>
+            <div class="stat-card-value" id="avgSpeedCard">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Max Speed Recorded</div>
+            <div class="stat-card-value" id="maxSpeedCard">—</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Speed Distribution</div>
+          <canvas id="speedChart" height="250"></canvas>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Time: Stopped vs Moving</div>
+          <canvas id="stopMoveChart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Time Patterns Tab -->
+      <div class="tab-pane" id="tab-time">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-label">Avg Trip Distance</div>
+            <div class="stat-card-value" id="avgDistanceCard">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Avg Trip Duration</div>
+            <div class="stat-card-value" id="avgDurationCard">—</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Trips by Time of Day</div>
+          <canvas id="timeOfDayChart" height="250"></canvas>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Trips by Day of Week</div>
+          <canvas id="dayOfWeekChart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- By Sensor Tab -->
+      <div class="tab-pane" id="tab-sensors">
+        <div id="sensorCards"></div>
+      </div>
+
+      <!-- Trip Details Tab -->
+      <div class="tab-pane" id="tab-trips">
+        <div id="tripsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="module" src="config.js"></script>
 <script type="module" src="app.js"></script>
+<script type="module" src="analytics.js"></script>
 </body>
 </html>
