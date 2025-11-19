@@ -27,11 +27,17 @@ const DEFAULT_COLOR = '#FF6600';
 
 // Speed color functions
 function getSpeedColorExpression(mode) {
+  // Handle both string and numeric Speed values
+  const speedValue = [
+    'to-number',
+    ['coalesce', ['get', 'Speed'], ['get', 'speed'], 0]
+  ];
+  
   if (mode === 'gradient') {
     return [
       'interpolate',
       ['linear'],
-      ['to-number', ['coalesce', ['get', 'Speed'], 0]],
+      speedValue,
       0, '#808080',
       2, '#DC2626',
       5, '#F97316',
@@ -43,7 +49,7 @@ function getSpeedColorExpression(mode) {
   } else {
     return [
       'step',
-      ['to-number', ['coalesce', ['get', 'Speed'], 0]],
+      speedValue,
       '#808080',
       2, '#DC2626',
       5, '#F97316',
@@ -102,17 +108,18 @@ function getTripStats(tripId) {
     return null;
   }
   
-  // Try multiple variations of the trip ID
+  // Try multiple variations to match metadata keys
   const variations = [
     tripId,
+    tripId.replace(/_clean_processed$/i, ''),
     tripId.replace(/_processed$/i, ''),
-    tripId.replace(/_processed$/i, '').replace(/_/g, ' '),
-    tripId.replace(/_/g, ' '),
-    tripId.replace(/ /g, '_')
+    tripId.replace(/_clean$/i, ''),
+    tripId.replace(/_clean_processed$/i, '').replace(/_/g, ' ')
   ];
   
-  console.log('🔍 Looking for metadata with variations:', variations);
-  console.log('📋 Available metadata keys:', Object.keys(tripsMetadata));
+  console.log('🔍 Looking for metadata. Layer ID:', tripId);
+  console.log('📋 Trying variations:', variations);
+  console.log('🗂️ Available metadata keys (first 10):', Object.keys(tripsMetadata).slice(0, 10));
   
   let tripData = null;
   let foundKey = null;
@@ -231,7 +238,7 @@ function showSelection(layerId) {
   document.getElementById('statTotalTimeRow').style.display = 'none';
   document.getElementById('selectedTripRow').style.display = 'flex';
   
-  const tripName = layerId.replace(/_/g, ' ').replace(/processed/gi, '').trim();
+  const tripName = layerId.replace(/_/g, ' ').replace(/processed/gi, '').replace(/clean/gi, '').trim();
   document.getElementById('selectedTrip').textContent = tripName;
 }
 
@@ -397,8 +404,8 @@ function setupClickHandlers() {
       }
       
       const props = e.features[0].properties;
-      const speed = props.Speed || 0;
-      const roadQuality = props.road_quality;
+      const speed = parseFloat(props.Speed || props.speed || 0);
+      const roadQuality = parseInt(props.road_quality || props.roadQuality || 0);
       
       selectedTrip = layerId;
       tripLayers.forEach(id => {
@@ -422,11 +429,13 @@ function setupClickHandlers() {
       let distanceKm, avgSpeed, maxSpeed, durationFormatted;
       
       if (stats) {
+        console.log('✅ Found stats for trip:', stats);
         distanceKm = stats.distance.toFixed(2);
         avgSpeed = stats.avgSpeed.toFixed(1);
         maxSpeed = stats.maxSpeed.toFixed(1);
         durationFormatted = stats.duration;
       } else {
+        console.warn('⚠️ No stats available for trip:', layerId);
         distanceKm = '—';
         avgSpeed = '—';
         maxSpeed = '—';
@@ -444,7 +453,7 @@ function setupClickHandlers() {
       };
       const qualityLabel = qualityLabels[roadQuality] || 'Unknown';
       
-      const popupTripName = layerId.replace(/_/g, ' ').replace(/processed/gi, '').trim();
+      const popupTripName = layerId.replace(/_/g, ' ').replace(/processed/gi, '').replace(/clean/gi, '').trim();
       currentPopup = new mapboxgl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(`
