@@ -109,12 +109,15 @@ function getTripStats(tripId) {
   }
   
   // Try multiple variations to match metadata keys
+  // The layer IDs have _clean_processed but metadata has neither
   const variations = [
     tripId,
-    tripId.replace(/_clean_processed$/i, ''),
-    tripId.replace(/_processed$/i, ''),
-    tripId.replace(/_clean$/i, ''),
-    tripId.replace(/_clean_processed$/i, '').replace(/_/g, ' ')
+    tripId.replace(/_clean_processed$/i, ''),  // Remove _clean_processed
+    tripId.replace(/_clean$/i, ''),             // Remove _clean
+    tripId.replace(/_processed$/i, ''),         // Remove _processed
+    tripId.replace(/_clean/gi, '').replace(/_processed/gi, ''), // Remove both anywhere
+    tripId.split('_clean')[0],                  // Take everything before _clean
+    tripId.split('_processed')[0]               // Take everything before _processed
   ];
   
   console.log('🔍 Looking for metadata. Layer ID:', tripId);
@@ -404,8 +407,10 @@ function setupClickHandlers() {
       }
       
       const props = e.features[0].properties;
+      console.log('📍 Clicked feature properties:', props);
       const speed = parseFloat(props.Speed || props.speed || 0);
       const roadQuality = parseInt(props.road_quality || props.roadQuality || 0);
+      console.log('🚴 Parsed speed:', speed, 'Road quality:', roadQuality);
       
       selectedTrip = layerId;
       tripLayers.forEach(id => {
