@@ -1,0 +1,1334 @@
+{
+  "statistics": {
+    "total": 109,
+    "success": 109,
+    "no_data": 0,
+    "insufficient_data": 0,
+    "errors": 0
+  },
+  "results": [
+    {
+      "status": "success",
+      "samples": 21501,
+      "quality_windows": 429,
+      "distribution": {
+        "2": 421,
+        "3": 8
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 28041,
+      "quality_windows": 559,
+      "distribution": {
+        "1": 24,
+        "2": 517,
+        "3": 18
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27171,
+      "quality_windows": 542,
+      "distribution": {
+        "1": 23,
+        "2": 511,
+        "3": 8
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 21911,
+      "quality_windows": 437,
+      "distribution": {
+        "1": 12,
+        "2": 248,
+        "3": 177
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 29911,
+      "quality_windows": 597,
+      "distribution": {
+        "1": 54,
+        "2": 538,
+        "3": 5
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27491,
+      "quality_windows": 548,
+      "distribution": {
+        "1": 45,
+        "2": 445,
+        "3": 58
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 44441,
+      "quality_windows": 887,
+      "distribution": {
+        "1": 28,
+        "2": 847,
+        "3": 12
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 17621,
+      "quality_windows": 351,
+      "distribution": {
+        "2": 347,
+        "3": 4
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 21241,
+      "quality_windows": 423,
+      "distribution": {
+        "2": 405,
+        "3": 18
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 8591,
+      "quality_windows": 170,
+      "distribution": {
+        "1": 20,
+        "2": 144,
+        "3": 6
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26621,
+      "quality_windows": 531,
+      "distribution": {
+        "1": 84,
+        "2": 442,
+        "3": 5
+      },
+      "input_path": "sensor_data/602B3/602B3_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/602B3/602B3_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 48211,
+      "quality_windows": 963,
+      "distribution": {
+        "1": 262,
+        "2": 686,
+        "3": 15
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 56611,
+      "quality_windows": 1131,
+      "distribution": {
+        "1": 37,
+        "2": 1086,
+        "3": 8
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 75151,
+      "quality_windows": 1502,
+      "distribution": {
+        "1": 94,
+        "2": 1371,
+        "3": 37
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip12_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip12_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 55461,
+      "quality_windows": 1108,
+      "distribution": {
+        "2": 1086,
+        "3": 22
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 84021,
+      "quality_windows": 1679,
+      "distribution": {
+        "1": 117,
+        "2": 1508,
+        "3": 54
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 16821,
+      "quality_windows": 335,
+      "distribution": {
+        "2": 328,
+        "3": 7
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 36201,
+      "quality_windows": 723,
+      "distribution": {
+        "1": 21,
+        "2": 643,
+        "3": 59
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 5751,
+      "quality_windows": 114,
+      "distribution": {
+        "2": 97,
+        "3": 17
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 36201,
+      "quality_windows": 723,
+      "distribution": {
+        "1": 21,
+        "2": 643,
+        "3": 59
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 71461,
+      "quality_windows": 1428,
+      "distribution": {
+        "2": 1406,
+        "3": 22
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 48211,
+      "quality_windows": 963,
+      "distribution": {
+        "1": 262,
+        "2": 686,
+        "3": 15
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip13_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip13_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 75151,
+      "quality_windows": 1502,
+      "distribution": {
+        "1": 94,
+        "2": 1371,
+        "3": 37
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 116281,
+      "quality_windows": 2324,
+      "distribution": {
+        "1": 470,
+        "2": 1840,
+        "3": 14
+      },
+      "input_path": "sensor_data/604F1/604F1_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/604F1/604F1_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 35961,
+      "quality_windows": 718,
+      "distribution": {
+        "1": 18,
+        "2": 562,
+        "3": 138
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 59731,
+      "quality_windows": 1193,
+      "distribution": {
+        "1": 243,
+        "2": 918,
+        "3": 32
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 70761,
+      "quality_windows": 1414,
+      "distribution": {
+        "1": 124,
+        "2": 1209,
+        "3": 81
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip15_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip15_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 40961,
+      "quality_windows": 818,
+      "distribution": {
+        "1": 2,
+        "2": 800,
+        "3": 16
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip12_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip12_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 63001,
+      "quality_windows": 1259,
+      "distribution": {
+        "1": 9,
+        "2": 1167,
+        "3": 83
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip16_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip16_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 61011,
+      "quality_windows": 1219,
+      "distribution": {
+        "1": 105,
+        "2": 1086,
+        "3": 28
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 38181,
+      "quality_windows": 762,
+      "distribution": {
+        "1": 19,
+        "2": 731,
+        "3": 12
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 48241,
+      "quality_windows": 963,
+      "distribution": {
+        "1": 65,
+        "2": 742,
+        "3": 154,
+        "4": 2
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 67311,
+      "quality_windows": 1345,
+      "distribution": {
+        "1": 33,
+        "2": 1244,
+        "3": 68
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 34911,
+      "quality_windows": 697,
+      "distribution": {
+        "1": 4,
+        "2": 673,
+        "3": 20
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 65951,
+      "quality_windows": 1318,
+      "distribution": {
+        "1": 121,
+        "2": 1142,
+        "3": 55
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 37541,
+      "quality_windows": 749,
+      "distribution": {
+        "1": 21,
+        "2": 698,
+        "3": 30
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 45391,
+      "quality_windows": 906,
+      "distribution": {
+        "1": 46,
+        "2": 832,
+        "3": 28
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip17_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip17_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 72421,
+      "quality_windows": 1447,
+      "distribution": {
+        "1": 119,
+        "2": 1256,
+        "3": 72
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip13_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip13_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 33111,
+      "quality_windows": 661,
+      "distribution": {
+        "1": 24,
+        "2": 572,
+        "3": 63,
+        "4": 2
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 77161,
+      "quality_windows": 1542,
+      "distribution": {
+        "1": 105,
+        "2": 1399,
+        "3": 38
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip14_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip14_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 65881,
+      "quality_windows": 1316,
+      "distribution": {
+        "1": 23,
+        "2": 1204,
+        "3": 89
+      },
+      "input_path": "sensor_data/608C9/608C9_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/608C9/608C9_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 35301,
+      "quality_windows": 705,
+      "distribution": {
+        "1": 60,
+        "2": 418,
+        "3": 225,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 32811,
+      "quality_windows": 655,
+      "distribution": {
+        "1": 80,
+        "2": 325,
+        "3": 246,
+        "4": 4
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip28_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip28_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 24311,
+      "quality_windows": 485,
+      "distribution": {
+        "1": 5,
+        "2": 240,
+        "3": 240
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip15_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip15_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 16501,
+      "quality_windows": 329,
+      "distribution": {
+        "1": 47,
+        "2": 114,
+        "3": 167,
+        "4": 1
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 24671,
+      "quality_windows": 492,
+      "distribution": {
+        "2": 332,
+        "3": 154,
+        "4": 6
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 23531,
+      "quality_windows": 469,
+      "distribution": {
+        "1": 24,
+        "2": 329,
+        "3": 116
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 11511,
+      "quality_windows": 229,
+      "distribution": {
+        "1": 13,
+        "2": 144,
+        "3": 70,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27061,
+      "quality_windows": 540,
+      "distribution": {
+        "1": 30,
+        "2": 323,
+        "3": 181,
+        "4": 6
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip12_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip12_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27831,
+      "quality_windows": 555,
+      "distribution": {
+        "1": 45,
+        "2": 291,
+        "3": 219
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip16_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip16_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27871,
+      "quality_windows": 556,
+      "distribution": {
+        "1": 18,
+        "2": 336,
+        "3": 200,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip38_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip38_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 33941,
+      "quality_windows": 677,
+      "distribution": {
+        "2": 426,
+        "3": 251
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip32_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip32_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 48261,
+      "quality_windows": 964,
+      "distribution": {
+        "1": 42,
+        "2": 562,
+        "3": 349,
+        "4": 11
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip25_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip25_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 19561,
+      "quality_windows": 390,
+      "distribution": {
+        "1": 41,
+        "2": 233,
+        "3": 113,
+        "4": 3
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip18_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip18_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 64281,
+      "quality_windows": 1284,
+      "distribution": {
+        "1": 14,
+        "2": 866,
+        "3": 403,
+        "4": 1
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip21_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip21_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 46341,
+      "quality_windows": 925,
+      "distribution": {
+        "1": 44,
+        "2": 536,
+        "3": 343,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip36_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip36_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 30691,
+      "quality_windows": 612,
+      "distribution": {
+        "1": 46,
+        "2": 419,
+        "3": 143,
+        "4": 4
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 49951,
+      "quality_windows": 998,
+      "distribution": {
+        "1": 13,
+        "2": 652,
+        "3": 323,
+        "4": 10
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip26_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip26_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 53321,
+      "quality_windows": 1065,
+      "distribution": {
+        "2": 543,
+        "3": 514,
+        "4": 8
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip31_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip31_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 44361,
+      "quality_windows": 886,
+      "distribution": {
+        "2": 390,
+        "3": 491,
+        "4": 5
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip35_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip35_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 50841,
+      "quality_windows": 1015,
+      "distribution": {
+        "1": 7,
+        "2": 664,
+        "3": 336,
+        "4": 8
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip22_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip22_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27091,
+      "quality_windows": 540,
+      "distribution": {
+        "1": 10,
+        "2": 431,
+        "3": 99
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip23_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip23_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 35591,
+      "quality_windows": 710,
+      "distribution": {
+        "1": 19,
+        "2": 558,
+        "3": 131,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip30_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip30_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 48911,
+      "quality_windows": 977,
+      "distribution": {
+        "1": 4,
+        "2": 565,
+        "3": 395,
+        "4": 13
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip27_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip27_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 29991,
+      "quality_windows": 598,
+      "distribution": {
+        "2": 386,
+        "3": 210,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip37_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip37_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26571,
+      "quality_windows": 530,
+      "distribution": {
+        "1": 52,
+        "2": 279,
+        "3": 197,
+        "4": 2
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip20_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip20_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 19431,
+      "quality_windows": 387,
+      "distribution": {
+        "1": 9,
+        "2": 342,
+        "3": 36
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip19_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip19_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 60951,
+      "quality_windows": 1218,
+      "distribution": {
+        "1": 83,
+        "2": 697,
+        "3": 428,
+        "4": 10
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip24_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip24_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 38941,
+      "quality_windows": 777,
+      "distribution": {
+        "1": 14,
+        "2": 361,
+        "3": 394,
+        "4": 8
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip33_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip33_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26471,
+      "quality_windows": 528,
+      "distribution": {
+        "1": 13,
+        "2": 295,
+        "3": 219,
+        "4": 1
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26981,
+      "quality_windows": 538,
+      "distribution": {
+        "1": 58,
+        "2": 393,
+        "3": 87
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 29421,
+      "quality_windows": 587,
+      "distribution": {
+        "1": 34,
+        "2": 310,
+        "3": 243
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 28261,
+      "quality_windows": 564,
+      "distribution": {
+        "2": 490,
+        "3": 73,
+        "4": 1
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip17_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip17_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 25011,
+      "quality_windows": 499,
+      "distribution": {
+        "2": 272,
+        "3": 219,
+        "4": 8
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip13_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip13_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27131,
+      "quality_windows": 541,
+      "distribution": {
+        "2": 139,
+        "3": 382,
+        "4": 20
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip14_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip14_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 65811,
+      "quality_windows": 1315,
+      "distribution": {
+        "1": 15,
+        "2": 783,
+        "3": 513,
+        "4": 4
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip29_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip29_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 24311,
+      "quality_windows": 485,
+      "distribution": {
+        "1": 16,
+        "2": 373,
+        "3": 93,
+        "4": 3
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 37281,
+      "quality_windows": 744,
+      "distribution": {
+        "1": 10,
+        "2": 393,
+        "3": 338,
+        "4": 3
+      },
+      "input_path": "sensor_data/604E9/604E9_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/604E9/604E9_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 8651,
+      "quality_windows": 172,
+      "distribution": {
+        "1": 1,
+        "2": 150,
+        "3": 21
+      },
+      "input_path": "sensor_data/604F0/604F0_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/604F0/604F0_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 9771,
+      "quality_windows": 194,
+      "distribution": {
+        "2": 172,
+        "3": 22
+      },
+      "input_path": "sensor_data/604F0/604F0_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/604F0/604F0_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 94661,
+      "quality_windows": 1892,
+      "distribution": {
+        "1": 118,
+        "2": 1417,
+        "3": 356,
+        "4": 1
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 33491,
+      "quality_windows": 668,
+      "distribution": {
+        "2": 610,
+        "3": 58
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27541,
+      "quality_windows": 549,
+      "distribution": {
+        "1": 29,
+        "2": 389,
+        "3": 131
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26791,
+      "quality_windows": 534,
+      "distribution": {
+        "2": 373,
+        "3": 161
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 31001,
+      "quality_windows": 619,
+      "distribution": {
+        "1": 27,
+        "2": 322,
+        "3": 266,
+        "4": 4
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 45901,
+      "quality_windows": 917,
+      "distribution": {
+        "1": 75,
+        "2": 720,
+        "3": 122
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 41241,
+      "quality_windows": 823,
+      "distribution": {
+        "1": 34,
+        "2": 752,
+        "3": 37
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 42761,
+      "quality_windows": 854,
+      "distribution": {
+        "1": 52,
+        "2": 749,
+        "3": 53
+      },
+      "input_path": "sensor_data/602D3/602D3_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/602D3/602D3_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 26451,
+      "quality_windows": 528,
+      "distribution": {
+        "1": 39,
+        "2": 432,
+        "3": 57
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 42871,
+      "quality_windows": 856,
+      "distribution": {
+        "1": 203,
+        "2": 649,
+        "3": 4
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27271,
+      "quality_windows": 544,
+      "distribution": {
+        "1": 4,
+        "2": 486,
+        "3": 54
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip7_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 14881,
+      "quality_windows": 296,
+      "distribution": {
+        "1": 1,
+        "2": 291,
+        "3": 4
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 13651,
+      "quality_windows": 272,
+      "distribution": {
+        "2": 271,
+        "3": 1
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 31501,
+      "quality_windows": 629,
+      "distribution": {
+        "1": 22,
+        "2": 592,
+        "3": 15
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip1_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip1_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 15901,
+      "quality_windows": 317,
+      "distribution": {
+        "1": 5,
+        "2": 204,
+        "3": 108
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 30761,
+      "quality_windows": 614,
+      "distribution": {
+        "1": 36,
+        "2": 567,
+        "3": 11
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 25001,
+      "quality_windows": 499,
+      "distribution": {
+        "1": 43,
+        "2": 376,
+        "3": 79,
+        "4": 1
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 27921,
+      "quality_windows": 557,
+      "distribution": {
+        "1": 28,
+        "2": 492,
+        "3": 37
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 36351,
+      "quality_windows": 726,
+      "distribution": {
+        "1": 146,
+        "2": 531,
+        "3": 49
+      },
+      "input_path": "sensor_data/602DE/602DE_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/602DE/602DE_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 76671,
+      "quality_windows": 1532,
+      "distribution": {
+        "1": 11,
+        "2": 1296,
+        "3": 225
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip6_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip6_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 132051,
+      "quality_windows": 2640,
+      "distribution": {
+        "1": 304,
+        "2": 2313,
+        "3": 23
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip2_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip2_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 79271,
+      "quality_windows": 1584,
+      "distribution": {
+        "1": 28,
+        "2": 1551,
+        "3": 5
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip5_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip5_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 92661,
+      "quality_windows": 1852,
+      "distribution": {
+        "2": 1834,
+        "3": 18
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip10_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip10_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 102211,
+      "quality_windows": 2043,
+      "distribution": {
+        "1": 51,
+        "2": 1963,
+        "3": 29
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip8_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip8_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 116501,
+      "quality_windows": 2329,
+      "distribution": {
+        "1": 44,
+        "2": 2270,
+        "3": 15
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip9_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip9_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 60571,
+      "quality_windows": 1210,
+      "distribution": {
+        "1": 4,
+        "2": 1206
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip11_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip11_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 33191,
+      "quality_windows": 662,
+      "distribution": {
+        "1": 23,
+        "2": 636,
+        "3": 3
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip4_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip4_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 116501,
+      "quality_windows": 2329,
+      "distribution": {
+        "1": 44,
+        "2": 2270,
+        "3": 15
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip3_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip3_clean_processed.geojson"
+    },
+    {
+      "status": "success",
+      "samples": 21571,
+      "quality_windows": 430,
+      "distribution": {
+        "2": 430
+      },
+      "input_path": "sensor_data/602CD/602CD_Trip7_clean.geojson",
+      "output_path": "processed_sensor_data/602CD/602CD_Trip7_clean_processed.geojson"
+    }
+  ],
+  "parameters": {
+    "window_size": 100,
+    "overlap": 0.5
+  }
+}
