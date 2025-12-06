@@ -91,15 +91,23 @@ def extract_metadata_and_features(data):
         geom = feat.get("geometry", {})
         coords = geom.get("coordinates", None)
         
+        # Check if this is a metadata feature (no coordinates or empty coordinates)
         if coords is None or (isinstance(coords, list) and len(coords) == 0):
-            # This is metadata
-            metadata = feat.get("properties", {})
+            # This is metadata - only keep important keys
+            props = feat.get("properties", {})
+            # Only keep keys that look like metadata (not sensor data points)
+            for key, value in props.items():
+                if not key.startswith(',,'):  # Skip raw sensor data rows
+                    metadata[key] = value
         else:
             features.append(feat)
     
     # Also check if metadata is in the top-level properties
     if not metadata and 'properties' in data:
-        metadata = data.get('properties', {})
+        top_props = data.get('properties', {})
+        for key, value in top_props.items():
+            if not key.startswith(',,'):
+                metadata[key] = value
     
     return features, metadata
 
@@ -497,13 +505,12 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
         
         print(f"  ✅ Sensor complete\n")
     
-    # Merge new metadata with existing and save
-    if all_metadata:
-        saved_metadata.update(all_metadata)
-        meta_file = Path("trips_metadata.json")
-        with open(meta_file, 'w') as f:
-            json.dump(saved_metadata, f, indent=2)
-        print(f"💾 Saved metadata for {len(saved_metadata)} trips total ({len(all_metadata)} new/updated)\n")
+    # Save metadata (merge with existing)
+    saved_metadata.update(all_metadata)
+    meta_file = Path("trips_metadata.json")
+    with open(meta_file, 'w') as f:
+        json.dump(saved_metadata, f, indent=2)
+    print(f"💾 Saved metadata for {len(saved_metadata)} trips total ({len(all_metadata)} new/updated)\n")
     
     # Summary
     print("=" * 60)
