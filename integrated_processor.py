@@ -87,6 +87,15 @@ def extract_metadata_and_features(data):
     features = []
     metadata = {}
     
+    # Important metadata keys to keep
+    important_keys = {
+        'WheelDiam', 'Wheel mm', 'Frequency', 'GNSS', 'SENSOR',
+        'Trip stop code', 'Trip start/end', 'Duration', 'Charge(start | stop)',
+        'Hardware', 'Firmware', 'SystemID', 'App version',
+        'BLE Device Information Service', 'Sensor\'s connection',
+        ',Duration,Stops,Dist km,AVG km/h,AVGWOS km/h,MAX km/h,MAX- m/s²,MAX+ m/s²,Falls,Bamps,Elevation m'
+    }
+    
     for feat in data.get("features", []):
         geom = feat.get("geometry", {})
         coords = geom.get("coordinates", None)
@@ -95,9 +104,9 @@ def extract_metadata_and_features(data):
         if coords is None or (isinstance(coords, list) and len(coords) == 0):
             # This is metadata - only keep important keys
             props = feat.get("properties", {})
-            # Only keep keys that look like metadata (not sensor data points)
             for key, value in props.items():
-                if not key.startswith(',,'):  # Skip raw sensor data rows
+                # Keep only important metadata keys (skip sensor data rows)
+                if key in important_keys or (not key.startswith(',,') and len(key) < 100):
                     metadata[key] = value
         else:
             features.append(feat)
@@ -106,7 +115,7 @@ def extract_metadata_and_features(data):
     if not metadata and 'properties' in data:
         top_props = data.get('properties', {})
         for key, value in top_props.items():
-            if not key.startswith(',,'):
+            if key in important_keys or (not key.startswith(',,') and len(key) < 100):
                 metadata[key] = value
     
     return features, metadata
@@ -425,12 +434,12 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
         print(f"❌ Directory not found: {input_dir}")
         return
     
-    # Load existing metadata
+    # Load existing metadata (DO NOT overwrite!)
     saved_metadata = load_metadata()
     if saved_metadata:
-        print(f"📖 Loaded metadata for {len(saved_metadata)} existing trips\n")
+        print(f"📖 Loaded existing metadata for {len(saved_metadata)} trips")
     
-    print("🚴 Processing Bike Trip Data with Road Quality")
+    print("\n🚴 Processing Bike Trip Data with Road Quality")
     print("=" * 60)
     print(f"📂 Input: {input_path}")
     print(f"📂 Output: {output_path}\n")
@@ -438,9 +447,9 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
     total_files = 0
     processed_files = 0
     skipped_files = 0
+    already_processed = 0
     failed_files = 0
     total_segments = 0
-    all_metadata = {}
     
     # Process each sensor folder
     for folder in sorted(input_path.iterdir()):
@@ -450,29 +459,35 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
         sensor_id = folder.name
         print(f"Processing sensor {sensor_id}...")
         
-        # Find all GeoJSON files
-        geojson_files = list(folder.glob("*.geojson"))
+        # Find all _clean.geojson files
+        geojson_files = list(folder.glob("*_clean.geojson"))
         
         for idx, geojson_file in enumerate(geojson_files):
             total_files += 1
             
-            # Parse filename to get serial and trip
-            filename = geojson_file.stem
-            parts = filename.split("_")
-            if len(parts) >= 2:
-                serial, trip = parts[0], parts[1]
-            else:
-                serial, trip = sensor_id, filename
+            # Parse filename to get trip ID
+            filename = geojson_file.stem  # e.g., "602B3_Trip1_clean"
+            trip_id = filename.replace("_clean", "")  # e.g., "602B3_Trip1"
             
-            trip_id = f"{serial}_{trip}"
+            # Check if this trip should be skipped
+            serial = trip_id.split("_")[0]
+            trip = "_".join(trip_id.split("_")[1:])
             
-            # Check if trip should be skipped
             if serial in SKIP_TRIPS and trip in SKIP_TRIPS[serial]:
                 print(f"  ⏩ Skipping {trip_id}")
                 skipped_files += 1
                 continue
             
-            print(f"  Processing {trip_id}...")
+            # Check if already processed
+            sensor_output_dir = output_path / sensor_id
+            output_file = sensor_output_dir / f"{trip_id}_processed.geojson"
+            
+            if output_file.exists():
+                print(f"  ✓ {trip_id} already processed")
+                already_processed += 1
+                continue
+            
+            print(f"  🔄 Processing {trip_id}...")
             
             # Enable debug for first file only
             debug = (idx == 0 and processed_files == 0)
@@ -484,10 +499,8 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
             
             if processed_data:
                 # Save processed file in sensor subfolder
-                sensor_output_dir = output_path / sensor_id
                 sensor_output_dir.mkdir(exist_ok=True)
                 
-                output_file = sensor_output_dir / f"{trip_id}_processed.geojson"
                 with open(output_file, 'w') as f:
                     json.dump(processed_data, f)
                 
@@ -495,32 +508,29 @@ def process_all_trips(input_dir=INPUT_ROOT, output_dir=OUTPUT_ROOT):
                 total_segments += num_segments
                 processed_files += 1
                 print(f"  ✅ {num_segments} segments created")
-                
-                # Store metadata (flat structure)
-                if metadata:
-                    all_metadata[trip_id] = metadata
             else:
                 failed_files += 1
                 print(f"  ❌ Failed to process")
         
         print(f"  ✅ Sensor complete\n")
     
-    # Save metadata (merge with existing)
-    saved_metadata.update(all_metadata)
-    meta_file = Path("trips_metadata.json")
-    with open(meta_file, 'w') as f:
-        json.dump(saved_metadata, f, indent=2)
-    print(f"💾 Saved metadata for {len(saved_metadata)} trips total ({len(all_metadata)} new/updated)\n")
+    
+    # Don't save metadata - just preserve what exists from CSV converter
+    # Metadata file should only be modified by csv_to_geojson_converter
     
     # Summary
     print("=" * 60)
     print(f"✅ Processing complete!")
-    print(f"   Total files found: {total_files}")
-    print(f"   Successfully processed: {processed_files}")
+    print(f"   Total _clean files found: {total_files}")
+    print(f"   Already processed: {already_processed}")
+    print(f"   Newly processed: {processed_files}")
     print(f"   Skipped: {skipped_files}")
     print(f"   Failed: {failed_files}")
     print(f"   Total segments created: {total_segments}")
     print(f"   Output saved to: {output_path}")
+    
+    if saved_metadata:
+        print(f"   Metadata preserved: {len(saved_metadata)} trips")
     
     # Calculate speed and road quality statistics
     all_speeds = []
