@@ -1,4 +1,4 @@
-// app.js - Enhanced with Road Quality Layer and Trip Search
+// app.js - Enhanced with Road Quality Layer, Trip Search, and Traffic Lights
 import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
@@ -355,6 +355,56 @@ map.on('load', async () => {
     });
 
     console.log('✅ All trips loaded and visible');
+    
+    // ==========================================
+    // 🚦 ADD TRAFFIC LIGHTS LAYER
+    // ==========================================
+    console.log('📡 Loading Amsterdam traffic lights...');
+    
+    try {
+      map.addSource('verkeerslichten', {
+        type: 'geojson',
+        data: 'https://maps.amsterdam.nl/open_geodata/geojson_lnglat.php?KAARTLAAG=VERKEERSLICHTEN&THEMA=verkeerslichten'
+      });
+
+      map.addLayer({
+        id: 'verkeerslichten',
+        type: 'circle',
+        source: 'verkeerslichten',
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#e63946',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+
+      console.log('✅ Traffic lights layer added');
+
+      // Click handler for traffic lights
+      map.on('click', 'verkeerslichten', (e) => {
+        const props = e.features[0].properties;
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.adres || 'Geen adres beschikbaar'}`)
+          .addTo(map);
+      });
+
+      // Cursor pointer on hover
+      map.on('mouseenter', 'verkeerslichten', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      
+      map.on('mouseleave', 'verkeerslichten', () => {
+        map.getCanvas().style.cursor = '';
+      });
+      
+    } catch (err) {
+      console.error('❌ Error loading traffic lights:', err);
+    }
+    // ==========================================
+    // END TRAFFIC LIGHTS LAYER
+    // ==========================================
     
     map.setCenter([4.9041, 52.3676]);
     map.setZoom(13);
