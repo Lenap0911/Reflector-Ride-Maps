@@ -399,29 +399,54 @@ map.on('load', async () => {
       
       if (!trafficLightsData) {
         console.error('❌ Could not load traffic lights from any path');
-        return;
+      } else {
+        // Add source with loaded data
+        map.addSource('verkeerslichten', {
+          type: 'geojson',
+          data: trafficLightsData
+        });
+
+        // Add the layer
+        map.addLayer({
+          id: 'verkeerslichten',
+          type: 'circle',
+          source: 'verkeerslichten',
+          paint: {
+            'circle-radius': 5,
+            'circle-color': '#e63946',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#fff'
+          }
+        });
+
+        console.log('✅ Traffic lights layer added with', trafficLightsData.features.length, 'points');
+
+        // Click handler for traffic lights
+        map.on('click', 'verkeerslichten', (e) => {
+          e.preventDefault();
+          if (e.originalEvent) {
+            e.originalEvent.stopPropagation();
+          }
+          
+          const props = e.features[0].properties;
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}`)
+            .addTo(map);
+        });
+
+        // Cursor pointer on hover
+        map.on('mouseenter', 'verkeerslichten', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+        
+        map.on('mouseleave', 'verkeerslichten', () => {
+          map.getCanvas().style.cursor = '';
+        });
       }
 
-      // Add source with loaded data
-      map.addSource('verkeerslichten', {
-        type: 'geojson',
-        data: trafficLightsData
-      });
-
-      // Add the layer
-      map.addLayer({
-        id: 'verkeerslichten',
-        type: 'circle',
-        source: 'verkeerslichten',
-        paint: {
-          'circle-radius': 5,
-          'circle-color': '#e63946',
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
-        }
-      });
-
-      console.log('✅ Traffic lights layer added with', trafficLightsData.features.length, 'points');
+    } catch (err) {
+      console.error('❌ Error loading traffic lights:', err);
     }
     // ==========================================
     // END TRAFFIC LIGHTS LAYER
@@ -538,6 +563,18 @@ function setupControls() {
       }
     });
   });
+
+  // Traffic lights toggle
+  const trafficLightsCheckbox = document.getElementById('trafficLightsCheckbox');
+  if (trafficLightsCheckbox) {
+    trafficLightsCheckbox.addEventListener('change', (e) => {
+      const visibility = e.target.checked ? 'visible' : 'none';
+      if (map.getLayer('verkeerslichten')) {
+        map.setLayoutProperty('verkeerslichten', 'visibility', visibility);
+        console.log('🚦 Traffic lights visibility:', visibility);
+      }
+    });
+  }
 }
 
 function setupClickHandlers() {
