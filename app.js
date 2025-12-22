@@ -371,21 +371,41 @@ map.on('load', async () => {
     console.log('📡 Loading Amsterdam traffic lights...');
     
     try {
-      // Add source - use local file to avoid CORS
+      // Try multiple possible paths
+      const possiblePaths = [
+        './traffic_lights.json',
+        'traffic_lights.json',
+        '/traffic_lights.json',
+        '../traffic_lights.json',
+        `${CONFIG.DATA_URL}/traffic_lights.json`
+      ];
+      
+      let trafficLightsData = null;
+      
+      for (const path of possiblePaths) {
+        try {
+          console.log('🔍 Trying to load traffic lights from:', path);
+          const response = await fetch(path);
+          if (response.ok) {
+            trafficLightsData = await response.json();
+            console.log('✅ Loaded traffic lights from', path);
+            console.log(`📍 Found ${trafficLightsData.features.length} traffic lights`);
+            break;
+          }
+        } catch (err) {
+          console.log('❌ Failed to load from', path, err.message);
+        }
+      }
+      
+      if (!trafficLightsData) {
+        console.error('❌ Could not load traffic lights from any path');
+        return;
+      }
+
+      // Add source with loaded data
       map.addSource('verkeerslichten', {
         type: 'geojson',
-        data: '/traffic_lights.json'  // or './traffic_lights.json'
-      });
-
-      // Listen for source data load
-      map.on('sourcedata', (e) => {
-        if (e.sourceId === 'verkeerslichten' && e.isSourceLoaded) {
-          console.log('✅ Traffic lights data loaded successfully');
-          const source = map.getSource('verkeerslichten');
-          if (source && source._data && source._data.features) {
-            console.log(`📍 Loaded ${source._data.features.length} traffic lights`);
-          }
-        }
+        data: trafficLightsData
       });
 
       // Add the layer
@@ -401,33 +421,7 @@ map.on('load', async () => {
         }
       });
 
-      console.log('✅ Traffic lights layer added');
-
-      // Click handler for traffic lights
-      map.on('click', 'verkeerslichten', (e) => {
-        e.preventDefault();
-        if (e.originalEvent) {
-          e.originalEvent.stopPropagation();
-        }
-        
-        const props = e.features[0].properties;
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}`)
-          .addTo(map);
-      });
-
-      // Cursor pointer on hover
-      map.on('mouseenter', 'verkeerslichten', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      
-      map.on('mouseleave', 'verkeerslichten', () => {
-        map.getCanvas().style.cursor = '';
-      });
-      
-    } catch (err) {
-      console.error('❌ Error loading traffic lights:', err);
+      console.log('✅ Traffic lights layer added with', trafficLightsData.features.length, 'points');
     }
     // ==========================================
     // END TRAFFIC LIGHTS LAYER
