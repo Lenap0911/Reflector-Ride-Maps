@@ -215,6 +215,15 @@ function resetSelection() {
     try {
       map.setPaintProperty(layerId, 'line-opacity', 0.7);
       map.setPaintProperty(layerId, 'line-width', 3);
+      
+      // Reset to appropriate color based on active mode
+      if (showSpeedColors) {
+        map.setPaintProperty(layerId, 'line-color', getSpeedColorExpression(speedMode));
+      } else if (showRoadQuality) {
+        map.setPaintProperty(layerId, 'line-color', getRoadQualityColorExpression());
+      } else {
+        map.setPaintProperty(layerId, 'line-color', DEFAULT_COLOR);
+      }
     } catch (err) {
       console.error('Error resetting layer:', layerId, err);
     }
@@ -242,7 +251,7 @@ function showSelection(layerId) {
   document.getElementById('selectedTrip').textContent = tripName;
 }
 
-// NEW: Search and highlight trip
+// Search and highlight trip
 function searchAndHighlightTrip(searchTerm) {
   if (!searchTerm) {
     resetSelection();
@@ -356,33 +365,73 @@ map.on('load', async () => {
 
     console.log('✅ All trips loaded and visible');
     
-// ==========================================
+    // ==========================================
     // 🚦 TRAFFIC LIGHTS LAYER
     // ==========================================
     console.log('📡 Loading Amsterdam traffic lights...');
     
-    // Add source - use local file to avoid CORS
-    map.addSource('verkeerslichten', {
-      type: 'geojson',
-      data: '/traffic_lights.json'  // or './traffic_lights.json'
-    });
+    try {
+      // Add source - use local file to avoid CORS
+      map.addSource('verkeerslichten', {
+        type: 'geojson',
+        data: '/traffic_lights.json'  // or './traffic_lights.json'
+      });
 
-    // Listen for source data load
-    map.on('sourcedata', (e) => {
-      if (e.sourceId === 'verkeerslichten' && e.isSourceLoaded) {
-        console.log('✅ Traffic lights data loaded successfully');
-        const source = map.getSource('verkeerslichten');
-        if (source && source._data && source._data.features) {
-          console.log(`📍 Loaded ${source._data.features.length} traffic lights`);
+      // Listen for source data load
+      map.on('sourcedata', (e) => {
+        if (e.sourceId === 'verkeerslichten' && e.isSourceLoaded) {
+          console.log('✅ Traffic lights data loaded successfully');
+          const source = map.getSource('verkeerslichten');
+          if (source && source._data && source._data.features) {
+            console.log(`📍 Loaded ${source._data.features.length} traffic lights`);
+          }
         }
-      }
-    });
+      });
 
-    // Listen for errors
-    map.on('error', (e) => {
-      if (e.sourceId === 'verkeerslichten') {
-        console.error('❌ Traffic lights source error:', e.error);
-        console.error('💡 This is likely a CORS issue. The Amsterdam API may not allow cross')
+      // Add the layer
+      map.addLayer({
+        id: 'verkeerslichten',
+        type: 'circle',
+        source: 'verkeerslichten',
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#e63946',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+
+      console.log('✅ Traffic lights layer added');
+
+      // Click handler for traffic lights
+      map.on('click', 'verkeerslichten', (e) => {
+        e.preventDefault();
+        if (e.originalEvent) {
+          e.originalEvent.stopPropagation();
+        }
+        
+        const props = e.features[0].properties;
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}`)
+          .addTo(map);
+      });
+
+      // Cursor pointer on hover
+      map.on('mouseenter', 'verkeerslichten', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      
+      map.on('mouseleave', 'verkeerslichten', () => {
+        map.getCanvas().style.cursor = '';
+      });
+      
+    } catch (err) {
+      console.error('❌ Error loading traffic lights:', err);
+    }
+    // ==========================================
+    // END TRAFFIC LIGHTS LAYER
+    // ==========================================
     
     map.setCenter([4.9041, 52.3676]);
     map.setZoom(13);
@@ -401,16 +450,6 @@ function setupControls() {
   if (resetButton) {
     resetButton.addEventListener('click', () => {
       resetSelection();
-      // Reset colors when clearing selection
-      tripLayers.forEach(layerId => {
-        if (showSpeedColors) {
-          map.setPaintProperty(layerId, 'line-color', getSpeedColorExpression(speedMode));
-        } else if (showRoadQuality) {
-          map.setPaintProperty(layerId, 'line-color', getRoadQualityColorExpression());
-        } else {
-          map.setPaintProperty(layerId, 'line-color', DEFAULT_COLOR);
-        }
-      });
     });
   }
   
@@ -595,6 +634,7 @@ function setupClickHandlers() {
     });
   });
   
+  // Click anywhere on map to deselect trip
   map.on('click', (e) => {
     if (!e.defaultPrevented && selectedTrip) {
       resetSelection();
