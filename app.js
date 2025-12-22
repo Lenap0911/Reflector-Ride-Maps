@@ -356,55 +356,33 @@ map.on('load', async () => {
 
     console.log('✅ All trips loaded and visible');
     
-    // ==========================================
-    // 🚦 ADD TRAFFIC LIGHTS LAYER
+// ==========================================
+    // 🚦 TRAFFIC LIGHTS LAYER
     // ==========================================
     console.log('📡 Loading Amsterdam traffic lights...');
     
-    try {
-      map.addSource('verkeerslichten', {
-        type: 'geojson',
-        data: 'https://maps.amsterdam.nl/open_geodata/geojson_lnglat.php?KAARTLAAG=VERKEERSLICHTEN&THEMA=verkeerslichten'
-      });
+    // Add source - use local file to avoid CORS
+    map.addSource('verkeerslichten', {
+      type: 'geojson',
+      data: '/traffic_lights.json'  // or './traffic_lights.json'
+    });
 
-      map.addLayer({
-        id: 'verkeerslichten',
-        type: 'circle',
-        source: 'verkeerslichten',
-        paint: {
-          'circle-radius': 5,
-          'circle-color': '#e63946',
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
+    // Listen for source data load
+    map.on('sourcedata', (e) => {
+      if (e.sourceId === 'verkeerslichten' && e.isSourceLoaded) {
+        console.log('✅ Traffic lights data loaded successfully');
+        const source = map.getSource('verkeerslichten');
+        if (source && source._data && source._data.features) {
+          console.log(`📍 Loaded ${source._data.features.length} traffic lights`);
         }
-      });
+      }
+    });
 
-      console.log('✅ Traffic lights layer added');
-
-      // Click handler for traffic lights
-      map.on('click', 'verkeerslichten', (e) => {
-        const props = e.features[0].properties;
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.adres || 'Geen adres beschikbaar'}`)
-          .addTo(map);
-      });
-
-      // Cursor pointer on hover
-      map.on('mouseenter', 'verkeerslichten', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      
-      map.on('mouseleave', 'verkeerslichten', () => {
-        map.getCanvas().style.cursor = '';
-      });
-      
-    } catch (err) {
-      console.error('❌ Error loading traffic lights:', err);
-    }
-    // ==========================================
-    // END TRAFFIC LIGHTS LAYER
-    // ==========================================
+    // Listen for errors
+    map.on('error', (e) => {
+      if (e.sourceId === 'verkeerslichten') {
+        console.error('❌ Traffic lights source error:', e.error);
+        console.error('💡 This is likely a CORS issue. The Amsterdam API may not allow cross')
     
     map.setCenter([4.9041, 52.3676]);
     map.setZoom(13);
@@ -436,7 +414,7 @@ function setupControls() {
     });
   }
   
-  // NEW: Trip search
+  // Trip search
   const searchInput = document.getElementById('tripSearchInput');
   const searchButton = document.getElementById('tripSearchButton');
   
