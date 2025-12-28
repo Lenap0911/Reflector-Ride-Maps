@@ -412,10 +412,10 @@ map.on('load', async () => {
           type: 'circle',
           source: 'verkeerslichten',
           paint: {
-            'circle-radius': 5,
+            'circle-radius': 4,
             'circle-color': '#e63946',
             'circle-stroke-width': 1,
-            'circle-stroke-color': '#fff'
+            'circle-opacity': 0.8
           }
         });
 
