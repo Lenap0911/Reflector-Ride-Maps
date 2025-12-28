@@ -21,9 +21,18 @@ let showRoadQuality = false;
 let selectedTrip = null;
 let tripsMetadata = null;
 let currentPopup = null;
+let trafficLightAnalysis = null;
+let showTrafficLightAnalysis = false;
+let analysisMode = 'overall'; // 'sudden', 'extended', 'overall'
 
 // Default orange color for routes
 const DEFAULT_COLOR = '#FF6600';
+
+// Traffic light analysis parameters
+const ANALYSIS_RADIUS = 25; // meters - diameter zone around traffic light
+const SUDDEN_BRAKE_THRESHOLD = -3; // m/s² - deceleration rate
+const EXTENDED_STOP_THRESHOLD = 5; // seconds - time stopped or very slow
+const SLOW_SPEED_THRESHOLD = 2; // km/h - considered "stopped"
 
 // Speed color functions
 function getSpeedColorExpression(mode) {
@@ -413,7 +422,7 @@ map.on('load', async () => {
           source: 'verkeerslichten',
           paint: {
             'circle-radius': 4,
-            'circle-color': '#e63946',
+            'circle-color': '#f4071bff',
             'circle-stroke-width': 1,
             'circle-opacity': 0.8
           }

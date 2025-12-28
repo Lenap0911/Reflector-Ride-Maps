@@ -63,6 +63,28 @@
       </label>
     </div>
 
+    <div class="control-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="trafficLightAnalysisCheckbox">
+        Analyze Traffic Light Safety
+      </label>
+    </div>
+
+    <div class="radio-group" id="analysisModeGroup">
+      <label class="radio-label">
+        <input type="radio" name="analysisMode" value="overall" checked>
+        Overall Risk
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="analysisMode" value="sudden">
+        Sudden Braking
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="analysisMode" value="extended">
+        Extended Stops
+      </label>
+    </div>
+
     <button id="resetButton">↩ Reset View</button>
   </div>
 
