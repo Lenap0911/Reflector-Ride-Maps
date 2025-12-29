@@ -34,6 +34,83 @@ const SUDDEN_BRAKE_THRESHOLD = -3; // m/s² - deceleration rate
 const EXTENDED_STOP_THRESHOLD = 5; // seconds - time stopped or very slow
 const SLOW_SPEED_THRESHOLD = 2; // km/h - considered "stopped"
 
+// Show info popup about traffic light analysis
+function showTrafficLightInfoPopup() {
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'trafficLightInfoOverlay';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  `;
+  
+  // Create popup
+  const popup = document.createElement('div');
+  popup.style.cssText = `
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  `;
+  
+  popup.innerHTML = `
+    <h3 style="margin-top: 0; color: #333;">🚦 Traffic Light Analysis</h3>
+    <p style="color: #666; line-height: 1.6;">
+      This layer analyzes cyclist behavior at traffic lights within a <strong>${ANALYSIS_RADIUS}m radius</strong> of each light.
+    </p>
+    <div style="margin: 20px 0;">
+      <h4 style="color: #DC2626; margin-bottom: 10px;">🛑 Sudden Braking</h4>
+      <p style="color: #666; margin: 0; line-height: 1.6;">
+        Detected when a cyclist enters the zone at speed and quickly drops below <strong>5 km/h</strong>. 
+        Indicates potentially dangerous or unexpected stops.
+      </p>
+    </div>
+    <div style="margin: 20px 0;">
+      <h4 style="color: #F97316; margin-bottom: 10px;">⏱️ Extended Stops</h4>
+      <p style="color: #666; margin: 0; line-height: 1.6;">
+        Measured by counting data points with speed below <strong>${SLOW_SPEED_THRESHOLD} km/h</strong>. 
+        Indicates inefficient traffic flow and long waiting times.
+      </p>
+    </div>
+    <button id="closeTrafficInfoBtn" style="
+      width: 100%;
+      padding: 12px;
+      background: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      margin-top: 10px;
+    ">Got it!</button>
+  `;
+  
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+  
+  // Close button handler
+  document.getElementById('closeTrafficInfoBtn').addEventListener('click', () => {
+    overlay.remove();
+  });
+  
+  // Click outside to close
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+    }
+  });
+}
+
 // Speed color functions
 function getSpeedColorExpression(mode) {
   const speedValue = [
@@ -896,6 +973,10 @@ function setupControls() {
         if (analysisModeGroup) analysisModeGroup.style.display = 'flex';
         if (analysisLegend) analysisLegend.style.display = 'block';
         updateTrafficLightColors();
+        
+        // Show info popup
+        showTrafficLightInfoPopup();
+        
         console.log('🚦 Traffic lights analysis ON');
       } else {
         // Hide traffic lights
