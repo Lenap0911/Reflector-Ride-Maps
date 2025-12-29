@@ -1,4 +1,4 @@
-// app.js - Enhanced with Road Quality Layer, Trip Search, and Traffic Lights
+// app.js - Enhanced with Road Quality Layer, Trip Search, and Traffic Light Analysis
 import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
@@ -83,6 +83,24 @@ function getRoadQualityColorExpression() {
   ];
 }
 
+// Traffic light analysis color expression
+function getTrafficLightAnalysisColor(score, mode) {
+  // Score ranges from 0 (safe/efficient) to 100 (dangerous/inefficient)
+  if (score < 20) return '#22C55E'; // Green - safe
+  if (score < 40) return '#84CC16'; // Light green
+  if (score < 60) return '#FACC15'; // Yellow
+  if (score < 80) return '#F97316'; // Orange
+  return '#DC2626'; // Red - dangerous
+}
+
+function getSafetyLabel(score) {
+  if (score < 20) return 'Very Safe';
+  if (score < 40) return 'Safe';
+  if (score < 60) return 'Moderate';
+  if (score < 80) return 'Concerning';
+  return 'Dangerous';
+}
+
 // Load metadata
 async function loadMetadata() {
   const possiblePaths = [
@@ -126,10 +144,6 @@ function getTripStats(tripId) {
     tripId.split('_processed')[0]
   ];
   
-  console.log('🔍 Looking for metadata. Layer ID:', tripId);
-  console.log('📋 Trying variations:', variations);
-  console.log('🗂️ Available metadata keys (first 10):', Object.keys(tripsMetadata).slice(0, 10));
-  
   let tripData = null;
   let foundKey = null;
   
@@ -142,17 +156,13 @@ function getTripStats(tripId) {
   }
   
   if (!tripData) {
-    console.warn('❌ No metadata found for any variation of:', tripId);
     return null;
   }
-  
-  console.log('✅ Found metadata using key:', foundKey);
   
   const meta = tripData.metadata || tripData;
   const gnssLine = meta['GNSS'];
   
   if (!gnssLine) {
-    console.warn('❌ No GNSS data in metadata');
     return null;
   }
   
@@ -325,6 +335,177 @@ function searchAndHighlightTrip(searchTerm) {
   }
 }
 
+// Analyze traffic light zones for safety/efficiency
+async function analyzeTrafficLights() {
+  console.log('🔍 Starting traffic light zone analysis...');
+  
+  // Wait a moment for layers to fully render
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  const trafficLightsSource = map.getSource('verkeerslichten');
+  if (!trafficLightsSource) {
+    console.warn('⚠️ No traffic lights source found');
+    return;
+  }
+  
+  const trafficLightsData = trafficLightsSource._data;
+  if (!trafficLightsData || !trafficLightsData.features) {
+    console.warn('⚠️ No traffic lights data');
+    return;
+  }
+  
+  console.log('📊 Analyzing', trafficLightsData.features.length, 'traffic lights...');
+  trafficLightAnalysis = {};
+  
+  // For each traffic light
+  trafficLightsData.features.forEach((light, index) => {
+    const lightCoords = light.geometry.coordinates;
+    const lightPoint = turf.point(lightCoords);
+    const key = `${lightCoords[0]},${lightCoords[1]}`;
+    
+    let suddenBrakeCount = 0;
+    let extendedStopCount = 0;
+    let totalPointsChecked = 0;
+    
+    // Check all trips for points near this traffic light
+    tripLayers.forEach(layerId => {
+      try {
+        const features = map.querySourceFeatures('trips', {
+          sourceLayer: layerId
+        });
+        
+        features.forEach(feature => {
+          if (feature.geometry.type === 'LineString') {
+            const coords = feature.geometry.coordinates;
+            const props = feature.properties;
+            
+            // Check each point in the line
+            for (let i = 0; i < coords.length; i++) {
+              const point = turf.point(coords[i]);
+              const distance = turf.distance(lightPoint, point, { units: 'meters' });
+              
+              // If within analysis radius
+              if (distance <= ANALYSIS_RADIUS) {
+                totalPointsChecked++;
+                
+                // Get speed at this point
+                const speed = parseFloat(props.Speed || props.speed || 0);
+                
+                // Check for sudden braking (speed dropped significantly)
+                if (i > 0) {
+                  const prevPoint = turf.point(coords[i - 1]);
+                  const prevDistance = turf.distance(lightPoint, prevPoint, { units: 'meters' });
+                  
+                  // If we just entered the zone and speed is low, it's a brake event
+                  if (prevDistance > ANALYSIS_RADIUS && speed < 5) {
+                    suddenBrakeCount++;
+                  }
+                }
+                
+                // Check for extended stop (very low speed)
+                if (speed < SLOW_SPEED_THRESHOLD) {
+                  extendedStopCount++;
+                }
+              }
+            }
+          }
+        });
+      } catch (err) {
+        // Layer might not be loaded yet, skip silently
+      }
+    });
+    
+    // Calculate scores (0-100)
+    // More events = higher score (worse)
+    const suddenScore = Math.min(100, suddenBrakeCount * 5);
+    const extendedScore = Math.min(100, (extendedStopCount / Math.max(1, totalPointsChecked)) * 100);
+    const overallScore = (suddenScore * 0.6 + extendedScore * 0.4);
+    
+    trafficLightAnalysis[key] = {
+      coords: lightCoords,
+      suddenBrakeCount,
+      extendedStopCount,
+      totalPointsChecked,
+      suddenScore,
+      extendedScore,
+      overallScore
+    };
+    
+    if ((index + 1) % 50 === 0) {
+      console.log(`   Analyzed ${index + 1}/${trafficLightsData.features.length} traffic lights...`);
+    }
+  });
+  
+  console.log('✅ Traffic light analysis complete!');
+  console.log('📈 Analysis summary:', {
+    totalLights: Object.keys(trafficLightAnalysis).length,
+    exampleLight: Object.values(trafficLightAnalysis)[0]
+  });
+}
+
+function updateTrafficLightColors() {
+  console.log('🎨 Updating traffic light colors, mode:', analysisMode);
+  
+  if (!map.getSource('verkeerslichten') || !trafficLightAnalysis) {
+    console.warn('⚠️ Cannot update colors - missing source or analysis');
+    return;
+  }
+  
+  const trafficLightsSource = map.getSource('verkeerslichten');
+  const data = trafficLightsSource._data;
+  
+  if (!data || !data.features) {
+    console.warn('⚠️ No traffic lights data to update');
+    return;
+  }
+  
+  console.log('📊 Updating colors for', data.features.length, 'traffic lights');
+  
+  // Update colors based on analysis mode
+  data.features.forEach(feature => {
+    const coords = feature.geometry.coordinates;
+    const key = `${coords[0]},${coords[1]}`;
+    const analysis = trafficLightAnalysis[key];
+    
+    if (analysis) {
+      let score;
+      if (analysisMode === 'sudden') {
+        score = analysis.suddenScore;
+      } else if (analysisMode === 'extended') {
+        score = analysis.extendedScore;
+      } else {
+        score = analysis.overallScore;
+      }
+      
+      feature.properties.analysisColor = getTrafficLightAnalysisColor(score, analysisMode);
+      feature.properties.analysisScore = score;
+    } else {
+      feature.properties.analysisColor = '#808080'; // gray for no data
+      feature.properties.analysisScore = 0;
+    }
+  });
+  
+  // Update the source
+  trafficLightsSource.setData(data);
+  
+  // Update paint property
+  if (showTrafficLightAnalysis) {
+    map.setPaintProperty('verkeerslichten', 'circle-color', [
+      'coalesce',
+      ['get', 'analysisColor'],
+      '#f4071bff'
+    ]);
+    map.setPaintProperty('verkeerslichten', 'circle-radius', 6);
+    map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 2);
+    console.log('✅ Traffic light colors updated (analysis mode)');
+  } else {
+    map.setPaintProperty('verkeerslichten', 'circle-color', '#f4071bff');
+    map.setPaintProperty('verkeerslichten', 'circle-radius', 4);
+    map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 1);
+    console.log('✅ Traffic light colors reset (default mode)');
+  }
+}
+
 map.on('error', (e) => {
   console.error('❌ Map error:', e);
 });
@@ -424,10 +605,14 @@ map.on('load', async () => {
             'circle-radius': 4,
             'circle-color': '#f4071bff',
             'circle-stroke-width': 1,
+            'circle-opacity': 0.8
           }
         });
 
         console.log('✅ Traffic lights layer added with', trafficLightsData.features.length, 'points');
+        
+        // NOW analyze traffic light zones after data is loaded
+        await analyzeTrafficLights();
 
         // Click handler for traffic lights
         map.on('click', 'verkeerslichten', (e) => {
@@ -437,9 +622,45 @@ map.on('load', async () => {
           }
           
           const props = e.features[0].properties;
+          const coords = e.features[0].geometry.coordinates;
+          
+          console.log('🚦 Clicked traffic light at:', coords);
+          console.log('🚦 Traffic light properties:', props);
+          
+          // Get analysis data for this traffic light
+          let analysisHTML = '';
+          if (trafficLightAnalysis) {
+            const key = `${coords[0]},${coords[1]}`;
+            const analysis = trafficLightAnalysis[key];
+            
+            console.log('🔍 Looking for analysis with key:', key);
+            console.log('📊 Found analysis:', analysis);
+            console.log('📋 Available keys (first 5):', Object.keys(trafficLightAnalysis).slice(0, 5));
+            
+            if (analysis) {
+              const safetyLabel = getSafetyLabel(analysis.overallScore);
+              const safetyColor = getTrafficLightAnalysisColor(analysis.overallScore, 'overall');
+              
+              analysisHTML = `
+                <br><br><strong>📊 Safety Analysis:</strong>
+                <br>🛑 Sudden braking events: ${analysis.suddenBrakeCount}
+                <br>⏱️ Extended stop points: ${analysis.extendedStopCount}
+                <br>📍 Total points checked: ${analysis.totalPointsChecked}
+                <br>📈 Sudden brake score: ${analysis.suddenScore.toFixed(0)}/100
+                <br>🕐 Extended stop score: ${analysis.extendedScore.toFixed(0)}/100
+                <br>🎯 Overall risk score: ${analysis.overallScore.toFixed(0)}/100
+                <br><span style="color: ${safetyColor}; font-size: 20px;">●</span> <strong>${safetyLabel}</strong>
+              `;
+            } else {
+              analysisHTML = '<br><br><em>No analysis data available for this location</em>';
+            }
+          } else {
+            analysisHTML = '<br><br><em>Analysis not yet complete</em>';
+          }
+          
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}`)
+            .setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}${analysisHTML}`)
             .addTo(map);
         });
 
@@ -583,6 +804,40 @@ function setupControls() {
       }
     });
   }
+
+  // Traffic light analysis toggle
+  const analysisCheckbox = document.getElementById('trafficLightAnalysisCheckbox');
+  if (analysisCheckbox) {
+    analysisCheckbox.addEventListener('change', (e) => {
+      showTrafficLightAnalysis = e.target.checked;
+      const analysisModeGroup = document.getElementById('analysisModeGroup');
+      const analysisLegend = document.getElementById('analysisLegend');
+      
+      if (showTrafficLightAnalysis) {
+        analysisModeGroup.style.display = 'flex';
+        analysisLegend.style.display = 'block';
+        updateTrafficLightColors();
+      } else {
+        analysisModeGroup.style.display = 'none';
+        analysisLegend.style.display = 'none';
+        if (map.getLayer('verkeerslichten')) {
+          map.setPaintProperty('verkeerslichten', 'circle-color', '#f4071bff');
+          map.setPaintProperty('verkeerslichten', 'circle-radius', 4);
+          map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 1);
+        }
+      }
+    });
+  }
+
+  // Analysis mode radio buttons
+  document.querySelectorAll('input[name="analysisMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      analysisMode = e.target.value;
+      if (showTrafficLightAnalysis) {
+        updateTrafficLightColors();
+      }
+    });
+  });
 }
 
 function setupClickHandlers() {
@@ -599,10 +854,8 @@ function setupClickHandlers() {
       }
       
       const props = e.features[0].properties;
-      console.log('📍 Clicked feature properties:', props);
       const speed = parseFloat(props.Speed || props.speed || 0);
       const roadQuality = parseInt(props.road_quality || props.roadQuality || 0);
-      console.log('🚴 Parsed speed:', speed, 'Road quality:', roadQuality);
       
       selectedTrip = layerId;
       tripLayers.forEach(id => {
@@ -626,13 +879,11 @@ function setupClickHandlers() {
       let distanceKm, avgSpeed, maxSpeed, durationFormatted;
       
       if (stats) {
-        console.log('✅ Found stats for trip:', stats);
         distanceKm = stats.distance.toFixed(2);
         avgSpeed = stats.avgSpeed.toFixed(1);
         maxSpeed = stats.maxSpeed.toFixed(1);
         durationFormatted = stats.duration;
       } else {
-        console.warn('⚠️ No stats available for trip:', layerId);
         distanceKm = '—';
         avgSpeed = '—';
         maxSpeed = '—';
