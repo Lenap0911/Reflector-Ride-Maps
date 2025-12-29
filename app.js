@@ -22,7 +22,7 @@ let selectedTrip = null;
 let tripsMetadata = null;
 let currentPopup = null;
 let trafficLightAnalysis = null;
-let showTrafficLightAnalysis = false;
+let showTrafficLights = false;
 let analysisMode = 'overall'; // 'sudden', 'extended', 'overall'
 
 // Default orange color for routes
@@ -422,10 +422,10 @@ async function analyzeTrafficLights() {
       }
     });
     
-    // Calculate scores (0-100)
+    // Calculate scores (0-100) with more aggressive weighting
     // More events = higher score (worse)
-    const suddenScore = Math.min(100, suddenBrakeCount * 5);
-    const extendedScore = Math.min(100, (extendedStopCount / Math.max(1, totalPointsChecked)) * 100);
+    const suddenScore = Math.min(100, suddenBrakeCount * 15); // Increased from 5 to 15
+    const extendedScore = Math.min(100, (extendedStopCount / Math.max(1, totalPointsChecked)) * 200); // Increased from 100 to 200
     const overallScore = (suddenScore * 0.6 + extendedScore * 0.4);
     
     trafficLightAnalysis[key] = {
@@ -477,7 +477,7 @@ function updateTrafficLightColors() {
     const key = `${coords[0].toFixed(7)},${coords[1].toFixed(7)}`;
     const analysis = trafficLightAnalysis[key];
     
-    if (analysis) {
+    if (analysis && analysis.totalPointsChecked > 0) {
       let score;
       if (analysisMode === 'sudden') {
         score = analysis.suddenScore;
@@ -489,9 +489,11 @@ function updateTrafficLightColors() {
       
       feature.properties.analysisColor = getTrafficLightAnalysisColor(score, analysisMode);
       feature.properties.analysisScore = score;
+      feature.properties.hasData = true;
     } else {
-      feature.properties.analysisColor = '#808080'; // gray for no data
+      feature.properties.analysisColor = '#FFFFFF'; // White for no data
       feature.properties.analysisScore = 0;
+      feature.properties.hasData = false;
     }
   });
   
@@ -499,20 +501,16 @@ function updateTrafficLightColors() {
   trafficLightsSource.setData(data);
   
   // Update paint property
-  if (showTrafficLightAnalysis) {
+  if (showTrafficLights) {
     map.setPaintProperty('verkeerslichten', 'circle-color', [
       'coalesce',
       ['get', 'analysisColor'],
-      '#f4071bff'
+      '#FFFFFF'
     ]);
     map.setPaintProperty('verkeerslichten', 'circle-radius', 6);
     map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 2);
+    map.setPaintProperty('verkeerslichten', 'circle-stroke-color', '#333333');
     console.log('✅ Traffic light colors updated (analysis mode)');
-  } else {
-    map.setPaintProperty('verkeerslichten', 'circle-color', '#f4071bff');
-    map.setPaintProperty('verkeerslichten', 'circle-radius', 4);
-    map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 1);
-    console.log('✅ Traffic light colors reset (default mode)');
   }
 }
 
@@ -606,16 +604,20 @@ map.on('load', async () => {
           data: trafficLightsData
         });
 
-        // Add the layer
+        // Add the layer (initially hidden)
         map.addLayer({
           id: 'verkeerslichten',
           type: 'circle',
           source: 'verkeerslichten',
+          layout: {
+            'visibility': 'none'
+          },
           paint: {
-            'circle-radius': 4,
+            'circle-radius': 6,
             'circle-color': '#f4071bff',
-            'circle-stroke-width': 1,
-            'circle-opacity': 0.8
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#333333',
+            'circle-opacity': 0.9
           }
         });
 
@@ -839,38 +841,31 @@ function setupControls() {
     });
   });
 
-  // Traffic lights toggle
+  // Traffic lights toggle (merged with analysis)
   const trafficLightsCheckbox = document.getElementById('trafficLightsCheckbox');
   if (trafficLightsCheckbox) {
     trafficLightsCheckbox.addEventListener('change', (e) => {
-      const visibility = e.target.checked ? 'visible' : 'none';
-      if (map.getLayer('verkeerslichten')) {
-        map.setLayoutProperty('verkeerslichten', 'visibility', visibility);
-        console.log('🚦 Traffic lights visibility:', visibility);
-      }
-    });
-  }
-
-  // Traffic light analysis toggle
-  const analysisCheckbox = document.getElementById('trafficLightAnalysisCheckbox');
-  if (analysisCheckbox) {
-    analysisCheckbox.addEventListener('change', (e) => {
-      showTrafficLightAnalysis = e.target.checked;
+      showTrafficLights = e.target.checked;
       const analysisModeGroup = document.getElementById('analysisModeGroup');
-      const analysisLegend = document.getElementById('analysisLegend');
+      const analysisLegend = document.getElementById('trafficLightLegend');
       
-      if (showTrafficLightAnalysis) {
+      if (showTrafficLights) {
+        // Show traffic lights and analysis
+        if (map.getLayer('verkeerslichten')) {
+          map.setLayoutProperty('verkeerslichten', 'visibility', 'visible');
+        }
         if (analysisModeGroup) analysisModeGroup.style.display = 'flex';
         if (analysisLegend) analysisLegend.style.display = 'block';
         updateTrafficLightColors();
+        console.log('🚦 Traffic lights analysis ON');
       } else {
+        // Hide traffic lights
+        if (map.getLayer('verkeerslichten')) {
+          map.setLayoutProperty('verkeerslichten', 'visibility', 'none');
+        }
         if (analysisModeGroup) analysisModeGroup.style.display = 'none';
         if (analysisLegend) analysisLegend.style.display = 'none';
-        if (map.getLayer('verkeerslichten')) {
-          map.setPaintProperty('verkeerslichten', 'circle-color', '#f4071bff');
-          map.setPaintProperty('verkeerslichten', 'circle-radius', 4);
-          map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 1);
-        }
+        console.log('🚦 Traffic lights OFF');
       }
     });
   }
@@ -879,7 +874,7 @@ function setupControls() {
   document.querySelectorAll('input[name="analysisMode"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       analysisMode = e.target.value;
-      if (showTrafficLightAnalysis) {
+      if (showTrafficLights) {
         updateTrafficLightColors();
       }
     });
@@ -889,6 +884,11 @@ function setupControls() {
 function setupClickHandlers() {
   tripLayers.forEach(layerId => {
     map.on('click', layerId, async (e) => {
+      // Don't show trip popups if traffic lights mode is active
+      if (showTrafficLights) {
+        return;
+      }
+      
       console.log('Layer clicked:', layerId);
       e.preventDefault();
       if (e.originalEvent) {
@@ -962,7 +962,9 @@ function setupClickHandlers() {
     });
 
     map.on('mouseenter', layerId, () => {
-      map.getCanvas().style.cursor = 'pointer';
+      if (!showTrafficLights) {
+        map.getCanvas().style.cursor = 'pointer';
+      }
     });
 
     map.on('mouseleave', layerId, () => {
@@ -972,7 +974,7 @@ function setupClickHandlers() {
   
   // Click anywhere on map to deselect trip
   map.on('click', (e) => {
-    if (!e.defaultPrevented && selectedTrip) {
+    if (!e.defaultPrevented && selectedTrip && !showTrafficLights) {
       resetSelection();
     }
   });
