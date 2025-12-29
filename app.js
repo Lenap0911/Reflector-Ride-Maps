@@ -361,7 +361,8 @@ async function analyzeTrafficLights() {
   trafficLightsData.features.forEach((light, index) => {
     const lightCoords = light.geometry.coordinates;
     const lightPoint = turf.point(lightCoords);
-    const key = `${lightCoords[0]},${lightCoords[1]}`;
+    // Round coordinates to 7 decimal places for consistent key matching
+    const key = `${lightCoords[0].toFixed(7)},${lightCoords[1].toFixed(7)}`;
     
     let suddenBrakeCount = 0;
     let extendedStopCount = 0;
@@ -464,7 +465,8 @@ function updateTrafficLightColors() {
   // Update colors based on analysis mode
   data.features.forEach(feature => {
     const coords = feature.geometry.coordinates;
-    const key = `${coords[0]},${coords[1]}`;
+    // Round coordinates to 7 decimal places to match storage key
+    const key = `${coords[0].toFixed(7)},${coords[1].toFixed(7)}`;
     const analysis = trafficLightAnalysis[key];
     
     if (analysis) {
@@ -630,7 +632,8 @@ map.on('load', async () => {
           // Get analysis data for this traffic light
           let analysisHTML = '';
           if (trafficLightAnalysis) {
-            const key = `${coords[0]},${coords[1]}`;
+            // Round coordinates to 7 decimal places to match storage key
+            const key = `${coords[0].toFixed(7)},${coords[1].toFixed(7)}`;
             const analysis = trafficLightAnalysis[key];
             
             console.log('🔍 Looking for analysis with key:', key);
@@ -814,12 +817,12 @@ function setupControls() {
       const analysisLegend = document.getElementById('analysisLegend');
       
       if (showTrafficLightAnalysis) {
-        analysisModeGroup.style.display = 'flex';
-        analysisLegend.style.display = 'block';
+        if (analysisModeGroup) analysisModeGroup.style.display = 'flex';
+        if (analysisLegend) analysisLegend.style.display = 'block';
         updateTrafficLightColors();
       } else {
-        analysisModeGroup.style.display = 'none';
-        analysisLegend.style.display = 'none';
+        if (analysisModeGroup) analysisModeGroup.style.display = 'none';
+        if (analysisLegend) analysisLegend.style.display = 'none';
         if (map.getLayer('verkeerslichten')) {
           map.setPaintProperty('verkeerslichten', 'circle-color', '#f4071bff');
           map.setPaintProperty('verkeerslichten', 'circle-radius', 4);
