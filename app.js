@@ -70,15 +70,16 @@ function showTrafficLightInfoPopup() {
     <div style="margin: 20px 0;">
       <h4 style="color: #DC2626; margin-bottom: 10px;">🛑 Sudden Braking</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
-        Detected when a cyclist enters the zone at speed and quickly drops below <strong>5 km/h</strong>. 
-        Indicates potentially dangerous or unexpected stops.
+        Detected when a cyclist <strong>enters the ${ANALYSIS_RADIUS}m zone from outside</strong> and their speed 
+        is below <strong>5 km/h at the first point inside the zone</strong>. This indicates they had to brake 
+        suddenly or stop abruptly when approaching the traffic light.
       </p>
     </div>
     <div style="margin: 20px 0;">
       <h4 style="color: #F97316; margin-bottom: 10px;">⏱️ Extended Stops</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
-        Measured by counting data points with speed below <strong>${SLOW_SPEED_THRESHOLD} km/h</strong>. 
-        Indicates inefficient traffic flow and long waiting times.
+        Measured by counting <strong>all data points</strong> within the zone where speed is below <strong>${SLOW_SPEED_THRESHOLD} km/h</strong>. 
+        More stopped points = longer waits. The score reflects the percentage of time spent stopped or nearly stopped.
       </p>
     </div>
     <button id="closeTrafficInfoBtn" style="
