@@ -23,7 +23,7 @@ let tripsMetadata = null;
 let currentPopup = null;
 let trafficLightAnalysis = null;
 let showTrafficLights = false;
-let analysisMode = 'overall'; // 'sudden', 'extended', 'overall'
+let analysisMode = 'safety'; // 'safety', 'efficiency', 'overall'
 
 // Default orange color for routes
 const DEFAULT_COLOR = '#FF6600';
@@ -86,19 +86,33 @@ function getRoadQualityColorExpression() {
 // Traffic light analysis color expression
 function getTrafficLightAnalysisColor(score, mode) {
   // Score ranges from 0 (safe/efficient) to 100 (dangerous/inefficient)
-  if (score < 20) return '#22C55E'; // Green - safe
-  if (score < 40) return '#84CC16'; // Light green
-  if (score < 60) return '#FACC15'; // Yellow
-  if (score < 80) return '#F97316'; // Orange
-  return '#DC2626'; // Red - dangerous
+  if (score < 20) return '#22C55E'; // Green - excellent
+  if (score < 40) return '#84CC16'; // Light green - good
+  if (score < 60) return '#FACC15'; // Yellow - moderate
+  if (score < 80) return '#F97316'; // Orange - poor
+  return '#DC2626'; // Red - critical
 }
 
-function getSafetyLabel(score) {
-  if (score < 20) return 'Very Safe';
-  if (score < 40) return 'Safe';
-  if (score < 60) return 'Moderate';
-  if (score < 80) return 'Concerning';
-  return 'Dangerous';
+function getAnalysisLabel(score, mode) {
+  if (mode === 'safety') {
+    if (score < 20) return 'Very Safe';
+    if (score < 40) return 'Safe';
+    if (score < 60) return 'Moderate Risk';
+    if (score < 80) return 'Unsafe';
+    return 'Very Unsafe';
+  } else if (mode === 'efficiency') {
+    if (score < 20) return 'Very Efficient';
+    if (score < 40) return 'Efficient';
+    if (score < 60) return 'Moderate';
+    if (score < 80) return 'Inefficient';
+    return 'Very Inefficient';
+  } else { // overall
+    if (score < 20) return 'Excellent';
+    if (score < 40) return 'Good';
+    if (score < 60) return 'Moderate';
+    if (score < 80) return 'Poor';
+    return 'Critical';
+  }
 }
 
 // Load metadata
@@ -479,9 +493,9 @@ function updateTrafficLightColors() {
     
     if (analysis && analysis.totalPointsChecked > 0) {
       let score;
-      if (analysisMode === 'sudden') {
+      if (analysisMode === 'safety') {
         score = analysis.suddenScore;
-      } else if (analysisMode === 'extended') {
+      } else if (analysisMode === 'efficiency') {
         score = analysis.extendedScore;
       } else {
         score = analysis.overallScore;
@@ -666,18 +680,31 @@ map.on('load', async () => {
                 const closestAnalysis = trafficLightAnalysis[similarKeys[0]];
                 if (closestAnalysis) {
                   console.log('✅ Using closest match:', similarKeys[0]);
-                  const safetyLabel = getSafetyLabel(closestAnalysis.overallScore);
-                  const safetyColor = getTrafficLightAnalysisColor(closestAnalysis.overallScore, 'overall');
+                  
+                  let displayScore, displayLabel;
+                  if (analysisMode === 'safety') {
+                    displayScore = closestAnalysis.suddenScore;
+                    displayLabel = getAnalysisLabel(displayScore, 'safety');
+                  } else if (analysisMode === 'efficiency') {
+                    displayScore = closestAnalysis.extendedScore;
+                    displayLabel = getAnalysisLabel(displayScore, 'efficiency');
+                  } else {
+                    displayScore = closestAnalysis.overallScore;
+                    displayLabel = getAnalysisLabel(displayScore, 'overall');
+                  }
+                  
+                  const displayColor = getTrafficLightAnalysisColor(displayScore, analysisMode);
                   
                   analysisHTML = `
-                    <br><br><strong>📊 Safety Analysis:</strong>
+                    <br><br><strong>📊 Traffic Light Analysis:</strong>
                     <br>🛑 Sudden braking events: ${closestAnalysis.suddenBrakeCount}
                     <br>⏱️ Extended stop points: ${closestAnalysis.extendedStopCount}
                     <br>📍 Total points checked: ${closestAnalysis.totalPointsChecked}
-                    <br>📈 Sudden brake score: ${closestAnalysis.suddenScore.toFixed(0)}/100
-                    <br>🕐 Extended stop score: ${closestAnalysis.extendedScore.toFixed(0)}/100
-                    <br>🎯 Overall risk score: ${closestAnalysis.overallScore.toFixed(0)}/100
-                    <br><span style="color: ${safetyColor}; font-size: 20px;">●</span> <strong>${safetyLabel}</strong>
+                    <br>📈 Safety score: ${closestAnalysis.suddenScore.toFixed(0)}/100
+                    <br>🕐 Efficiency score: ${closestAnalysis.extendedScore.toFixed(0)}/100
+                    <br>🎯 Overall score: ${closestAnalysis.overallScore.toFixed(0)}/100
+                    <br><br><strong>Current View (${analysisMode}):</strong>
+                    <br><span style="color: ${displayColor}; font-size: 20px;">●</span> <strong>${displayLabel}</strong> (Score: ${displayScore.toFixed(0)})
                   `;
                 }
               }
@@ -686,18 +713,30 @@ map.on('load', async () => {
             console.log('📋 Available keys (first 5):', Object.keys(trafficLightAnalysis).slice(0, 5));
             
             if (analysis) {
-              const safetyLabel = getSafetyLabel(analysis.overallScore);
-              const safetyColor = getTrafficLightAnalysisColor(analysis.overallScore, 'overall');
+              let displayScore, displayLabel;
+              if (analysisMode === 'safety') {
+                displayScore = analysis.suddenScore;
+                displayLabel = getAnalysisLabel(displayScore, 'safety');
+              } else if (analysisMode === 'efficiency') {
+                displayScore = analysis.extendedScore;
+                displayLabel = getAnalysisLabel(displayScore, 'efficiency');
+              } else {
+                displayScore = analysis.overallScore;
+                displayLabel = getAnalysisLabel(displayScore, 'overall');
+              }
+              
+              const displayColor = getTrafficLightAnalysisColor(displayScore, analysisMode);
               
               analysisHTML = `
-                <br><br><strong>📊 Safety Analysis:</strong>
+                <br><br><strong>📊 Traffic Light Analysis:</strong>
                 <br>🛑 Sudden braking events: ${analysis.suddenBrakeCount}
                 <br>⏱️ Extended stop points: ${analysis.extendedStopCount}
                 <br>📍 Total points checked: ${analysis.totalPointsChecked}
-                <br>📈 Sudden brake score: ${analysis.suddenScore.toFixed(0)}/100
-                <br>🕐 Extended stop score: ${analysis.extendedScore.toFixed(0)}/100
-                <br>🎯 Overall risk score: ${analysis.overallScore.toFixed(0)}/100
-                <br><span style="color: ${safetyColor}; font-size: 20px;">●</span> <strong>${safetyLabel}</strong>
+                <br>📈 Safety score: ${analysis.suddenScore.toFixed(0)}/100
+                <br>🕐 Efficiency score: ${analysis.extendedScore.toFixed(0)}/100
+                <br>🎯 Overall score: ${analysis.overallScore.toFixed(0)}/100
+                <br><br><strong>Current View (${analysisMode}):</strong>
+                <br><span style="color: ${displayColor}; font-size: 20px;">●</span> <strong>${displayLabel}</strong> (Score: ${displayScore.toFixed(0)})
               `;
             } else if (!analysisHTML) {
               analysisHTML = '<br><br><em>No trip data near this traffic light</em>';
@@ -1000,4 +1039,4 @@ function updateStatsFromMetadata() {
 }
 
 // Make search function available globally for console testing
-window.searchTrip = searchAndHighlightTrip;
+window.searchTrip = searchAndHighlightTrip
