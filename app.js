@@ -640,11 +640,14 @@ map.on('load', async () => {
           // Get analysis data for this traffic light
           let analysisHTML = '';
           if (trafficLightAnalysis) {
-            // Round coordinates to 7 decimal places to match storage key
-            const key = `${coords[0].toFixed(7)},${coords[1].toFixed(7)}`;
-            const analysis = trafficLightAnalysis[key];
+            // Use the ORIGINAL coordinates from the feature, not the click location
+            // Round to 7 decimals to match how we stored them
+            const originalCoords = e.features[0].geometry.coordinates;
+            const key = `${originalCoords[0].toFixed(7)},${originalCoords[1].toFixed(7)}`;
             
             console.log('🔍 Looking for analysis with key:', key);
+            
+            const analysis = trafficLightAnalysis[key];
             console.log('📊 Found analysis:', analysis);
             
             if (!analysis) {
@@ -652,9 +655,30 @@ map.on('load', async () => {
               const similarKeys = Object.keys(trafficLightAnalysis).filter(k => {
                 const [lon, lat] = k.split(',').map(Number);
                 const [searchLon, searchLat] = key.split(',').map(Number);
-                return Math.abs(lon - searchLon) < 0.001 && Math.abs(lat - searchLat) < 0.001;
+                return Math.abs(lon - searchLon) < 0.0001 && Math.abs(lat - searchLat) < 0.0001;
               });
-              console.log('🔎 Similar keys within 0.001 degrees:', similarKeys);
+              console.log('🔎 Similar keys within 0.0001 degrees:', similarKeys);
+              
+              // Try to use closest match if available
+              if (similarKeys.length > 0) {
+                const closestAnalysis = trafficLightAnalysis[similarKeys[0]];
+                if (closestAnalysis) {
+                  console.log('✅ Using closest match:', similarKeys[0]);
+                  const safetyLabel = getSafetyLabel(closestAnalysis.overallScore);
+                  const safetyColor = getTrafficLightAnalysisColor(closestAnalysis.overallScore, 'overall');
+                  
+                  analysisHTML = `
+                    <br><br><strong>📊 Safety Analysis:</strong>
+                    <br>🛑 Sudden braking events: ${closestAnalysis.suddenBrakeCount}
+                    <br>⏱️ Extended stop points: ${closestAnalysis.extendedStopCount}
+                    <br>📍 Total points checked: ${closestAnalysis.totalPointsChecked}
+                    <br>📈 Sudden brake score: ${closestAnalysis.suddenScore.toFixed(0)}/100
+                    <br>🕐 Extended stop score: ${closestAnalysis.extendedScore.toFixed(0)}/100
+                    <br>🎯 Overall risk score: ${closestAnalysis.overallScore.toFixed(0)}/100
+                    <br><span style="color: ${safetyColor}; font-size: 20px;">●</span> <strong>${safetyLabel}</strong>
+                  `;
+                }
+              }
             }
             
             console.log('📋 Available keys (first 5):', Object.keys(trafficLightAnalysis).slice(0, 5));
@@ -673,8 +697,8 @@ map.on('load', async () => {
                 <br>🎯 Overall risk score: ${analysis.overallScore.toFixed(0)}/100
                 <br><span style="color: ${safetyColor}; font-size: 20px;">●</span> <strong>${safetyLabel}</strong>
               `;
-            } else {
-              analysisHTML = '<br><br><em>No analysis data available for this location</em>';
+            } else if (!analysisHTML) {
+              analysisHTML = '<br><br><em>No trip data near this traffic light</em>';
             }
           } else {
             analysisHTML = '<br><br><em>Analysis not yet complete</em>';
