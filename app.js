@@ -424,7 +424,6 @@ map.on('load', async () => {
             'circle-radius': 4,
             'circle-color': '#f4071bff',
             'circle-stroke-width': 1,
-            'circle-opacity': 0.8
           }
         });
 
