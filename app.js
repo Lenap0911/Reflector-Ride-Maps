@@ -431,18 +431,31 @@ function searchAndHighlightTrip(searchTerm) {
 async function analyzeTrafficLights() {
   console.log('🔍 Starting traffic light zone analysis...');
   
+  // Show loading bar
+  const loadingBar = document.getElementById('analysisLoadingBar');
+  const loadingProgress = document.getElementById('analysisLoadingProgress');
+  const loadingText = document.getElementById('analysisLoadingText');
+  
+  if (loadingBar) {
+    loadingBar.style.display = 'block';
+    loadingProgress.style.width = '0%';
+    loadingText.textContent = 'Initializing...';
+  }
+  
   // Wait a moment for layers to fully render
   await new Promise(resolve => setTimeout(resolve, 1000));
   
   const trafficLightsSource = map.getSource('verkeerslichten');
   if (!trafficLightsSource) {
     console.warn('⚠️ No traffic lights source found');
+    if (loadingBar) loadingBar.style.display = 'none';
     return;
   }
   
   const trafficLightsData = trafficLightsSource._data;
   if (!trafficLightsData || !trafficLightsData.features) {
     console.warn('⚠️ No traffic lights data');
+    if (loadingBar) loadingBar.style.display = 'none';
     return;
   }
   
@@ -450,6 +463,7 @@ async function analyzeTrafficLights() {
   console.log('🗺️ Available trip layers:', tripLayers.length);
   
   trafficLightAnalysis = {};
+  const totalLights = trafficLightsData.features.length;
   
   // For each traffic light
   trafficLightsData.features.forEach((light, index) => {
@@ -530,10 +544,26 @@ async function analyzeTrafficLights() {
       overallScore
     };
     
+    // Update progress bar
+    if (loadingBar && (index + 1) % 10 === 0) {
+      const progress = ((index + 1) / totalLights) * 100;
+      loadingProgress.style.width = `${progress}%`;
+      loadingText.textContent = `Analyzing ${index + 1}/${totalLights}`;
+    }
+    
     if ((index + 1) % 50 === 0) {
       console.log(`   Analyzed ${index + 1}/${trafficLightsData.features.length} traffic lights...`);
     }
   });
+  
+  // Complete loading bar
+  if (loadingBar) {
+    loadingProgress.style.width = '100%';
+    loadingText.textContent = 'Complete!';
+    setTimeout(() => {
+      loadingBar.style.display = 'none';
+    }, 1000);
+  }
   
   console.log('✅ Traffic light analysis complete!');
   console.log('📈 Analysis summary:', {
