@@ -355,6 +355,8 @@ async function analyzeTrafficLights() {
   }
   
   console.log('📊 Analyzing', trafficLightsData.features.length, 'traffic lights...');
+  console.log('🗺️ Available trip layers:', tripLayers.length);
+  
   trafficLightAnalysis = {};
   
   // For each traffic light
@@ -374,6 +376,10 @@ async function analyzeTrafficLights() {
         const features = map.querySourceFeatures('trips', {
           sourceLayer: layerId
         });
+        
+        if (index === 0 && features.length > 0) {
+          console.log(`   📍 Sample layer "${layerId}" has ${features.length} features`);
+        }
         
         features.forEach(feature => {
           if (feature.geometry.type === 'LineString') {
@@ -440,7 +446,9 @@ async function analyzeTrafficLights() {
   console.log('✅ Traffic light analysis complete!');
   console.log('📈 Analysis summary:', {
     totalLights: Object.keys(trafficLightAnalysis).length,
-    exampleLight: Object.values(trafficLightAnalysis)[0]
+    lightsWithData: Object.values(trafficLightAnalysis).filter(a => a.totalPointsChecked > 0).length,
+    exampleLight: Object.values(trafficLightAnalysis)[0],
+    sampleKeys: Object.keys(trafficLightAnalysis).slice(0, 10)
   });
 }
 
@@ -638,6 +646,17 @@ map.on('load', async () => {
             
             console.log('🔍 Looking for analysis with key:', key);
             console.log('📊 Found analysis:', analysis);
+            
+            if (!analysis) {
+              console.log('❌ No analysis found. Checking if key exists anywhere...');
+              const similarKeys = Object.keys(trafficLightAnalysis).filter(k => {
+                const [lon, lat] = k.split(',').map(Number);
+                const [searchLon, searchLat] = key.split(',').map(Number);
+                return Math.abs(lon - searchLon) < 0.001 && Math.abs(lat - searchLat) < 0.001;
+              });
+              console.log('🔎 Similar keys within 0.001 degrees:', similarKeys);
+            }
+            
             console.log('📋 Available keys (first 5):', Object.keys(trafficLightAnalysis).slice(0, 5));
             
             if (analysis) {
