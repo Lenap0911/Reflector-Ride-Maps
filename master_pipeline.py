@@ -4,7 +4,8 @@ Master Pipeline for Reflector Ride Maps
 Runs the complete data processing workflow:
 1. CSV to GeoJSON conversion
 2. Speed calculation from sensor data
-3. PMTiles generation for web visualization
+3. Traffic light analysis generation
+4. PMTiles generation for web visualization
 
 Usage: python master_pipeline.py
 """
@@ -75,7 +76,8 @@ def check_prerequisites():
     # Check if Python scripts exist
     scripts = [
         "csv_to_geojson_converter.py",
-        "combined_processor.py",
+        "integrated_processor.py",
+        "generate_traffic_light_analysis.py",
         "build_pmtiles.py"
     ]
     
@@ -85,6 +87,25 @@ def check_prerequisites():
             print_error(f"{script} not found")
         else:
             print_success(f"Found {script}")
+    
+    # Check for traffic lights file
+    traffic_light_files = [
+        "traffic_lights.json",
+        "verkeerslichten.geojson",
+        "traffic_lights.geojson",
+        "data/verkeerslichten.geojson",
+        "data/traffic_lights.json"
+    ]
+    found_traffic_lights = False
+    for tl_file in traffic_light_files:
+        if Path(tl_file).exists():
+            print_success(f"Found traffic lights file: {tl_file}")
+            found_traffic_lights = True
+            break
+    
+    if not found_traffic_lights:
+        print_warning("Traffic lights file not found (optional)")
+        print_info("Traffic light analysis will be skipped")
     
     # Check if tippecanoe is installed
     try:
@@ -148,6 +169,7 @@ def print_summary():
     csv_count = count_files("csv_data", "*.csv")
     geojson_clean_count = count_files("sensor_data", "*_clean.geojson")
     geojson_processed_count = count_files("processed_sensor_data", "*_processed.geojson")
+    traffic_analysis_exists = Path("traffic_lights_analyzed.json").exists()
     pmtiles_exists = Path("trips.pmtiles").exists()
     
     print(f"{Colors.BOLD}Input Files:{Colors.END}")
@@ -156,6 +178,7 @@ def print_summary():
     print(f"\n{Colors.BOLD}Generated Files:{Colors.END}")
     print(f"  🗺️  Cleaned GeoJSON: {geojson_clean_count}")
     print(f"  ⚡ Processed GeoJSON: {geojson_processed_count}")
+    print(f"  🚦 Traffic Light Analysis: {'✅ Yes' if traffic_analysis_exists else '❌ No'}")
     print(f"  📦 PMTiles: {'✅ Yes' if pmtiles_exists else '❌ No'}")
     
     if pmtiles_exists:
@@ -172,6 +195,8 @@ def print_summary():
         print(f"  1. Commit changes: git add . && git commit -m 'Update trip data'")
         print(f"  2. Push to GitHub: git push")
         print(f"  3. View at: https://tomvanarman.github.io/Reflector-Ride-Maps/")
+        if traffic_analysis_exists:
+            print(f"  4. Enable 'Traffic Light Analysis' in the web interface to see insights!")
     else:
         print(f"\n{Colors.YELLOW}{Colors.BOLD}⚠️  Pipeline completed with issues{Colors.END}")
 
@@ -219,7 +244,7 @@ def main():
     # Step 2: Calculate speeds
     print_step("2", "Calculating Speeds from Sensor Data")
     step2_success = run_command(
-        [sys.executable, "combined_processor.py"],
+        [sys.executable, "integrated_processor.py"],
         "Speed calculation"
     )
     
@@ -227,15 +252,41 @@ def main():
         print_error("Step 2 failed. Aborting pipeline.")
         sys.exit(1)
     
-    # Step 3: Build PMTiles
-    print_step("3", "Building PMTiles for Web")
-    step3_success = run_command(
+    # Step 3: Generate traffic light analysis
+    print_step("3", "Generating Traffic Light Analysis")
+    
+    # Check if traffic lights file exists
+    traffic_light_files = [
+        "traffic_lights.json",
+        "verkeerslichten.geojson",
+        "traffic_lights.geojson",
+        "data/verkeerslichten.geojson",
+        "data/traffic_lights.json"
+    ]
+    has_traffic_lights = any(Path(f).exists() for f in traffic_light_files)
+    
+    if has_traffic_lights:
+        step3_success = run_command(
+            [sys.executable, "generate_traffic_light_analysis.py"],
+            "Traffic light analysis"
+        )
+        
+        if not step3_success:
+            print_warning("Step 3 failed, but continuing with pipeline...")
+    else:
+        print_warning("No traffic lights file found - skipping traffic light analysis")
+        print_info("Add traffic_lights.json or verkeerslichten.geojson to enable this feature")
+        step3_success = True  # Don't fail pipeline if optional step is skipped
+    
+    # Step 4: Build PMTiles
+    print_step("4", "Building PMTiles for Web")
+    step4_success = run_command(
         [sys.executable, "build_pmtiles.py"],
         "PMTiles generation"
     )
     
-    if not step3_success:
-        print_error("Step 3 failed. Aborting pipeline.")
+    if not step4_success:
+        print_error("Step 4 failed. Aborting pipeline.")
         sys.exit(1)
     
     # Print summary

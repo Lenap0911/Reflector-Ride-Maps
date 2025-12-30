@@ -54,19 +54,19 @@ function showTrafficLightInfoPopup() {
   `;
   
   popup.innerHTML = `
-    <h3 style="margin-top: 0; color: #333;">🚦 Traffic Light Analysis</h3>
+    <h3 style="margin-top: 0; color: #333;">Traffic Light Analysis</h3>
     <p style="color: #666; line-height: 1.6;">
       This layer shows pre-computed analysis of cyclist behavior at traffic lights.
     </p>
     <div style="margin: 20px 0;">
-      <h4 style="color: #DC2626; margin-bottom: 10px;">🛑 Sudden Braking</h4>
+      <h4 style="color: #DC2626; margin-bottom: 10px;">Sudden Braking</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
         Detected when a cyclist enters a 25m zone around a traffic light and their speed 
         is below 5 km/h at the first point inside the zone, indicating sudden braking.
       </p>
     </div>
     <div style="margin: 20px 0;">
-      <h4 style="color: #F97316; margin-bottom: 10px;">⏱️ Extended Stops</h4>
+      <h4 style="color: #F97316; margin-bottom: 10px;">⏱Extended Stops</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
         Measured by counting data points within the zone where speed is below 2 km/h. 
         The score reflects the percentage of time spent stopped or nearly stopped.
