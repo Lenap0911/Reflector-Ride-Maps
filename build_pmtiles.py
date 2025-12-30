@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Build PMTiles from Processed GeoJSON Data
 Unified script that creates PMTiles with speed and road quality data
@@ -54,7 +52,7 @@ def main():
         print("Run integrated_processor.py first to process your data")
         return 1
     
-    # Count files (recursively search subfolders)
+    # Count files 
     print(f"\n📂 Scanning {processed_dir}...")
     geojson_files = list(processed_dir.rglob("*_processed.geojson"))
     

@@ -3,8 +3,9 @@ export const CONFIG = {
   MAP_STYLE: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   MAP_CENTER: [4.9041, 52.3676], // Amsterdam
   MAP_ZOOM: 13,
-  PMTILES_URL: '/Reflector-Ride-Maps/trips.pmtiles', // This path looks correct
-  DATA_URL: '/Reflector-Ride-Maps/sensor_data' // Updated to sensor_data
+  PMTILES_URL: '/Reflector-Ride-Maps/trips.pmtiles',
+  DATA_URL: '/Reflector-Ride-Maps/sensor_data' 
 };
-// Also make available globally for non-module scripts
+
+// Make available globally
 window.CONFIG = CONFIG;

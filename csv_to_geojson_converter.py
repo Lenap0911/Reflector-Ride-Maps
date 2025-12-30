@@ -88,7 +88,7 @@ def process_csv(input_path, sensor_id, trip_num):
         elif line == "BLE Device Information Service":
             metadata[line] = line
         elif line.startswith('SENSOR,') or line.startswith('GNSS,'):
-            # These are summary lines - parse them
+            # Parse summary lines
             parts = line.split(',', 1)
             if len(parts) == 2:
                 metadata[parts[0]] = ',' + parts[1]

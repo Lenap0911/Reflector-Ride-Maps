@@ -2,7 +2,7 @@
 
 A comprehensive bike sensor data visualization tool that transforms GPS and wheel rotation data into interactive, speed-colored route maps with traffic light analysis.
 
-## 📊 Overview
+## Overview
 
 This project processes raw CSV files from bike sensors and creates:
 - **Speed-colored route visualizations** showing cycling speeds across trips
@@ -10,26 +10,26 @@ This project processes raw CSV files from bike sensors and creates:
 - **Traffic light analysis** highlighting cyclist safety and efficiency at intersections
 - **Interactive web visualization** powered by MapLibre GL JS and PMTiles
 
-## ✨ Features
+## Features
 
-### 🗺️ **Interactive Map**
+### **Interactive Map**
 - View all trips simultaneously or focus on individual routes
 - Click any route segment to see detailed speed and quality metrics
 - Search for specific trips by name
 - Toggle fullscreen mode for presentations
 
-### 🎨 **Speed Visualization**
+### **Speed Visualization**
 - **Gradient mode**: Smooth color transitions between speeds
 - **Category mode**: Distinct colors for speed ranges
 - Real-time speed display on hover
 - Speed range: 0-30+ km/h with 7 color categories
 
-### 🛣️ **Road Quality Analysis**
+### **Road Quality Analysis**
 - 5-level road quality rating system
 - Color-coded segments: Perfect → Normal → Outdated → Bad → No Road
 - Helps identify infrastructure improvements needed
 
-### 🚦 **Traffic Light Analysis** (NEW!)
+### **Traffic Light Analysis** 
 - Pre-computed safety scores based on sudden braking events
 - Efficiency scores showing extended stop patterns
 - Three analysis modes:
@@ -38,13 +38,13 @@ This project processes raw CSV files from bike sensors and creates:
   - **Balanced**: Combined assessment
 - Interactive traffic light markers with detailed statistics
 
-### 📊 **Trip Statistics**
+### **Trip Statistics**
 - Total trips, distance, and riding time
 - Average and maximum speeds
 - Per-trip metrics on click
 - Aggregate statistics across all rides
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 Reflector-Ride-Maps/
@@ -56,7 +56,7 @@ Reflector-Ride-Maps/
 ├── traffic_lights.json                # Traffic light locations
 ├── traffic_lights_analyzed.json       # Pre-computed traffic analysis (generated)
 │
-├── master_pipeline.py                 # 🔥 Run this to process everything
+├── master_pipeline.py                 # Run this to process everything
 ├── csv_to_geojson_converter.py        # Step 1: Convert CSVs to GeoJSON
 ├── integrated_processor.py            # Step 2: Calculate speeds from sensors
 ├── generate_traffic_light_analysis.py # Step 3: Analyze traffic lights
@@ -68,7 +68,7 @@ Reflector-Ride-Maps/
 └── styles.css                         # Styling
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -93,7 +93,7 @@ This automated pipeline runs all processing steps:
 3. ✅ Analyzes traffic light behavior
 4. ✅ Generates PMTiles for web visualization
 
-## 📋 Detailed Workflow
+## Detailed Workflow
 
 ### Step 1: Convert Raw CSVs to GeoJSON
 
@@ -188,26 +188,26 @@ python build_pmtiles.py
 - Fast: Only loads visible tiles
 - Standard: Works with MapLibre/Mapbox GL JS
 
-## 🌐 Web Visualization
+## Web Visualization
 
 Visit: **https://tomvanarman.github.io/Reflector-Ride-Maps/**
 
 ### Controls:
 
 **Trip Selection:**
-- 🔍 **Search**: Find specific trips by name
-- 🖱️ **Click**: Select individual routes
-- ↩️ **Reset**: Return to full view
+- **Search**: Find specific trips by name
+- **Click**: Select individual routes
+- **Reset**: Return to full view
 
 **Visualization Modes:**
-- ✅ **Speed Colors**: Show speeds with gradient or categories
-- ✅ **Road Quality**: Display infrastructure conditions
-- ✅ **Traffic Light Analysis**: View intersection safety/efficiency
+- **Speed**: Show speeds with gradient or categories
+- **Road Quality**: Display infrastructure conditions
+- **Traffic Light Analysis**: View intersection safety/efficiency
 
 **Traffic Light Analysis Modes:**
-- 🛑 **Safety**: Highlights sudden braking locations
-- ⏱️ **Efficiency**: Shows extended stop durations
-- 🎯 **Balanced**: Combined safety and efficiency view
+- **Safety**: Highlights sudden braking locations
+- **Efficiency**: Shows extended stop durations
+- **Balanced**: Combined safety and efficiency view
 
 ### Speed Legend:
 
@@ -236,7 +236,7 @@ Visit: **https://tomvanarman.github.io/Reflector-Ride-Maps/**
 - 🔴 Red: Critical (80-100)
 - ⚪ White: No Data
 
-## 🔧 Configuration
+## Configuration
 
 ### Wheel Settings (in `integrated_processor.py`):
 
@@ -263,7 +263,7 @@ MAP_ZOOM: 13,                    // Initial zoom level
 MAP_STYLE: 'https://...'         // CartoDB Dark Matter
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "PMTiles shows all gray/red"
 - Check that `Speed` property exists in processed GeoJSON
@@ -285,7 +285,7 @@ MAP_STYLE: 'https://...'         // CartoDB Dark Matter
 - Run complete pipeline: `python master_pipeline.py`
 - Check that CSV format matches expected structure
 
-## 🎯 Use Cases
+## Use Cases
 
 ### Urban Planning
 - Identify dangerous intersections requiring infrastructure improvements
@@ -301,23 +301,3 @@ MAP_STYLE: 'https://...'         // CartoDB Dark Matter
 - Track your cycling speed patterns
 - Monitor road quality on regular routes
 - Review trip statistics over time
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -am 'Add feature'`
-4. Push to branch: `git push origin feature-name`
-5. Submit a Pull Request
-
-## 📄 License
-
-ISC License - See package.json for details
-
-## 🙏 Acknowledgments
-
-- **MapLibre GL JS**: Open-source mapping library
-- **Tippecanoe**: PMTiles generation by Mapbox
-- **PMTiles**: Efficient vector tile format
-- **CartoDB**: Free basemap styles
-- **Turf.js**: Geospatial analysis library

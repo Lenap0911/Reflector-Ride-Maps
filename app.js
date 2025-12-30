@@ -1,4 +1,4 @@
-// app.js - Simplified with pre-computed traffic light analysis
+// app.js 
 import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
@@ -66,7 +66,7 @@ function showTrafficLightInfoPopup() {
       </p>
     </div>
     <div style="margin: 20px 0;">
-      <h4 style="color: #F97316; margin-bottom: 10px;">⏱Extended Stops</h4>
+      <h4 style="color: #F97316; margin-bottom: 10px;">Extended Stops</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
         Measured by counting data points within the zone where speed is below 2 km/h. 
         The score reflects the percentage of time spent stopped or nearly stopped.
@@ -151,33 +151,43 @@ function getRoadQualityColorExpression() {
 
 // Traffic light analysis color based on pre-computed scores
 function getTrafficLightColorExpression(mode) {
-  const scoreKey = mode === 'safety' ? 'safety_score' : 
-                   mode === 'efficiency' ? 'efficiency_score' : 
-                   'overall_score';
-  
+  const scoreKey =
+    mode === 'safety' ? 'safety_score' :
+    mode === 'efficiency' ? 'efficiency_score' :
+    'overall_score';
+
   return [
     'case',
-    ['==', ['get', 'has_data'], false], '#FFFFFF', // White for no data
+    ['==', ['get', 'has_data'], false], '#FFFFFF',
     [
-      'interpolate',
-      ['linear'],
+      'step',
       ['to-number', ['get', scoreKey]],
-      0, '#22C55E',   // Green - excellent
-      20, '#84CC16',  // Light green - good
-      40, '#FACC15',  // Yellow - moderate
-      60, '#F97316',  // Orange - poor
-      80, '#DC2626'   // Red - critical
+      '#16A34A',   // < 10
+
+      10, '#22C55E',
+      20, '#4ADE80',
+      30, '#84CC16',
+      40, '#FDE047',
+      50, '#FACC15',
+      60, '#FB923C',
+      70, '#F97316',
+      80, '#DC2626'
     ]
   ];
 }
 
 function getAnalysisLabel(score) {
+  if (score < 10) return 'Excellent+';
   if (score < 20) return 'Excellent';
+  if (score < 30) return 'Good+';
   if (score < 40) return 'Good';
+  if (score < 50) return 'Moderate+';
   if (score < 60) return 'Moderate';
+  if (score < 70) return 'Poor+';
   if (score < 80) return 'Poor';
   return 'Critical';
 }
+
 
 // Load metadata
 async function loadMetadata() {

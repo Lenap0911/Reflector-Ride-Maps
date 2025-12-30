@@ -43,7 +43,7 @@ def parse_time(time_str, milliseconds):
         return None
 
 def safe_int(value, default=0):
-    """Safely convert value to int"""
+    """Convert value to int"""
     if value is None or value == '':
         return default
     try:
@@ -58,7 +58,7 @@ def safe_int(value, default=0):
             return default
 
 def safe_float(value, default=0.0):
-    """Safely convert value to float"""
+    """Convert value to float"""
     if value is None or value == '':
         return default
     try:

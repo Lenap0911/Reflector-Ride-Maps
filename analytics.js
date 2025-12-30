@@ -1,5 +1,5 @@
 // analytics.js
-// This file handles all analytics visualizations
+// Handles analytics visualizations- speed and road quality
 
 let analyticsCharts = {};
 let analyticsData = null;
