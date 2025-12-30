@@ -26,6 +26,7 @@ Reflector-Ride-Maps/
 ```
 
 ## 🚀 Quick Start
+### By running: python master_pipeline.py you can automatically run all of the following processes
 
 ### Prerequisites
 

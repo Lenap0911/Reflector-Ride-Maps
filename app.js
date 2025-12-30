@@ -1,4 +1,4 @@
-// app.js - Enhanced with Road Quality Layer, Trip Search, and Traffic Light Analysis
+// app.js - Simplified with pre-computed traffic light analysis
 import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
@@ -21,22 +21,14 @@ let showRoadQuality = false;
 let selectedTrip = null;
 let tripsMetadata = null;
 let currentPopup = null;
-let trafficLightAnalysis = null;
 let showTrafficLights = false;
 let analysisMode = 'safety'; // 'safety', 'efficiency', 'overall'
 
 // Default orange color for routes
 const DEFAULT_COLOR = '#FF6600';
 
-// Traffic light analysis parameters
-const ANALYSIS_RADIUS = 25; // meters - diameter zone around traffic light
-const SUDDEN_BRAKE_THRESHOLD = -3; // m/s² - deceleration rate
-const EXTENDED_STOP_THRESHOLD = 5; // seconds - time stopped or very slow
-const SLOW_SPEED_THRESHOLD = 2; // km/h - considered "stopped"
-
 // Show info popup about traffic light analysis
 function showTrafficLightInfoPopup() {
-  // Create overlay
   const overlay = document.createElement('div');
   overlay.id = 'trafficLightInfoOverlay';
   overlay.style.cssText = `
@@ -52,7 +44,6 @@ function showTrafficLightInfoPopup() {
     z-index: 10000;
   `;
   
-  // Create popup
   const popup = document.createElement('div');
   popup.style.cssText = `
     background: white;
@@ -65,21 +56,20 @@ function showTrafficLightInfoPopup() {
   popup.innerHTML = `
     <h3 style="margin-top: 0; color: #333;">🚦 Traffic Light Analysis</h3>
     <p style="color: #666; line-height: 1.6;">
-      This layer analyzes cyclist behavior at traffic lights within a <strong>${ANALYSIS_RADIUS}m radius</strong> of each light.
+      This layer shows pre-computed analysis of cyclist behavior at traffic lights.
     </p>
     <div style="margin: 20px 0;">
       <h4 style="color: #DC2626; margin-bottom: 10px;">🛑 Sudden Braking</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
-        Detected when a cyclist <strong>enters the ${ANALYSIS_RADIUS}m zone from outside</strong> and their speed 
-        is below <strong>5 km/h at the first point inside the zone</strong>. This indicates they had to brake 
-        suddenly or stop abruptly when approaching the traffic light.
+        Detected when a cyclist enters a 25m zone around a traffic light and their speed 
+        is below 5 km/h at the first point inside the zone, indicating sudden braking.
       </p>
     </div>
     <div style="margin: 20px 0;">
       <h4 style="color: #F97316; margin-bottom: 10px;">⏱️ Extended Stops</h4>
       <p style="color: #666; margin: 0; line-height: 1.6;">
-        Measured by counting <strong>all data points</strong> within the zone where speed is below <strong>${SLOW_SPEED_THRESHOLD} km/h</strong>. 
-        More stopped points = longer waits. The score reflects the percentage of time spent stopped or nearly stopped.
+        Measured by counting data points within the zone where speed is below 2 km/h. 
+        The score reflects the percentage of time spent stopped or nearly stopped.
       </p>
     </div>
     <button id="closeTrafficInfoBtn" style="
@@ -99,12 +89,10 @@ function showTrafficLightInfoPopup() {
   overlay.appendChild(popup);
   document.body.appendChild(overlay);
   
-  // Close button handler
   document.getElementById('closeTrafficInfoBtn').addEventListener('click', () => {
     overlay.remove();
   });
   
-  // Click outside to close
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) {
       overlay.remove();
@@ -161,36 +149,34 @@ function getRoadQualityColorExpression() {
   ];
 }
 
-// Traffic light analysis color expression
-function getTrafficLightAnalysisColor(score, mode) {
-  // Score ranges from 0 (safe/efficient) to 100 (dangerous/inefficient)
-  if (score < 20) return '#22C55E'; // Green - excellent
-  if (score < 40) return '#84CC16'; // Light green - good
-  if (score < 60) return '#FACC15'; // Yellow - moderate
-  if (score < 80) return '#F97316'; // Orange - poor
-  return '#DC2626'; // Red - critical
+// Traffic light analysis color based on pre-computed scores
+function getTrafficLightColorExpression(mode) {
+  const scoreKey = mode === 'safety' ? 'safety_score' : 
+                   mode === 'efficiency' ? 'efficiency_score' : 
+                   'overall_score';
+  
+  return [
+    'case',
+    ['==', ['get', 'has_data'], false], '#FFFFFF', // White for no data
+    [
+      'interpolate',
+      ['linear'],
+      ['to-number', ['get', scoreKey]],
+      0, '#22C55E',   // Green - excellent
+      20, '#84CC16',  // Light green - good
+      40, '#FACC15',  // Yellow - moderate
+      60, '#F97316',  // Orange - poor
+      80, '#DC2626'   // Red - critical
+    ]
+  ];
 }
 
-function getAnalysisLabel(score, mode) {
-  if (mode === 'safety') {
-    if (score < 20) return 'Very Safe';
-    if (score < 40) return 'Safe';
-    if (score < 60) return 'Moderate Risk';
-    if (score < 80) return 'Unsafe';
-    return 'Very Unsafe';
-  } else if (mode === 'efficiency') {
-    if (score < 20) return 'Very Efficient';
-    if (score < 40) return 'Efficient';
-    if (score < 60) return 'Moderate';
-    if (score < 80) return 'Inefficient';
-    return 'Very Inefficient';
-  } else { // overall
-    if (score < 20) return 'Excellent';
-    if (score < 40) return 'Good';
-    if (score < 60) return 'Moderate';
-    if (score < 80) return 'Poor';
-    return 'Critical';
-  }
+function getAnalysisLabel(score) {
+  if (score < 20) return 'Excellent';
+  if (score < 40) return 'Good';
+  if (score < 60) return 'Moderate';
+  if (score < 80) return 'Poor';
+  return 'Critical';
 }
 
 // Load metadata
@@ -237,12 +223,10 @@ function getTripStats(tripId) {
   ];
   
   let tripData = null;
-  let foundKey = null;
   
   for (const variant of variations) {
     if (tripsMetadata[variant]) {
       tripData = tripsMetadata[variant];
-      foundKey = variant;
       break;
     }
   }
@@ -327,7 +311,6 @@ function resetSelection() {
       map.setPaintProperty(layerId, 'line-opacity', 0.7);
       map.setPaintProperty(layerId, 'line-width', 3);
       
-      // Reset to appropriate color based on active mode
       if (showSpeedColors) {
         map.setPaintProperty(layerId, 'line-color', getSpeedColorExpression(speedMode));
       } else if (showRoadQuality) {
@@ -371,7 +354,6 @@ function searchAndHighlightTrip(searchTerm) {
   
   const normalizedSearch = searchTerm.toLowerCase().trim();
   
-  // Find matching trip
   const matchingTrip = tripLayers.find(layerId => 
     layerId.toLowerCase().includes(normalizedSearch)
   );
@@ -379,14 +361,13 @@ function searchAndHighlightTrip(searchTerm) {
   if (matchingTrip) {
     console.log('🎯 Found trip:', matchingTrip);
     
-    // Highlight the trip
     selectedTrip = matchingTrip;
     tripLayers.forEach(id => {
       try {
         if (id === matchingTrip) {
           map.setPaintProperty(id, 'line-opacity', 1.0);
           map.setPaintProperty(id, 'line-width', 5);
-          map.setPaintProperty(id, 'line-color', '#FF00FF'); // Magenta for search result
+          map.setPaintProperty(id, 'line-color', '#FF00FF');
         } else {
           map.setPaintProperty(id, 'line-opacity', 0.15);
           map.setPaintProperty(id, 'line-width', 2);
@@ -398,7 +379,6 @@ function searchAndHighlightTrip(searchTerm) {
     
     showSelection(matchingTrip);
     
-    // Zoom to the trip
     try {
       const features = map.querySourceFeatures('trips', {
         sourceLayer: matchingTrip
@@ -427,213 +407,17 @@ function searchAndHighlightTrip(searchTerm) {
   }
 }
 
-// Analyze traffic light zones for safety/efficiency
-async function analyzeTrafficLights() {
-  console.log('🔍 Starting traffic light zone analysis...');
-  
-  // Show loading bar
-  const loadingBar = document.getElementById('analysisLoadingBar');
-  const loadingProgress = document.getElementById('analysisLoadingProgress');
-  const loadingText = document.getElementById('analysisLoadingText');
-  
-  if (loadingBar) {
-    loadingBar.style.display = 'block';
-    loadingProgress.style.width = '0%';
-    loadingText.textContent = 'Initializing...';
-  }
-  
-  // Wait a moment for layers to fully render
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  const trafficLightsSource = map.getSource('verkeerslichten');
-  if (!trafficLightsSource) {
-    console.warn('⚠️ No traffic lights source found');
-    if (loadingBar) loadingBar.style.display = 'none';
-    return;
-  }
-  
-  const trafficLightsData = trafficLightsSource._data;
-  if (!trafficLightsData || !trafficLightsData.features) {
-    console.warn('⚠️ No traffic lights data');
-    if (loadingBar) loadingBar.style.display = 'none';
-    return;
-  }
-  
-  console.log('📊 Analyzing', trafficLightsData.features.length, 'traffic lights...');
-  console.log('🗺️ Available trip layers:', tripLayers.length);
-  
-  trafficLightAnalysis = {};
-  const totalLights = trafficLightsData.features.length;
-  
-  // For each traffic light
-  trafficLightsData.features.forEach((light, index) => {
-    const lightCoords = light.geometry.coordinates;
-    const lightPoint = turf.point(lightCoords);
-    // Round coordinates to 7 decimal places for consistent key matching
-    const key = `${lightCoords[0].toFixed(7)},${lightCoords[1].toFixed(7)}`;
-    
-    let suddenBrakeCount = 0;
-    let extendedStopCount = 0;
-    let totalPointsChecked = 0;
-    
-    // Check all trips for points near this traffic light
-    tripLayers.forEach(layerId => {
-      try {
-        const features = map.querySourceFeatures('trips', {
-          sourceLayer: layerId
-        });
-        
-        if (index === 0 && features.length > 0) {
-          console.log(`   📍 Sample layer "${layerId}" has ${features.length} features`);
-        }
-        
-        features.forEach(feature => {
-          if (feature.geometry.type === 'LineString') {
-            const coords = feature.geometry.coordinates;
-            const props = feature.properties;
-            
-            // Check each point in the line
-            for (let i = 0; i < coords.length; i++) {
-              const point = turf.point(coords[i]);
-              const distance = turf.distance(lightPoint, point, { units: 'meters' });
-              
-              // If within analysis radius
-              if (distance <= ANALYSIS_RADIUS) {
-                totalPointsChecked++;
-                
-                // Get speed at this point
-                const speed = parseFloat(props.Speed || props.speed || 0);
-                
-                // Check for sudden braking (speed dropped significantly)
-                if (i > 0) {
-                  const prevPoint = turf.point(coords[i - 1]);
-                  const prevDistance = turf.distance(lightPoint, prevPoint, { units: 'meters' });
-                  
-                  // If we just entered the zone and speed is low, it's a brake event
-                  if (prevDistance > ANALYSIS_RADIUS && speed < 5) {
-                    suddenBrakeCount++;
-                  }
-                }
-                
-                // Check for extended stop (very low speed)
-                if (speed < SLOW_SPEED_THRESHOLD) {
-                  extendedStopCount++;
-                }
-              }
-            }
-          }
-        });
-      } catch (err) {
-        // Layer might not be loaded yet, skip silently
-      }
-    });
-    
-    // Calculate scores (0-100) with more aggressive weighting
-    // More events = higher score (worse)
-    const suddenScore = Math.min(100, suddenBrakeCount * 15); // Increased from 5 to 15
-    const extendedScore = Math.min(100, (extendedStopCount / Math.max(1, totalPointsChecked)) * 200); // Increased from 100 to 200
-    const overallScore = (suddenScore * 0.6 + extendedScore * 0.4);
-    
-    trafficLightAnalysis[key] = {
-      coords: lightCoords,
-      suddenBrakeCount,
-      extendedStopCount,
-      totalPointsChecked,
-      suddenScore,
-      extendedScore,
-      overallScore
-    };
-    
-    // Update progress bar
-    if (loadingBar && (index + 1) % 10 === 0) {
-      const progress = ((index + 1) / totalLights) * 100;
-      loadingProgress.style.width = `${progress}%`;
-      loadingText.textContent = `Analyzing ${index + 1}/${totalLights}`;
-    }
-    
-    if ((index + 1) % 50 === 0) {
-      console.log(`   Analyzed ${index + 1}/${trafficLightsData.features.length} traffic lights...`);
-    }
-  });
-  
-  // Complete loading bar
-  if (loadingBar) {
-    loadingProgress.style.width = '100%';
-    loadingText.textContent = 'Complete!';
-    setTimeout(() => {
-      loadingBar.style.display = 'none';
-    }, 1000);
-  }
-  
-  console.log('✅ Traffic light analysis complete!');
-  console.log('📈 Analysis summary:', {
-    totalLights: Object.keys(trafficLightAnalysis).length,
-    lightsWithData: Object.values(trafficLightAnalysis).filter(a => a.totalPointsChecked > 0).length,
-    exampleLight: Object.values(trafficLightAnalysis)[0],
-    sampleKeys: Object.keys(trafficLightAnalysis).slice(0, 10)
-  });
-}
-
 function updateTrafficLightColors() {
   console.log('🎨 Updating traffic light colors, mode:', analysisMode);
   
-  if (!map.getSource('verkeerslichten') || !trafficLightAnalysis) {
-    console.warn('⚠️ Cannot update colors - missing source or analysis');
+  if (!map.getLayer('verkeerslichten')) {
+    console.warn('⚠️ Traffic lights layer not found');
     return;
   }
   
-  const trafficLightsSource = map.getSource('verkeerslichten');
-  const data = trafficLightsSource._data;
-  
-  if (!data || !data.features) {
-    console.warn('⚠️ No traffic lights data to update');
-    return;
-  }
-  
-  console.log('📊 Updating colors for', data.features.length, 'traffic lights');
-  
-  // Update colors based on analysis mode
-  data.features.forEach(feature => {
-    const coords = feature.geometry.coordinates;
-    // Round coordinates to 7 decimal places to match storage key
-    const key = `${coords[0].toFixed(7)},${coords[1].toFixed(7)}`;
-    const analysis = trafficLightAnalysis[key];
-    
-    if (analysis && analysis.totalPointsChecked > 0) {
-      let score;
-      if (analysisMode === 'safety') {
-        score = analysis.suddenScore;
-      } else if (analysisMode === 'efficiency') {
-        score = analysis.extendedScore;
-      } else {
-        score = analysis.overallScore;
-      }
-      
-      feature.properties.analysisColor = getTrafficLightAnalysisColor(score, analysisMode);
-      feature.properties.analysisScore = score;
-      feature.properties.hasData = true;
-    } else {
-      feature.properties.analysisColor = '#FFFFFF'; // White for no data
-      feature.properties.analysisScore = 0;
-      feature.properties.hasData = false;
-    }
-  });
-  
-  // Update the source
-  trafficLightsSource.setData(data);
-  
-  // Update paint property
-  if (showTrafficLights) {
-    map.setPaintProperty('verkeerslichten', 'circle-color', [
-      'coalesce',
-      ['get', 'analysisColor'],
-      '#FFFFFF'
-    ]);
-    map.setPaintProperty('verkeerslichten', 'circle-radius', 6);
-    map.setPaintProperty('verkeerslichten', 'circle-stroke-width', 2);
-    map.setPaintProperty('verkeerslichten', 'circle-stroke-color', '#333333');
-    console.log('✅ Traffic light colors updated (analysis mode)');
-  }
+  // Update colors based on pre-computed scores
+  map.setPaintProperty('verkeerslichten', 'circle-color', getTrafficLightColorExpression(analysisMode));
+  console.log('✅ Traffic light colors updated');
 }
 
 map.on('error', (e) => {
@@ -685,31 +469,27 @@ map.on('load', async () => {
 
     console.log('✅ All trips loaded and visible');
     
-    // ==========================================
-    // 🚦 TRAFFIC LIGHTS LAYER
-    // ==========================================
-    console.log('📡 Loading Amsterdam traffic lights...');
+    // Load pre-computed traffic light analysis
+    console.log('📡 Loading traffic light analysis...');
     
     try {
-      // Try multiple possible paths
       const possiblePaths = [
-        './traffic_lights.json',
-        'traffic_lights.json',
-        '/traffic_lights.json',
-        '../traffic_lights.json',
-        `${CONFIG.DATA_URL}/traffic_lights.json`
+        './traffic_lights_analyzed.json',
+        'traffic_lights_analyzed.json',
+        '/traffic_lights_analyzed.json',
+        `${CONFIG.DATA_URL}/traffic_lights_analyzed.json`
       ];
       
       let trafficLightsData = null;
       
       for (const path of possiblePaths) {
         try {
-          console.log('🔍 Trying to load traffic lights from:', path);
+          console.log('🔍 Trying to load from:', path);
           const response = await fetch(path);
           if (response.ok) {
             trafficLightsData = await response.json();
-            console.log('✅ Loaded traffic lights from', path);
-            console.log(`📍 Found ${trafficLightsData.features.length} traffic lights`);
+            console.log('✅ Loaded analyzed traffic lights from', path);
+            console.log(`📍 Found ${trafficLightsData.features.length} traffic lights with analysis`);
             break;
           }
         } catch (err) {
@@ -718,15 +498,13 @@ map.on('load', async () => {
       }
       
       if (!trafficLightsData) {
-        console.error('❌ Could not load traffic lights from any path');
+        console.error('❌ Could not load traffic light analysis');
       } else {
-        // Add source with loaded data
         map.addSource('verkeerslichten', {
           type: 'geojson',
           data: trafficLightsData
         });
 
-        // Add the layer (initially hidden)
         map.addLayer({
           id: 'verkeerslichten',
           type: 'circle',
@@ -736,17 +514,14 @@ map.on('load', async () => {
           },
           paint: {
             'circle-radius': 6,
-            'circle-color': '#f4071bff',
+            'circle-color': getTrafficLightColorExpression('safety'),
             'circle-stroke-width': 2,
             'circle-stroke-color': '#333333',
             'circle-opacity': 0.9
           }
         });
 
-        console.log('✅ Traffic lights layer added with', trafficLightsData.features.length, 'points');
-        
-        // NOW analyze traffic light zones after data is loaded
-        await analyzeTrafficLights();
+        console.log('✅ Traffic lights layer added');
 
         // Click handler for traffic lights
         map.on('click', 'verkeerslichten', (e) => {
@@ -758,99 +533,42 @@ map.on('load', async () => {
           const props = e.features[0].properties;
           const coords = e.features[0].geometry.coordinates;
           
-          console.log('🚦 Clicked traffic light at:', coords);
-          console.log('🚦 Traffic light properties:', props);
+          console.log('🚦 Clicked traffic light:', props);
           
-          // Get analysis data for this traffic light
+          // Build analysis HTML from pre-computed data
           let analysisHTML = '';
-          if (trafficLightAnalysis) {
-            // Use the ORIGINAL coordinates from the feature, not the click location
-            // Round to 7 decimals to match how we stored them
-            const originalCoords = e.features[0].geometry.coordinates;
-            const key = `${originalCoords[0].toFixed(7)},${originalCoords[1].toFixed(7)}`;
+          
+          if (props.has_data === 'true' || props.has_data === true) {
+            const safetyScore = parseFloat(props.safety_score || 0);
+            const efficiencyScore = parseFloat(props.efficiency_score || 0);
+            const overallScore = parseFloat(props.overall_score || 0);
+            const suddenBrakes = parseInt(props.sudden_brakes || 0);
+            const extendedStops = parseInt(props.extended_stops || 0);
+            const totalPoints = parseInt(props.total_points || 0);
             
-            console.log('🔍 Looking for analysis with key:', key);
+            let displayScore = analysisMode === 'safety' ? safetyScore : 
+                               analysisMode === 'efficiency' ? efficiencyScore : 
+                               overallScore;
             
-            const analysis = trafficLightAnalysis[key];
-            console.log('📊 Found analysis:', analysis);
+            const displayLabel = getAnalysisLabel(displayScore);
+            const displayColor = displayScore < 20 ? '#22C55E' :
+                                displayScore < 40 ? '#84CC16' :
+                                displayScore < 60 ? '#FACC15' :
+                                displayScore < 80 ? '#F97316' : '#DC2626';
             
-            if (!analysis) {
-              console.log('❌ No analysis found. Checking if key exists anywhere...');
-              const similarKeys = Object.keys(trafficLightAnalysis).filter(k => {
-                const [lon, lat] = k.split(',').map(Number);
-                const [searchLon, searchLat] = key.split(',').map(Number);
-                return Math.abs(lon - searchLon) < 0.0001 && Math.abs(lat - searchLat) < 0.0001;
-              });
-              console.log('🔎 Similar keys within 0.0001 degrees:', similarKeys);
-              
-              // Try to use closest match if available
-              if (similarKeys.length > 0) {
-                const closestAnalysis = trafficLightAnalysis[similarKeys[0]];
-                if (closestAnalysis) {
-                  console.log('✅ Using closest match:', similarKeys[0]);
-                  
-                  let displayScore, displayLabel;
-                  if (analysisMode === 'safety') {
-                    displayScore = closestAnalysis.suddenScore;
-                    displayLabel = getAnalysisLabel(displayScore, 'safety');
-                  } else if (analysisMode === 'efficiency') {
-                    displayScore = closestAnalysis.extendedScore;
-                    displayLabel = getAnalysisLabel(displayScore, 'efficiency');
-                  } else {
-                    displayScore = closestAnalysis.overallScore;
-                    displayLabel = getAnalysisLabel(displayScore, 'overall');
-                  }
-                  
-                  const displayColor = getTrafficLightAnalysisColor(displayScore, analysisMode);
-                  
-                  analysisHTML = `
-                    <br><br><strong>📊 Traffic Light Analysis:</strong>
-                    <br>🛑 Sudden braking events: ${closestAnalysis.suddenBrakeCount}
-                    <br>⏱️ Extended stop points: ${closestAnalysis.extendedStopCount}
-                    <br>📍 Total points checked: ${closestAnalysis.totalPointsChecked}
-                    <br>📈 Safety score: ${closestAnalysis.suddenScore.toFixed(0)}/100
-                    <br>🕐 Efficiency score: ${closestAnalysis.extendedScore.toFixed(0)}/100
-                    <br>🎯 Overall score: ${closestAnalysis.overallScore.toFixed(0)}/100
-                    <br><br><strong>Current View (${analysisMode}):</strong>
-                    <br><span style="color: ${displayColor}; font-size: 20px;">●</span> <strong>${displayLabel}</strong> (Score: ${displayScore.toFixed(0)})
-                  `;
-                }
-              }
-            }
-            
-            console.log('📋 Available keys (first 5):', Object.keys(trafficLightAnalysis).slice(0, 5));
-            
-            if (analysis) {
-              let displayScore, displayLabel;
-              if (analysisMode === 'safety') {
-                displayScore = analysis.suddenScore;
-                displayLabel = getAnalysisLabel(displayScore, 'safety');
-              } else if (analysisMode === 'efficiency') {
-                displayScore = analysis.extendedScore;
-                displayLabel = getAnalysisLabel(displayScore, 'efficiency');
-              } else {
-                displayScore = analysis.overallScore;
-                displayLabel = getAnalysisLabel(displayScore, 'overall');
-              }
-              
-              const displayColor = getTrafficLightAnalysisColor(displayScore, analysisMode);
-              
-              analysisHTML = `
-                <br><br><strong>📊 Traffic Light Analysis:</strong>
-                <br>🛑 Sudden braking events: ${analysis.suddenBrakeCount}
-                <br>⏱️ Extended stop points: ${analysis.extendedStopCount}
-                <br>📍 Total points checked: ${analysis.totalPointsChecked}
-                <br>📈 Safety score: ${analysis.suddenScore.toFixed(0)}/100
-                <br>🕐 Efficiency score: ${analysis.extendedScore.toFixed(0)}/100
-                <br>🎯 Overall score: ${analysis.overallScore.toFixed(0)}/100
-                <br><br><strong>Current View (${analysisMode}):</strong>
-                <br><span style="color: ${displayColor}; font-size: 20px;">●</span> <strong>${displayLabel}</strong> (Score: ${displayScore.toFixed(0)})
-              `;
-            } else if (!analysisHTML) {
-              analysisHTML = '<br><br><em>No trip data near this traffic light</em>';
-            }
+            analysisHTML = `
+              <br><br><strong>📊 Traffic Light Analysis:</strong>
+              <br>🛑 Sudden braking events: ${suddenBrakes}
+              <br>⏱️ Extended stop points: ${extendedStops}
+              <br>📍 Total points checked: ${totalPoints}
+              <br>📈 Safety score: ${safetyScore.toFixed(0)}/100
+              <br>🕐 Efficiency score: ${efficiencyScore.toFixed(0)}/100
+              <br>🎯 Overall score: ${overallScore.toFixed(0)}/100
+              <br><br><strong>Current View (${analysisMode}):</strong>
+              <br><span style="color: ${displayColor}; font-size: 20px;">●</span> <strong>${displayLabel}</strong> (Score: ${displayScore.toFixed(0)})
+            `;
           } else {
-            analysisHTML = '<br><br><em>Analysis not yet complete</em>';
+            analysisHTML = '<br><br><em>No trip data near this traffic light</em>';
           }
           
           new mapboxgl.Popup()
@@ -859,7 +577,6 @@ map.on('load', async () => {
             .addTo(map);
         });
 
-        // Cursor pointer on hover
         map.on('mouseenter', 'verkeerslichten', () => {
           map.getCanvas().style.cursor = 'pointer';
         });
@@ -872,9 +589,6 @@ map.on('load', async () => {
     } catch (err) {
       console.error('❌ Error loading traffic lights:', err);
     }
-    // ==========================================
-    // END TRAFFIC LIGHTS LAYER
-    // ==========================================
     
     map.setCenter([4.9041, 52.3676]);
     map.setZoom(13);
@@ -988,7 +702,7 @@ function setupControls() {
     });
   });
 
-  // Traffic lights toggle (merged with analysis)
+  // Traffic lights toggle
   const trafficLightsCheckbox = document.getElementById('trafficLightsCheckbox');
   if (trafficLightsCheckbox) {
     trafficLightsCheckbox.addEventListener('change', (e) => {
@@ -997,7 +711,6 @@ function setupControls() {
       const analysisLegend = document.getElementById('trafficLightLegend');
       
       if (showTrafficLights) {
-        // Show traffic lights and analysis
         if (map.getLayer('verkeerslichten')) {
           map.setLayoutProperty('verkeerslichten', 'visibility', 'visible');
         }
@@ -1005,12 +718,10 @@ function setupControls() {
         if (analysisLegend) analysisLegend.style.display = 'block';
         updateTrafficLightColors();
         
-        // Show info popup
         showTrafficLightInfoPopup();
         
         console.log('🚦 Traffic lights analysis ON');
       } else {
-        // Hide traffic lights
         if (map.getLayer('verkeerslichten')) {
           map.setLayoutProperty('verkeerslichten', 'visibility', 'none');
         }
@@ -1035,7 +746,6 @@ function setupControls() {
 function setupClickHandlers() {
   tripLayers.forEach(layerId => {
     map.on('click', layerId, async (e) => {
-      // Don't show trip popups if traffic lights mode is active
       if (showTrafficLights) {
         return;
       }
@@ -1136,7 +846,7 @@ function updateStatsFromMetadata() {
     document.getElementById('statTrips').textContent = tripLayers.length;
     return;
   }
-  
+    
   const aggregateStats = calculateAggregateStats();
   
   if (aggregateStats) {
