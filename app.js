@@ -56,7 +56,7 @@ function showTrafficLightInfoPopup() {
   popup.innerHTML = `
     <h3 style="margin-top: 0; color: #333;">Traffic Light Analysis</h3>
     <p style="color: #666; line-height: 1.6;">
-      This layer shows pre-computed analysis of cyclist behavior at traffic lights.
+      This layer shows a pre-computed analysis of cyclist behavior at traffic lights.
     </p>
     <div style="margin: 20px 0;">
       <h4 style="color: #DC2626; margin-bottom: 10px;">Sudden Braking</h4>
