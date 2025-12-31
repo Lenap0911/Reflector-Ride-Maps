@@ -120,13 +120,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122020849",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 166,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 2.41,
+        "overall_score": 9.96
       }
     },
     {
@@ -184,13 +184,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/B00000026729",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 82,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 1,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 2.44,
+        "overall_score": 0.98
       }
     },
     {
@@ -312,13 +312,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -376,13 +376,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 222,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -408,13 +408,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/4f38560d-6df3-9985-c4c1-ae15b112b594",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 54,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -536,13 +536,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 28,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -664,13 +664,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 10,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -696,13 +696,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 30,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -760,13 +760,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 48,
+        "sudden_brakes": 1,
+        "extended_stops": 4,
+        "safety_score": 15,
+        "efficiency_score": 16.67,
+        "overall_score": 15.67
       }
     },
     {
@@ -792,13 +792,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 54,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -856,13 +856,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 240,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 8,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 6.67,
+        "overall_score": 2.67
       }
     },
     {
@@ -1368,13 +1368,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 78,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -1592,13 +1592,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 140,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -1656,13 +1656,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -1688,13 +1688,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 122,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -1848,13 +1848,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/0a489b56-d482-3576-72c0-65d25bb2fb28",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 424,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 6,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 2.83,
+        "overall_score": 1.13
       }
     },
     {
@@ -1944,13 +1944,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 82,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 3,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 7.32,
+        "overall_score": 2.93
       }
     },
     {
@@ -1976,13 +1976,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122028769",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
+        "has_data": true,
+        "total_points": 88,
+        "sudden_brakes": 1,
         "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "safety_score": 15,
+        "efficiency_score": 0.0,
+        "overall_score": 9.0
       }
     },
     {
@@ -2072,13 +2072,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/231639fb-126a-2d88-bb51-4f7c90dbeb2d.jpg",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 47,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.51,
+        "overall_score": 3.4
       }
     },
     {
@@ -2104,13 +2104,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/d230ea69-7160-ff38-0d22-2613e75c0340",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 224,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -2136,13 +2136,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122013737",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 84,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -2552,13 +2552,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122023095",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 102,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -2712,13 +2712,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/9731f5b2-75da-9706-b02a-8b391a2d86e2",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 88,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -2776,13 +2776,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/6f735134-8527-11e4-aead-9bde047844bc",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 164,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -2968,13 +2968,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 62,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3000,13 +3000,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 8,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3096,13 +3096,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 52,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3288,13 +3288,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 56,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3320,13 +3320,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 96,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3384,13 +3384,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 52,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3480,13 +3480,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122019695",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 154,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3672,13 +3672,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 72,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3768,13 +3768,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 140,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 2.86,
+        "overall_score": 1.14
       }
     },
     {
@@ -3800,13 +3800,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "vanBaerlestraatWillemsparkweg_1934.jpg",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 16,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -3832,13 +3832,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 200,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 8,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.0,
+        "overall_score": 3.2
       }
     },
     {
@@ -3864,13 +3864,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://pinkfloyded.tumblr.com/image/51830075997",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 48,
+        "sudden_brakes": 1,
+        "extended_stops": 3,
+        "safety_score": 15,
+        "efficiency_score": 12.5,
+        "overall_score": 14.0
       }
     },
     {
@@ -3992,13 +3992,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/34bf572f-488b-79c4-8392-a9d888ead464",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 108,
+        "sudden_brakes": 2,
+        "extended_stops": 4,
+        "safety_score": 30,
+        "efficiency_score": 7.41,
+        "overall_score": 20.96
       }
     },
     {
@@ -4024,13 +4024,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 15.38,
+        "overall_score": 6.15
       }
     },
     {
@@ -4056,13 +4056,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 75,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 14,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 37.33,
+        "overall_score": 14.93
       }
     },
     {
@@ -4088,13 +4088,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/8390e7de-e8ea-0819-28a3-530466b87f94\r\n",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 386,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 16,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.29,
+        "overall_score": 3.32
       }
     },
     {
@@ -4120,13 +4120,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 352,
+        "sudden_brakes": 1,
+        "extended_stops": 14,
+        "safety_score": 15,
+        "efficiency_score": 7.95,
+        "overall_score": 12.18
       }
     },
     {
@@ -4152,13 +4152,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 66,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -4184,13 +4184,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 52,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -4216,13 +4216,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/ee505168-85bc-8acd-024c-13063fdc1277",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 86,
+        "sudden_brakes": 1,
+        "extended_stops": 3,
+        "safety_score": 15,
+        "efficiency_score": 6.98,
+        "overall_score": 11.79
       }
     },
     {
@@ -4248,13 +4248,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 284,
+        "sudden_brakes": 2,
+        "extended_stops": 14,
+        "safety_score": 30,
+        "efficiency_score": 9.86,
+        "overall_score": 21.94
       }
     },
     {
@@ -4280,13 +4280,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 190,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 8,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.42,
+        "overall_score": 3.37
       }
     },
     {
@@ -4312,13 +4312,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 28,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 14.29,
+        "overall_score": 5.71
       }
     },
     {
@@ -4344,13 +4344,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 18,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -4440,13 +4440,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010009008170",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 48,
+        "sudden_brakes": 1,
+        "extended_stops": 4,
+        "safety_score": 15,
+        "efficiency_score": 16.67,
+        "overall_score": 15.67
       }
     },
     {
@@ -4472,13 +4472,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/4474b925-215b-0ce8-edf4-4daead46a3ec",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 12,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -4632,13 +4632,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 300,
+        "sudden_brakes": 1,
+        "extended_stops": 19,
+        "safety_score": 15,
+        "efficiency_score": 12.67,
+        "overall_score": 14.07
       }
     },
     {
@@ -4664,13 +4664,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.0,
+        "overall_score": 3.2
       }
     },
     {
@@ -4696,13 +4696,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 40,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 10.0,
+        "overall_score": 4.0
       }
     },
     {
@@ -4856,13 +4856,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "Alexanderplein_1965.jpg",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/BMAB00026000077_008",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 246,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 1.63,
+        "overall_score": 0.65
       }
     },
     {
@@ -5112,13 +5112,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 34,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -5176,13 +5176,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 86,
+        "sudden_brakes": 2,
+        "extended_stops": 4,
+        "safety_score": 30,
+        "efficiency_score": 9.3,
+        "overall_score": 21.72
       }
     },
     {
@@ -5240,13 +5240,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 294,
+        "sudden_brakes": 2,
+        "extended_stops": 24,
+        "safety_score": 30,
+        "efficiency_score": 16.33,
+        "overall_score": 24.53
       }
     },
     {
@@ -5304,13 +5304,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/3216016e-e200-8e36-e197-3a651b3c95f5",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 54,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -5336,13 +5336,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 150,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 6,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.0,
+        "overall_score": 3.2
       }
     },
     {
@@ -5368,13 +5368,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 62,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 6.45,
+        "overall_score": 2.58
       }
     },
     {
@@ -5496,13 +5496,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 57,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 7.02,
+        "overall_score": 2.81
       }
     },
     {
@@ -5624,13 +5624,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 36,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -5688,13 +5688,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 96,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.33,
+        "overall_score": 3.33
       }
     },
     {
@@ -5752,13 +5752,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 38,
+        "sudden_brakes": 1,
+        "extended_stops": 1,
+        "safety_score": 15,
+        "efficiency_score": 5.26,
+        "overall_score": 11.11
       }
     },
     {
@@ -5784,13 +5784,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 94,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 4.26,
+        "overall_score": 1.7
       }
     },
     {
@@ -6040,13 +6040,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 86,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 4.65,
+        "overall_score": 1.86
       }
     },
     {
@@ -6104,13 +6104,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 70,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 11.43,
+        "overall_score": 4.57
       }
     },
     {
@@ -6264,13 +6264,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122023710",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 306,
+        "sudden_brakes": 2,
+        "extended_stops": 10,
+        "safety_score": 30,
+        "efficiency_score": 6.54,
+        "overall_score": 20.61
       }
     },
     {
@@ -6392,13 +6392,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 94,
+        "sudden_brakes": 2,
+        "extended_stops": 2,
+        "safety_score": 30,
+        "efficiency_score": 4.26,
+        "overall_score": 19.7
       }
     },
     {
@@ -6872,13 +6872,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://stadsarchief.amsterdam.nl/",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 108,
+        "sudden_brakes": 2,
+        "extended_stops": 8,
+        "safety_score": 30,
+        "efficiency_score": 14.81,
+        "overall_score": 23.93
       }
     },
     {
@@ -6904,13 +6904,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 6,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -6936,13 +6936,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 104,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 7.69,
+        "overall_score": 3.08
       }
     },
     {
@@ -6968,13 +6968,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 12,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -7000,13 +7000,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 54,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 7.41,
+        "overall_score": 2.96
       }
     },
     {
@@ -7128,13 +7128,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 72,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 11.11,
+        "overall_score": 4.44
       }
     },
     {
@@ -7224,13 +7224,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 32,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -7256,13 +7256,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 152,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -7448,13 +7448,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 100,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -7640,13 +7640,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8280,13 +8280,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 96,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8344,13 +8344,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 106,
+        "sudden_brakes": 2,
+        "extended_stops": 2,
+        "safety_score": 30,
+        "efficiency_score": 3.77,
+        "overall_score": 19.51
       }
     },
     {
@@ -8376,13 +8376,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8440,13 +8440,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 24,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8536,13 +8536,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/980f6b6f-bc45-cae2-e379-36eafa6b14d1",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 20,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8568,13 +8568,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 84,
+        "sudden_brakes": 1,
+        "extended_stops": 7,
+        "safety_score": 15,
+        "efficiency_score": 16.67,
+        "overall_score": 15.67
       }
     },
     {
@@ -8632,13 +8632,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 126,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -8696,13 +8696,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 105,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -9592,13 +9592,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 60,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 6.67,
+        "overall_score": 11.67
       }
     },
     {
@@ -9656,13 +9656,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 56,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 7.14,
+        "overall_score": 2.86
       }
     },
     {
@@ -9688,13 +9688,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 64,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -9720,13 +9720,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 2,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -9848,13 +9848,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/ANWC00032000001",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -9880,13 +9880,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 64,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -10040,13 +10040,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 68,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -10072,13 +10072,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 18,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -10552,13 +10552,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -10584,13 +10584,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 86,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 4.65,
+        "overall_score": 10.86
       }
     },
     {
@@ -10616,13 +10616,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 74,
+        "sudden_brakes": 1,
+        "extended_stops": 3,
+        "safety_score": 15,
+        "efficiency_score": 8.11,
+        "overall_score": 12.24
       }
     },
     {
@@ -10680,13 +10680,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 158,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 10,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 12.66,
+        "overall_score": 5.06
       }
     },
     {
@@ -10840,13 +10840,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 130,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 6,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 9.23,
+        "overall_score": 3.69
       }
     },
     {
@@ -11000,13 +11000,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 123,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -11608,13 +11608,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 300,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 14,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 9.33,
+        "overall_score": 3.73
       }
     },
     {
@@ -11896,13 +11896,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 444,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 20,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 9.01,
+        "overall_score": 3.6
       }
     },
     {
@@ -11960,13 +11960,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 16,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -12376,13 +12376,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 60,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -12696,13 +12696,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 92,
+        "sudden_brakes": 1,
+        "extended_stops": 3,
+        "safety_score": 15,
+        "efficiency_score": 6.52,
+        "overall_score": 11.61
       }
     },
     {
@@ -13112,13 +13112,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/30d7ad68-8cfd-7767-7ec3-72630c18ec5e",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 22,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -13144,13 +13144,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 130,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -13176,13 +13176,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://disseminate.objectrepository.org/file/level2/10622/30051002128285",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 62,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -13208,13 +13208,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/37384bfb-12be-d3c1-3b37-21b4fe04fde2",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 194,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 6,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 6.19,
+        "overall_score": 2.47
       }
     },
     {
@@ -13240,13 +13240,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 190,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 10,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 10.53,
+        "overall_score": 4.21
       }
     },
     {
@@ -13656,13 +13656,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 210,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 3.81,
+        "overall_score": 1.52
       }
     },
     {
@@ -13688,13 +13688,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 132,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 6,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 9.09,
+        "overall_score": 3.64
       }
     },
     {
@@ -13720,13 +13720,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 76,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 5.26,
+        "overall_score": 2.11
       }
     },
     {
@@ -13752,13 +13752,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 298,
+        "sudden_brakes": 4,
+        "extended_stops": 16,
+        "safety_score": 60,
+        "efficiency_score": 10.74,
+        "overall_score": 40.3
       }
     },
     {
@@ -13912,13 +13912,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/inventarissen/inventaris/5225.nl.html#A35110000001",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 92,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 8.7,
+        "overall_score": 3.48
       }
     },
     {
@@ -14264,13 +14264,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 118,
+        "sudden_brakes": 1,
+        "extended_stops": 1,
+        "safety_score": 15,
+        "efficiency_score": 1.69,
+        "overall_score": 9.68
       }
     },
     {
@@ -14296,13 +14296,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -14616,13 +14616,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -14648,13 +14648,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 4,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -14680,13 +14680,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 6,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -14712,13 +14712,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 60,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 13.33,
+        "overall_score": 5.33
       }
     },
     {
@@ -14744,13 +14744,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 72,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 11.11,
+        "overall_score": 4.44
       }
     },
     {
@@ -14776,13 +14776,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "http://beeldbank.amsterdam.nl/afbeelding/010028000803",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 106,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 5,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 9.43,
+        "overall_score": 3.77
       }
     },
     {
@@ -14808,13 +14808,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 154,
+        "sudden_brakes": 3,
+        "extended_stops": 12,
+        "safety_score": 45,
+        "efficiency_score": 15.58,
+        "overall_score": 33.23
       }
     },
     {
@@ -14840,13 +14840,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15096,13 +15096,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/d3004e66-0447-6d8b-43c6-fc76ebf0201e",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 120,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 1,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 1.67,
+        "overall_score": 0.67
       }
     },
     {
@@ -15160,13 +15160,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15320,13 +15320,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010009000509",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15352,13 +15352,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/5293FO016855",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 10,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15384,13 +15384,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 28,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15416,13 +15416,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010009014919",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 14,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15480,13 +15480,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15512,13 +15512,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 136,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 2.94,
+        "overall_score": 10.18
       }
     },
     {
@@ -15544,13 +15544,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/446e4ba1-9948-fa11-2412-0a6e7e098f4c",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 328,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 9,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 5.49,
+        "overall_score": 2.2
       }
     },
     {
@@ -15576,13 +15576,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15608,13 +15608,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/0c336bee-6dfa-3384-6a7e-7f3f816ecebe",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 682,
+        "sudden_brakes": 5,
+        "extended_stops": 36,
+        "safety_score": 75,
+        "efficiency_score": 10.56,
+        "overall_score": 49.22
       }
     },
     {
@@ -15640,13 +15640,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 16,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -15672,13 +15672,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/ead14021-61a8-7005-9a84-1626625b0b12",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 68,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 1,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 2.94,
+        "overall_score": 1.18
       }
     },
     {
@@ -15704,13 +15704,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122051418",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 110,
+        "sudden_brakes": 2,
+        "extended_stops": 9,
+        "safety_score": 30,
+        "efficiency_score": 16.36,
+        "overall_score": 24.55
       }
     },
     {
@@ -15832,13 +15832,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 22,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16152,13 +16152,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16184,13 +16184,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 12,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16344,13 +16344,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 118,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16376,13 +16376,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/c09b3a92-63e0-1289-2f91-4c227c92d79f",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 28,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16408,13 +16408,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://www.geheugenvannederland.nl/?/zoom/index/&language=indonesie_onafhankelijk_-_fotos_1947-1953&i=http%3A%2F%2Fresolver.kb.nl%2Fresolve%3Furn%3Durn%3Agvn%3AANP01%3A12981927%26size%3Dlarge",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 50,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16440,13 +16440,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "http://beeldbank.amsterdam.nl/afbeelding/010009000745",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 212,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16472,13 +16472,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 85,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 4.71,
+        "overall_score": 10.88
       }
     },
     {
@@ -16504,13 +16504,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 74,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16536,13 +16536,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 82,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 8,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 19.51,
+        "overall_score": 7.8
       }
     },
     {
@@ -16568,13 +16568,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://disseminate.objectrepository.org/file/level2/10622/30051001471322",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 290,
+        "sudden_brakes": 2,
+        "extended_stops": 8,
+        "safety_score": 30,
+        "efficiency_score": 5.52,
+        "overall_score": 20.21
       }
     },
     {
@@ -16600,13 +16600,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 104,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -16632,13 +16632,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 104,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 3.85,
+        "overall_score": 1.54
       }
     },
     {
@@ -16824,13 +16824,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17080,13 +17080,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010122017856",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 26,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17112,13 +17112,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 2,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17144,13 +17144,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 40,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17176,13 +17176,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://beeldbank.amsterdam.nl/afbeelding/010028001526",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 62,
+        "sudden_brakes": 1,
+        "extended_stops": 3,
+        "safety_score": 15,
+        "efficiency_score": 9.68,
+        "overall_score": 12.87
       }
     },
     {
@@ -17208,13 +17208,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 30,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17240,13 +17240,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 30,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17272,13 +17272,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/98b78930-83e7-e306-d46f-bab534c21caa",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 36,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 11.11,
+        "overall_score": 13.44
       }
     },
     {
@@ -17400,13 +17400,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 32,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17432,13 +17432,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/c51fca02-e442-925f-e4e6-58fc4327e8ad.jpg",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 74,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17464,13 +17464,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 116,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17496,13 +17496,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 46,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17528,13 +17528,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/4a7a8244-2f5e-84ce-c338-af5b0fabb09a.jpg",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 100,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 2,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 4.0,
+        "overall_score": 1.6
       }
     },
     {
@@ -17560,13 +17560,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/966beb47-f330-0386-434f-bfca1b70e54e",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 178,
+        "sudden_brakes": 2,
+        "extended_stops": 1,
+        "safety_score": 30,
+        "efficiency_score": 1.12,
+        "overall_score": 18.45
       }
     },
     {
@@ -17592,13 +17592,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "Frederiksplein_1968.jpg",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 48,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17624,13 +17624,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 10,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -17656,13 +17656,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 30,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -18264,13 +18264,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 20,
         "sudden_brakes": 0,
         "extended_stops": 0,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 0.0,
+        "overall_score": 0.0
       }
     },
     {
@@ -18392,13 +18392,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
+        "has_data": true,
+        "total_points": 182,
         "sudden_brakes": 0,
-        "extended_stops": 0,
+        "extended_stops": 4,
         "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "efficiency_score": 4.4,
+        "overall_score": 1.76
       }
     },
     {
@@ -18904,13 +18904,13 @@
         "SELECTIE": "VERVALLEN",
         "Foto": "",
         "Weblink": "https://archief.amsterdam/beeldbank/detail/c06a3a9a-e329-b423-65b1-a26ff8379466",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 94,
+        "sudden_brakes": 1,
+        "extended_stops": 1,
+        "safety_score": 15,
+        "efficiency_score": 2.13,
+        "overall_score": 9.85
       }
     },
     {
@@ -19224,13 +19224,13 @@
         "SELECTIE": "BEDRIJF",
         "Foto": "",
         "Weblink": "",
-        "has_data": false,
-        "total_points": 0,
-        "sudden_brakes": 0,
-        "extended_stops": 0,
-        "safety_score": 0,
-        "efficiency_score": 0,
-        "overall_score": 0
+        "has_data": true,
+        "total_points": 122,
+        "sudden_brakes": 1,
+        "extended_stops": 2,
+        "safety_score": 15,
+        "efficiency_score": 3.28,
+        "overall_score": 10.31
       }
     },
     {

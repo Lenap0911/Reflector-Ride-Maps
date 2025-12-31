@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Traffic Light Static Analysis Generator
 Analyzes all trip data against traffic light locations and generates
@@ -117,67 +116,80 @@ def load_processed_trips():
 def analyze_traffic_light(light_coords, trips, radius=25):
     """
     Analyze cyclist behavior at a single traffic light across all trips
+    Uses the EXACT same logic as app.js analyzeTrafficLights() function
     
     Args:
         light_coords: [lon, lat] of traffic light
         trips: List of trip data
-        radius: Detection radius in meters (default 25m)
+        radius: Detection radius in meters (default 25m - matches app.js ANALYSIS_RADIUS)
     
     Returns:
         Dictionary with analysis results
     """
     lon, lat = light_coords
     
-    total_points = 0
-    sudden_brakes = 0
-    extended_stop_points = 0
+    sudden_brake_count = 0
+    extended_stop_count = 0
+    total_points_checked = 0
     
-    # Speed thresholds
-    BRAKE_THRESHOLD = 5.0  # km/h - below this at entry = sudden brake
-    STOP_THRESHOLD = 2.0   # km/h - below this = stopped
+    # Speed thresholds - MATCH app.js exactly
+    SLOW_SPEED_THRESHOLD = 2  # km/h - considered "stopped" (matches app.js)
+    ENTRY_BRAKE_THRESHOLD = 5  # km/h - sudden brake if entering zone at this speed (matches app.js logic)
     
+    # Process each trip
     for trip in trips:
         features = trip['data'].get('features', [])
         
-        points_in_zone = []
-        
-        # Find all points within radius
         for feature in features:
-            if feature['geometry']['type'] != 'Point':
-                continue
+            # Handle both LineString and Point geometries
+            if feature['geometry']['type'] == 'LineString':
+                coords = feature['geometry']['coordinates']
+                props = feature['properties']
+                
+                # Check each point in the line
+                for i in range(len(coords)):
+                    point_lon, point_lat = coords[i][0], coords[i][1]
+                    distance = haversine_distance(lon, lat, point_lon, point_lat)
+                    
+                    # If within analysis radius
+                    if distance <= radius:
+                        total_points_checked += 1
+                        
+                        # Get speed at this point
+                        speed = props.get('Speed', props.get('speed', 0))
+                        
+                        # Check for sudden braking (matches app.js logic)
+                        # "If we just entered the zone and speed is low, it's a brake event"
+                        if i > 0:
+                            prev_lon, prev_lat = coords[i-1][0], coords[i-1][1]
+                            prev_distance = haversine_distance(lon, lat, prev_lon, prev_lat)
+                            
+                            # Previous point was outside, current is inside, and speed is low
+                            if prev_distance > radius and speed < ENTRY_BRAKE_THRESHOLD:
+                                sudden_brake_count += 1
+                        
+                        # Check for extended stop (very low speed)
+                        # Matches app.js: "if (speed < SLOW_SPEED_THRESHOLD)"
+                        if speed < SLOW_SPEED_THRESHOLD:
+                            extended_stop_count += 1
             
-            point_coords = feature['geometry']['coordinates']
-            point_lon, point_lat = point_coords[0], point_coords[1]
-            
-            distance = haversine_distance(lon, lat, point_lon, point_lat)
-            
-            if distance <= radius:
-                speed = feature['properties'].get('Speed', 0)
-                points_in_zone.append({
-                    'speed': speed,
-                    'distance': distance,
-                    'coords': point_coords
-                })
-        
-        if not points_in_zone:
-            continue
-        
-        # Sort by distance to get entry point
-        points_in_zone.sort(key=lambda p: p['distance'])
-        
-        total_points += len(points_in_zone)
-        
-        # Check for sudden braking (first point is very slow)
-        if points_in_zone[0]['speed'] < BRAKE_THRESHOLD:
-            sudden_brakes += 1
-        
-        # Count extended stops (points with very low speed)
-        for point in points_in_zone:
-            if point['speed'] < STOP_THRESHOLD:
-                extended_stop_points += 1
+            elif feature['geometry']['type'] == 'Point':
+                # Handle Point features (some GeoJSON files use Points)
+                point_coords = feature['geometry']['coordinates']
+                point_lon, point_lat = point_coords[0], point_coords[1]
+                distance = haversine_distance(lon, lat, point_lon, point_lat)
+                
+                if distance <= radius:
+                    total_points_checked += 1
+                    props = feature['properties']
+                    speed = props.get('Speed', props.get('speed', 0))
+                    
+                    if speed < SLOW_SPEED_THRESHOLD:
+                        extended_stop_count += 1
     
-    # Calculate scores (0-100, where 0 is best)
-    has_data = total_points > 0
+    # Calculate scores (0-100) - MATCH app.js scoring exactly
+    # "More events = higher score (worse)"
+    has_data = total_points_checked > 0
     
     if not has_data:
         return {
@@ -190,22 +202,20 @@ def analyze_traffic_light(light_coords, trips, radius=25):
             'overall_score': 0
         }
     
-    # Safety score: based on sudden braking events
-    # Normalize by number of trip passes
-    trip_passes = sudden_brakes + max(1, total_points // 10)  # Estimate passes
-    safety_score = min(100, (sudden_brakes / trip_passes) * 100)
+    # Safety score: "const suddenScore = Math.min(100, suddenBrakeCount * 15);"
+    safety_score = min(100, sudden_brake_count * 15)
     
-    # Efficiency score: based on time spent stopped
-    efficiency_score = min(100, (extended_stop_points / total_points) * 100)
+    # Efficiency score: "const extendedScore = Math.min(100, (extendedStopCount / Math.max(1, totalPointsChecked)) * 200);"
+    efficiency_score = min(100, (extended_stop_count / max(1, total_points_checked)) * 200)
     
-    # Overall score: weighted average (60% safety, 40% efficiency)
-    overall_score = (safety_score * 0.6) + (efficiency_score * 0.4)
+    # Overall score: "const overallScore = (suddenScore * 0.6 + extendedScore * 0.4);"
+    overall_score = (safety_score * 0.6 + efficiency_score * 0.4)
     
     return {
         'has_data': True,
-        'total_points': total_points,
-        'sudden_brakes': sudden_brakes,
-        'extended_stops': extended_stop_points,
+        'total_points': total_points_checked,
+        'sudden_brakes': sudden_brake_count,
+        'extended_stops': extended_stop_count,
         'safety_score': round(safety_score, 2),
         'efficiency_score': round(efficiency_score, 2),
         'overall_score': round(overall_score, 2)
@@ -214,6 +224,7 @@ def analyze_traffic_light(light_coords, trips, radius=25):
 def generate_analysis():
     """Main function to generate traffic light analysis"""
     print_header("TRAFFIC LIGHT STATIC ANALYSIS GENERATOR")
+    print_info("Using exact logic from app.js for consistency")
     
     # Load traffic lights
     traffic_lights_data = load_traffic_lights()
@@ -227,6 +238,7 @@ def generate_analysis():
         return False
     
     print_info(f"Analyzing {len(traffic_lights_data['features'])} traffic lights against {len(trips)} trips...")
+    print_info("Using 25m radius, 5 km/h brake threshold, 2 km/h stop threshold")
     
     # Analyze each traffic light
     analyzed_features = []
@@ -238,7 +250,7 @@ def generate_analysis():
         # Analyze this traffic light
         analysis = analyze_traffic_light(coords, trips)
         
-        # Add analysis results to properties
+        # Add analysis results to properties (match app.js property names)
         properties.update(analysis)
         
         # Create new feature with analysis
@@ -298,25 +310,23 @@ def generate_analysis():
         worst_efficiency = sorted([f for f in analyzed_features if f['properties']['has_data']], 
                                  key=lambda x: x['properties']['efficiency_score'], reverse=True)[:3]
         
-        print(f"\n{Colors.BOLD}Top 3 Safety Concerns:{Colors.END}")
+        print(f"\n{Colors.BOLD}Top 3 Safety Concerns (Most Sudden Braking):{Colors.END}")
         for i, light in enumerate(worst_safety, 1):
             name = light['properties'].get('Kruispunt', 'Unknown')
             score = light['properties']['safety_score']
             brakes = light['properties']['sudden_brakes']
             print(f"  {i}. {name[:40]} - Score: {score:.0f} ({brakes} sudden brakes)")
         
-        print(f"\n{Colors.BOLD}Top 3 Efficiency Issues:{Colors.END}")
+        print(f"\n{Colors.BOLD}Top 3 Efficiency Issues (Longest Stops):{Colors.END}")
         for i, light in enumerate(worst_efficiency, 1):
             name = light['properties'].get('Kruispunt', 'Unknown')
             score = light['properties']['efficiency_score']
             stops = light['properties']['extended_stops']
-            print(f"  {i}. {name[:40]} - Score: {score:.0f} ({stops} stop points)")
+            total = light['properties']['total_points']
+            pct = (stops / total * 100) if total > 0 else 0
+            print(f"  {i}. {name[:40]} - Score: {score:.0f} ({stops}/{total} points = {pct:.1f}% stopped)")
     
     print(f"\n{Colors.GREEN}{Colors.BOLD}✅ Ready for web visualization!{Colors.END}")
-    print(f"\n{Colors.CYAN}Next steps:{Colors.END}")
-    print(f"  1. The file '{output_file}' is ready to use")
-    print(f"  2. Your map will load it automatically")
-    print(f"  3. Enable 'Traffic Light Analysis' in the web interface")
     
     return True
 
