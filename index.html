@@ -78,6 +78,28 @@
       </label>
     </div>
 
+    <div class="control-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="averagedSegmentsCheckbox">
+        📊 Averaged Road Segments
+      </label>
+    </div>
+
+    <div class="radio-group" id="averagedModeGroup" style="display: none;">
+      <label class="radio-label">
+        <input type="radio" name="averagedMode" value="composite" checked>
+        🎯 Composite Score (Quality + Speed)
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="averagedMode" value="speed">
+        🚴 Average Speed
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="averagedMode" value="quality">
+        🛣️ Road Quality
+      </label>
+    </div>
+
     <button id="resetButton">↩ Reset View</button>
   </div>
 
@@ -166,47 +188,132 @@
   </div>
 
   <div class="legend" id="trafficLightLegend" style="bottom: 20px; right: 20px; left: auto; top: auto;">
-  <h4>Traffic Light Analysis</h4>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #16A34A;"></div>
-    <span>Excellent+ (0-10)</span>
+    <h4>Traffic Light Analysis</h4>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #16A34A;"></div>
+      <span>Excellent+ (0-10)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #22C55E;"></div>
+      <span>Excellent (10-20)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #4ADE80;"></div>
+      <span>Good+ (20-30)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #84CC16;"></div>
+      <span>Good (30-40)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #FDE047;"></div>
+      <span>Moderate+ (40-50)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #FACC15;"></div>
+      <span>Moderate (50-60)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #FB923C;"></div>
+      <span>Poor+ (60-70)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #F97316;"></div>
+      <span>Poor (70-80)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #DC2626;"></div>
+      <span>Critical (80+)</span>
+    </div>
+    <div class="speed-legend-item">
+      <div class="speed-color-box" style="background: #FFFFFF; border: 1px solid #ccc;"></div>
+      <span>No Data</span>
+    </div>
   </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #22C55E;"></div>
-    <span>Excellent (10-20)</span>
+
+  <div class="legend" id="averagedSegmentsLegend" style="display: none; bottom: 20px; left: 20px;">
+    <h4>Averaged Road Segments</h4>
+    
+    <!-- Composite Score Legend (default) -->
+    <div id="compositeLegendItems">
+      <p style="margin: 5px 0; font-size: 12px; color: #666;">
+        Combined score based on quality (60%) + speed (40%)
+      </p>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #22C55E;"></div>
+        <span>Excellent (0-20)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #84CC16;"></div>
+        <span>Good (20-40)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #FACC15;"></div>
+        <span>Moderate (40-60)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #F97316;"></div>
+        <span>Poor (60-80)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #DC2626;"></div>
+        <span>Critical (80-100)</span>
+      </div>
+    </div>
+    
+    <!-- Speed Legend -->
+    <div id="avgSpeedLegendItems" style="display: none;">
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #DC2626;"></div>
+        <span>Very Slow (0-5 km/h)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #F97316;"></div>
+        <span>Slow (5-10 km/h)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #FACC15;"></div>
+        <span>Moderate (10-15 km/h)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #22C55E;"></div>
+        <span>Fast (15-20 km/h)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #3B82F6;"></div>
+        <span>Very Fast (20-25 km/h)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #6366F1;"></div>
+        <span>Extreme (25+ km/h)</span>
+      </div>
+    </div>
+    
+    <!-- Quality Legend -->
+    <div id="avgQualityLegendItems" style="display: none;">
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #22C55E;"></div>
+        <span>Perfect (1.0-1.5)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #84CC16;"></div>
+        <span>Normal (1.5-2.5)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #FACC15;"></div>
+        <span>Outdated (2.5-3.5)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #F97316;"></div>
+        <span>Bad (3.5-4.5)</span>
+      </div>
+      <div class="speed-legend-item">
+        <div class="speed-color-box" style="background: #DC2626;"></div>
+        <span>No Road (4.5-5.0)</span>
+      </div>
+    </div>
   </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #4ADE80;"></div>
-    <span>Good+ (20-30)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #84CC16;"></div>
-    <span>Good (30-40)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #FDE047;"></div>
-    <span>Moderate+ (40-50)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #FACC15;"></div>
-    <span>Moderate (50-60)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #FB923C;"></div>
-    <span>Poor+ (60-70)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #F97316;"></div>
-    <span>Poor (70-80)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #DC2626;"></div>
-    <span>Critical (80+)</span>
-  </div>
-  <div class="speed-legend-item">
-    <div class="speed-color-box" style="background: #FFFFFF; border: 1px solid #ccc;"></div>
-    <span>No Data</span>
-  </div>
+
 </div>
 
 <script>
@@ -260,6 +367,27 @@
       fullscreenBtn.title = 'Enter Fullscreen';
     }
   }
+
+  // Handle legend switching for averaged segments
+  document.querySelectorAll('input[name="averagedMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const mode = e.target.value;
+      
+      // Hide all legend items
+      document.getElementById('compositeLegendItems').style.display = 'none';
+      document.getElementById('avgSpeedLegendItems').style.display = 'none';
+      document.getElementById('avgQualityLegendItems').style.display = 'none';
+      
+      // Show relevant legend
+      if (mode === 'composite') {
+        document.getElementById('compositeLegendItems').style.display = 'block';
+      } else if (mode === 'speed') {
+        document.getElementById('avgSpeedLegendItems').style.display = 'block';
+      } else if (mode === 'quality') {
+        document.getElementById('avgQualityLegendItems').style.display = 'block';
+      }
+    });
+  });
 </script>
 
 <script type="module" src="config.js"></script>

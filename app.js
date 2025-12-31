@@ -21,7 +21,9 @@ let tripsMetadata = null;
 let currentPopup = null;
 let showTrafficLights = false;
 let analysisMode = 'safety'; // 'safety', 'efficiency', 'overall'
-let trafficLightInfoShown = false; 
+let trafficLightInfoShown = false;
+let showAveragedSegments = false;
+let averagedSegmentMode = 'composite'; // 'speed', 'quality', or 'composite'
 
 // Default orange color for routes
 const DEFAULT_COLOR = '#FF6600';
@@ -186,6 +188,64 @@ function getAnalysisLabel(score) {
   return 'Critical';
 }
 
+// Color expressions for averaged segments
+function getAveragedSpeedColorExpression() {
+  return [
+    'interpolate',
+    ['linear'],
+    ['get', 'avg_speed'],
+    0, '#DC2626',      // Red for very slow
+    5, '#F97316',      // Orange
+    10, '#FACC15',     // Yellow
+    15, '#22C55E',     // Green
+    20, '#3B82F6',     // Blue
+    25, '#6366F1'      // Indigo for fast
+  ];
+}
+
+function getAveragedQualityColorExpression() {
+  return [
+    'interpolate',
+    ['linear'],
+    ['get', 'avg_quality'],
+    1, '#22C55E',      // Perfect
+    2, '#84CC16',      // Normal
+    3, '#FACC15',      // Outdated
+    4, '#F97316',      // Bad
+    5, '#DC2626'       // No road
+  ];
+}
+
+function getCompositeScoreColorExpression() {
+  // Lower composite score = better road (good quality + good speed)
+  return [
+    'interpolate',
+    ['linear'],
+    ['get', 'composite_score'],
+    0, '#22C55E',      // Excellent
+    25, '#84CC16',     // Good
+    50, '#FACC15',     // Moderate
+    75, '#F97316',     // Poor
+    100, '#DC2626'     // Critical
+  ];
+}
+
+function getQualityLabel(quality) {
+  if (quality <= 1.5) return 'Perfect';
+  if (quality <= 2.5) return 'Normal';
+  if (quality <= 3.5) return 'Outdated';
+  if (quality <= 4.5) return 'Bad';
+  return 'No road';
+}
+
+function getCompositeLabel(score) {
+  if (score < 20) return 'Excellent';
+  if (score < 40) return 'Good';
+  if (score < 60) return 'Moderate';
+  if (score < 80) return 'Poor';
+  return 'Critical';
+}
+
 // Load metadata
 async function loadMetadata() {
   const possiblePaths = [
@@ -210,6 +270,33 @@ async function loadMetadata() {
   }
   
   console.warn('⚠️ Could not load metadata');
+  return null;
+}
+
+// Load averaged segments data
+async function loadAveragedSegments() {
+  const possiblePaths = [
+    './road_segments_averaged.json',
+    'road_segments_averaged.json',
+    '/road_segments_averaged.json',
+    `${CONFIG.DATA_URL}/road_segments_averaged.json`
+  ];
+  
+  for (const path of possiblePaths) {
+    try {
+      console.log('🔍 Trying to load averaged segments from:', path);
+      const response = await fetch(path);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`✅ Loaded ${data.features.length} averaged road segments from`, path);
+        return data;
+      }
+    } catch (err) {
+      console.log('❌ Failed to load from', path);
+    }
+  }
+  
+  console.error('❌ Could not load averaged segments');
   return null;
 }
 
@@ -426,6 +513,108 @@ function updateTrafficLightColors() {
   console.log('✅ Traffic light colors updated');
 }
 
+// Update averaged segment colors based on mode
+function updateAveragedSegmentColors() {
+  if (!map.getLayer('averaged-segments')) return;
+  
+  let colorExpression;
+  switch (averagedSegmentMode) {
+    case 'speed':
+      colorExpression = getAveragedSpeedColorExpression();
+      break;
+    case 'quality':
+      colorExpression = getAveragedQualityColorExpression();
+      break;
+    case 'composite':
+      colorExpression = getCompositeScoreColorExpression();
+      break;
+  }
+  
+  map.setPaintProperty('averaged-segments', 'line-color', colorExpression);
+  console.log('🎨 Updated averaged segment colors to:', averagedSegmentMode);
+}
+
+async function setupAveragedSegments() {
+  console.log('📡 Loading averaged road segments...');
+  
+  const segmentsData = await loadAveragedSegments();
+  
+  if (!segmentsData) {
+    console.error('❌ Could not load averaged segments');
+    return;
+  }
+  
+  // Add source
+  map.addSource('averaged-segments', {
+    type: 'geojson',
+    data: segmentsData
+  });
+  
+  // Add layer (initially hidden)
+  map.addLayer({
+    id: 'averaged-segments',
+    type: 'line',
+    source: 'averaged-segments',
+    layout: {
+      'visibility': 'none',
+      'line-cap': 'round',
+      'line-join': 'round'
+    },
+    paint: {
+      'line-color': getCompositeScoreColorExpression(),
+      'line-width': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        10, 2,
+        14, 4,
+        16, 6
+      ],
+      'line-opacity': 0.8
+    }
+  });
+  
+  console.log('✅ Averaged segments layer added');
+  
+  // Click handler for averaged segments
+  map.on('click', 'averaged-segments', (e) => {
+    e.preventDefault();
+    if (e.originalEvent) {
+      e.originalEvent.stopPropagation();
+    }
+    
+    const props = e.features[0].properties;
+    
+    let qualityText = props.avg_quality 
+      ? `🛣️ Avg Quality: ${props.avg_quality} (${getQualityLabel(props.avg_quality)})`
+      : '🛣️ Quality: No data';
+    
+    let compositeText = getCompositeLabel(props.composite_score);
+    
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`
+        <strong>📊 Averaged Road Segment</strong><br>
+        🚴 Avg Speed: ${props.avg_speed} km/h<br>
+        📈 Speed Range: ${props.min_speed} - ${props.max_speed} km/h<br>
+        ${qualityText}<br>
+        📏 Distance: ${props.distance_m}m<br>
+        🎯 Composite Score: ${props.composite_score} (${compositeText})<br>
+        📍 Observations: ${props.observation_count}<br>
+        🚲 From ${props.trip_count} trips
+      `)
+      .addTo(map);
+  });
+  
+  map.on('mouseenter', 'averaged-segments', () => {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  
+  map.on('mouseleave', 'averaged-segments', () => {
+    map.getCanvas().style.cursor = '';
+  });
+}
+
 map.on('error', (e) => {
   console.error('❌ Map error:', e);
 });
@@ -595,6 +784,9 @@ map.on('load', async () => {
       console.error('❌ Error loading traffic lights:', err);
     }
     
+    // Load averaged segments
+    await setupAveragedSegments();
+    
     map.setCenter([4.9041, 52.3676]);
     map.setZoom(13);
     
@@ -606,6 +798,56 @@ map.on('load', async () => {
     console.error('❌ Error loading trips:', err);
   }
 });
+
+function setupAveragedSegmentControls() {
+  const avgSegmentsCheckbox = document.getElementById('averagedSegmentsCheckbox');
+  if (avgSegmentsCheckbox) {
+    avgSegmentsCheckbox.addEventListener('change', (e) => {
+      showAveragedSegments = e.target.checked;
+      const avgModeGroup = document.getElementById('averagedModeGroup');
+      const avgLegend = document.getElementById('averagedSegmentsLegend');
+      
+      if (showAveragedSegments) {
+        if (map.getLayer('averaged-segments')) {
+          map.setLayoutProperty('averaged-segments', 'visibility', 'visible');
+        }
+        if (avgModeGroup) avgModeGroup.style.display = 'flex';
+        if (avgLegend) avgLegend.style.display = 'block';
+        updateAveragedSegmentColors();
+        
+        // Optionally hide individual trips for cleaner view
+        tripLayers.forEach(layerId => {
+          map.setPaintProperty(layerId, 'line-opacity', 0.2);
+        });
+        
+        console.log('📊 Averaged segments ON');
+      } else {
+        if (map.getLayer('averaged-segments')) {
+          map.setLayoutProperty('averaged-segments', 'visibility', 'none');
+        }
+        if (avgModeGroup) avgModeGroup.style.display = 'none';
+        if (avgLegend) avgLegend.style.display = 'none';
+        
+        // Restore trip visibility
+        tripLayers.forEach(layerId => {
+          map.setPaintProperty(layerId, 'line-opacity', 0.7);
+        });
+        
+        console.log('📊 Averaged segments OFF');
+      }
+    });
+  }
+  
+  // Mode radio buttons
+  document.querySelectorAll('input[name="averagedMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      averagedSegmentMode = e.target.value;
+      if (showAveragedSegments) {
+        updateAveragedSegmentColors();
+      }
+    });
+  });
+}
 
 function setupControls() {
   const resetButton = document.getElementById('resetButton');
@@ -745,6 +987,9 @@ function setupControls() {
       }
     });
   });
+
+  // Setup averaged segment controls
+  setupAveragedSegmentControls();
 }
 
 function setupClickHandlers() {
@@ -865,4 +1110,4 @@ function updateStatsFromMetadata() {
 }
 
 // Make search function available globally for console testing
-window.searchTrip = searchAndHighlightTrip
+window.searchTrip = searchAndHighlightTrip;
