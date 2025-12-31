@@ -815,9 +815,9 @@ function setupAveragedSegmentControls() {
         if (avgLegend) avgLegend.style.display = 'block';
         updateAveragedSegmentColors();
         
-        // Optionally hide individual trips for cleaner view
+        // Hide individual trip layers completely
         tripLayers.forEach(layerId => {
-          map.setPaintProperty(layerId, 'line-opacity', 0.2);
+          map.setLayoutProperty(layerId, 'visibility', 'none');
         });
         
         console.log('📊 Averaged segments ON');
@@ -830,7 +830,7 @@ function setupAveragedSegmentControls() {
         
         // Restore trip visibility
         tripLayers.forEach(layerId => {
-          map.setPaintProperty(layerId, 'line-opacity', 0.7);
+          map.setLayoutProperty(layerId, 'visibility', 'visible');
         });
         
         console.log('📊 Averaged segments OFF');
@@ -1091,21 +1091,25 @@ function setupClickHandlers() {
 }
 
 function updateStatsFromMetadata() {
+  // Always show the actual number of loaded trips first
+  const actualTripCount = tripLayers.length;
+  document.getElementById('statTrips').textContent = actualTripCount;
+  
   if (!tripsMetadata) {
-    document.getElementById('statTrips').textContent = tripLayers.length;
+    console.warn('⚠️ No metadata loaded, showing trip count only');
     return;
   }
     
   const aggregateStats = calculateAggregateStats();
   
   if (aggregateStats) {
-    document.getElementById('statTrips').textContent = aggregateStats.tripCount;
+    // Use actual loaded trip count, not metadata count
+    document.getElementById('statTrips').textContent = actualTripCount;
     document.getElementById('statDistance').textContent = `${aggregateStats.totalDistance} km`;
     document.getElementById('statAvgSpeed').textContent = `${aggregateStats.avgSpeed} km/h`;
     document.getElementById('statTotalTime').textContent = aggregateStats.totalTime;
     console.log('✅ Stats updated from metadata:', aggregateStats);
-  } else {
-    document.getElementById('statTrips').textContent = tripLayers.length;
+    console.log(`📊 Actual trips loaded: ${actualTripCount}, Metadata trips: ${aggregateStats.tripCount}`);
   }
 }
 

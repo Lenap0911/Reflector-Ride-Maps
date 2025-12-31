@@ -7,6 +7,7 @@ Runs the complete data processing workflow:
 3. Road segment averaging and consolidation
 4. Traffic light analysis generation
 5. PMTiles generation for web visualization
+6. Cleanup of processed CSV files
 
 Usage: python master_pipeline.py
 """
@@ -17,6 +18,7 @@ import os
 import json
 from pathlib import Path
 import time
+import shutil
 
 # ANSI color codes for pretty output
 class Colors:
@@ -164,6 +166,57 @@ def count_files(directory, pattern):
         return 0
     return len(list(Path(directory).rglob(pattern)))
 
+def cleanup_csv_files():
+    """Delete processed CSV files"""
+    print_step("6", "Cleaning Up Processed CSV Files")
+    
+    csv_dir = Path("csv_data")
+    if not csv_dir.exists():
+        print_warning("csv_data/ directory not found")
+        return
+    
+    csv_files = list(csv_dir.glob("*.csv"))
+    
+    if not csv_files:
+        print_info("No CSV files to clean up")
+        return
+    
+    print_info(f"Found {len(csv_files)} CSV file(s) to delete")
+    
+    # List files to be deleted
+    for csv_file in csv_files:
+        print(f"  📄 {csv_file.name}")
+    
+    # Confirm deletion
+    try:
+        response = input(f"\n{Colors.YELLOW}Delete these {len(csv_files)} CSV file(s)? (y/N): {Colors.END}").lower()
+        if response != 'y':
+            print_warning("CSV cleanup skipped")
+            return
+    except KeyboardInterrupt:
+        print("\n")
+        print_warning("CSV cleanup cancelled")
+        return
+    
+    # Delete files
+    deleted_count = 0
+    failed_count = 0
+    
+    for csv_file in csv_files:
+        try:
+            csv_file.unlink()
+            deleted_count += 1
+            print_success(f"Deleted {csv_file.name}")
+        except Exception as e:
+            failed_count += 1
+            print_error(f"Failed to delete {csv_file.name}: {e}")
+    
+    # Summary
+    if deleted_count > 0:
+        print_success(f"Deleted {deleted_count} CSV file(s)")
+    if failed_count > 0:
+        print_warning(f"Failed to delete {failed_count} file(s)")
+
 def print_summary():
     """Print a summary of generated files"""
     print_header("PIPELINE SUMMARY")
@@ -177,7 +230,7 @@ def print_summary():
     pmtiles_exists = Path("trips.pmtiles").exists()
     
     print(f"{Colors.BOLD}Input Files:{Colors.END}")
-    print(f"  📄 CSV files: {csv_count}")
+    print(f"  📄 CSV files remaining: {csv_count}")
     
     print(f"\n{Colors.BOLD}Generated Files:{Colors.END}")
     print(f"  🗺️  Cleaned GeoJSON: {geojson_clean_count}")
@@ -216,10 +269,41 @@ def print_summary():
     else:
         print(f"\n{Colors.YELLOW}{Colors.BOLD}⚠️  Pipeline completed with issues{Colors.END}")
 
+def check_python_packages():
+    """Check if required Python packages are installed"""
+    print_info("Checking Python packages...")
+    
+    required_packages = ['numpy', 'geojson']
+    missing_packages = []
+    
+    for package in required_packages:
+        try:
+            __import__(package)
+            print_success(f"Package '{package}' is installed")
+        except ImportError:
+            missing_packages.append(package)
+            print_error(f"Package '{package}' is NOT installed")
+    
+    if missing_packages:
+        print_error(f"\nMissing packages: {', '.join(missing_packages)}")
+        print_info(f"Install with: pip3 install {' '.join(missing_packages)}")
+        print_info(f"Or: python3 -m pip install {' '.join(missing_packages)}")
+        return False
+    
+    return True
+
 def main():
     """Main pipeline execution"""
     print_header("REFLECTOR RIDE MAPS - MASTER PIPELINE")
     print(f"{Colors.BOLD}This will process all CSV files and regenerate map data{Colors.END}\n")
+    
+    # Check Python interpreter and packages
+    print_info(f"Using Python: {sys.executable}")
+    print_info(f"Python version: {sys.version.split()[0]}\n")
+    
+    if not check_python_packages():
+        print_error("\nRequired Python packages are missing!")
+        sys.exit(1)
     
     # Check prerequisites
     prereqs_ok, issues = check_prerequisites()
@@ -314,6 +398,12 @@ def main():
     if not step5_success:
         print_error("Step 5 failed. Aborting pipeline.")
         sys.exit(1)
+    
+    # Step 6: Cleanup CSV files (only if all previous steps succeeded)
+    if step1_success and step2_success and step5_success:
+        cleanup_csv_files()
+    else:
+        print_warning("Skipping CSV cleanup due to pipeline errors")
     
     # Print summary
     total_elapsed = time.time() - total_start
