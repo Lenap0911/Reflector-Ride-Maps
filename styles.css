@@ -153,6 +153,24 @@ input[type="radio"] {
   display: none;
 }
 
+#speedLegend {
+  left: 20px;
+}
+
+#roadQualityLegend {
+  left: 280px; 
+}
+
+#averagedSegmentsLegend {
+  left: 540px;
+} 
+
+#trafficLightLegend {
+  bottom: 20px;
+  right: 20px;
+  left: auto;
+}
+
 .legend h4 {
   margin: 0 0 10px 0;
   font-size: 14px;
