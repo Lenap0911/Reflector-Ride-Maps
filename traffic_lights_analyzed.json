@@ -5241,12 +5241,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 294,
+        "total_points": 332,
         "sudden_brakes": 2,
-        "extended_stops": 24,
+        "extended_stops": 26,
         "safety_score": 30,
-        "efficiency_score": 16.33,
-        "overall_score": 24.53
+        "efficiency_score": 15.66,
+        "overall_score": 24.27
       }
     },
     {
@@ -10681,12 +10681,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 158,
+        "total_points": 170,
         "sudden_brakes": 0,
         "extended_stops": 10,
         "safety_score": 0,
-        "efficiency_score": 12.66,
-        "overall_score": 5.06
+        "efficiency_score": 11.76,
+        "overall_score": 4.71
       }
     },
     {
@@ -11609,12 +11609,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 300,
+        "total_points": 320,
         "sudden_brakes": 0,
         "extended_stops": 14,
         "safety_score": 0,
-        "efficiency_score": 9.33,
-        "overall_score": 3.73
+        "efficiency_score": 8.75,
+        "overall_score": 3.5
       }
     },
     {
@@ -14777,12 +14777,12 @@
         "Foto": "http://beeldbank.amsterdam.nl/afbeelding/010028000803",
         "Weblink": "",
         "has_data": true,
-        "total_points": 106,
+        "total_points": 122,
         "sudden_brakes": 0,
         "extended_stops": 5,
         "safety_score": 0,
-        "efficiency_score": 9.43,
-        "overall_score": 3.77
+        "efficiency_score": 8.2,
+        "overall_score": 3.28
       }
     },
     {
@@ -14809,12 +14809,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 154,
-        "sudden_brakes": 3,
-        "extended_stops": 12,
-        "safety_score": 45,
-        "efficiency_score": 15.58,
-        "overall_score": 33.23
+        "total_points": 174,
+        "sudden_brakes": 4,
+        "extended_stops": 13,
+        "safety_score": 60,
+        "efficiency_score": 14.94,
+        "overall_score": 41.98
       }
     },
     {
