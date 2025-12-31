@@ -3,8 +3,6 @@ import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
 
-mapboxgl.accessToken = CONFIG.MAPBOX_TOKEN;
-
 const map = new mapboxgl.Map({
   container: 'map',
   style: CONFIG.MAP_STYLE,
@@ -163,7 +161,6 @@ function getTrafficLightColorExpression(mode) {
       'step',
       ['to-number', ['get', scoreKey]],
       '#16A34A',   // < 10
-
       10, '#22C55E',
       20, '#4ADE80',
       30, '#84CC16',
@@ -187,7 +184,6 @@ function getAnalysisLabel(score) {
   if (score < 80) return 'Poor';
   return 'Critical';
 }
-
 
 // Load metadata
 async function loadMetadata() {
@@ -425,7 +421,6 @@ function updateTrafficLightColors() {
     return;
   }
   
-  // Update colors based on pre-computed scores
   map.setPaintProperty('verkeerslichten', 'circle-color', getTrafficLightColorExpression(analysisMode));
   console.log('✅ Traffic light colors updated');
 }
@@ -545,7 +540,6 @@ map.on('load', async () => {
           
           console.log('🚦 Clicked traffic light:', props);
           
-          // Build analysis HTML from pre-computed data
           let analysisHTML = '';
           
           if (props.has_data === 'true' || props.has_data === true) {
@@ -620,7 +614,6 @@ function setupControls() {
     });
   }
   
-  // Trip search
   const searchInput = document.getElementById('tripSearchInput');
   const searchButton = document.getElementById('tripSearchButton');
   
@@ -636,7 +629,6 @@ function setupControls() {
     });
   }
   
-  // Speed colors toggle
   const speedColorsCheckbox = document.getElementById('speedColorsCheckbox');
   if (speedColorsCheckbox) {
     speedColorsCheckbox.addEventListener('change', (e) => {
@@ -669,7 +661,6 @@ function setupControls() {
     });
   }
 
-  // Road quality toggle
   const roadQualityCheckbox = document.getElementById('roadQualityCheckbox');
   if (roadQualityCheckbox) {
     roadQualityCheckbox.addEventListener('change', (e) => {
@@ -700,7 +691,6 @@ function setupControls() {
     });
   }
 
-  // Speed mode radio buttons
   document.querySelectorAll('input[name="speedMode"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       speedMode = e.target.value;
@@ -712,7 +702,6 @@ function setupControls() {
     });
   });
 
-  // Traffic lights toggle
   const trafficLightsCheckbox = document.getElementById('trafficLightsCheckbox');
   if (trafficLightsCheckbox) {
     trafficLightsCheckbox.addEventListener('change', (e) => {
@@ -742,7 +731,6 @@ function setupControls() {
     });
   }
 
-  // Analysis mode radio buttons
   document.querySelectorAll('input[name="analysisMode"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       analysisMode = e.target.value;
