@@ -21,6 +21,7 @@ let tripsMetadata = null;
 let currentPopup = null;
 let showTrafficLights = false;
 let analysisMode = 'safety'; // 'safety', 'efficiency', 'overall'
+let trafficLightInfoShown = false; 
 
 // Default orange color for routes
 const DEFAULT_COLOR = '#FF6600';
@@ -717,10 +718,15 @@ function setupControls() {
         if (analysisLegend) analysisLegend.style.display = 'block';
         updateTrafficLightColors();
         
-        showTrafficLightInfoPopup();
+        if (!trafficLightInfoShown) {
+          showTrafficLightInfoPopup();
+          trafficLightInfoShown = true;
+        }
         
         console.log('🚦 Traffic lights analysis ON');
-      } else {
+      }
+      
+      else {
         if (map.getLayer('verkeerslichten')) {
           map.setLayoutProperty('verkeerslichten', 'visibility', 'none');
         }
