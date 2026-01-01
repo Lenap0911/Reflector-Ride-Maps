@@ -145,6 +145,7 @@ input[type="radio"] {
 .legend {
   position: absolute;
   bottom: 10px;
+  right: 10px;
   background: rgba(255,255,255,0.95);
   padding: 12px;
   border-radius: 8px;

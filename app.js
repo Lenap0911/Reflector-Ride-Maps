@@ -810,7 +810,7 @@ function updateLegendPositions() {
   
   // Position them from right to left
   legends.forEach((legend, index) => {
-    const offset = index * 200; // 240px spacing between legends
+    const offset = index * 200; // Reduced spacing between legends
     legend.el.style.right = `${10 + offset}px`;
   });
 }
