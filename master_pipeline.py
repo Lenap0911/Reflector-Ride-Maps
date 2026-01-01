@@ -262,10 +262,7 @@ def print_summary():
         print(f"  1. Commit changes: git add . && git commit -m 'Update trip data'")
         print(f"  2. Push to GitHub: git push")
         print(f"  3. View at: https://tomvanarman.github.io/Reflector-Ride-Maps/")
-        if road_segments_exists:
-            print(f"  4. Load 'road_segments_averaged.json' in your map to see consolidated segments!")
-        if traffic_analysis_exists:
-            print(f"  5. Enable 'Traffic Light Analysis' in the web interface to see insights!")
+
     else:
         print(f"\n{Colors.YELLOW}{Colors.BOLD}⚠️  Pipeline completed with issues{Colors.END}")
 

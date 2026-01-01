@@ -1,8 +1,13 @@
 // app.js 
+// Bike Sensor Data Visualization
+// This application visualizes bike trip data from PMTiles, including speed, road quality,
+// traffic light analysis, and averaged road segments
+
 import { CONFIG } from './config.js';
 
 console.log('🚀 Starting bike visualization...');
 
+// Initialize map
 const map = new mapboxgl.Map({
   container: 'map',
   style: CONFIG.MAP_STYLE,
@@ -10,23 +15,26 @@ const map = new mapboxgl.Map({
   zoom: CONFIG.MAP_ZOOM
 });
 
-window.map = map;
+window.map = map; // Make map available globally for debugging
 
-let tripLayers = [];
-let speedMode = 'gradient';
-let showSpeedColors = false;
-let showRoadQuality = false;
-let selectedTrip = null;
-let tripsMetadata = null;
-let currentPopup = null;
-let showTrafficLights = false;
-let analysisMode = 'safety';
-let trafficLightInfoShown = false;
-let showAveragedSegments = false;
-let averagedSegmentMode = 'composite';
+// State management
 
-const DEFAULT_COLOR = '#FF6600';
+let tripLayers = [];                    // Array of all trip layer IDs loaded from PMTiles
+let speedMode = 'gradient';             // 'gradient' or 'categories' for speed visualization
+let showSpeedColors = false;            // Toggle for speed color overlay
+let showRoadQuality = false;            // Toggle for road quality overlay
+let selectedTrip = null;                // Currently selected trip layer ID
+let tripsMetadata = null;               // Metadata object containing trip statistics
+let currentPopup = null;                // Reference to currently open popup
+let showTrafficLights = false;          // Toggle for traffic light layer visibility
+let analysisMode = 'safety';            // 'safety', 'efficiency', or 'overall' for traffic light analysis
+let trafficLightInfoShown = false;      // Track if info popup has been shown
+let showAveragedSegments = false;       // Toggle for averaged road segments layer
+let averagedSegmentMode = 'composite';  // 'speed', 'quality', or 'composite' for segment visualization
 
+const DEFAULT_COLOR = '#FF6600';        
+
+// UI - Pop Ups (for traffic light analysis)
 function showTrafficLightInfoPopup() {
   const overlay = document.createElement('div');
   overlay.id = 'trafficLightInfoOverlay';
@@ -99,6 +107,7 @@ function showTrafficLightInfoPopup() {
   });
 }
 
+// Color expressions- Returns different colors based on different scores/values
 function getSpeedColorExpression(mode) {
   const speedValue = ['to-number', ['coalesce', ['get', 'Speed'], ['get', 'speed'], 0]];
   
@@ -108,6 +117,7 @@ function getSpeedColorExpression(mode) {
     return ['step', speedValue, '#808080', 2, '#DC2626', 5, '#F97316', 10, '#FACC15', 15, '#22C55E', 20, '#3B82F6', 25, '#6366F1'];
   }
 }
+
 
 function getRoadQualityColorExpression() {
   return ['match', ['get', 'road_quality'], 1, '#22C55E', 2, '#84CC16', 3, '#FACC15', 4, '#F97316', 5, '#DC2626', '#808080'];
@@ -158,6 +168,7 @@ function getCompositeLabel(score) {
   return 'Critical';
 }
 
+// Data loading functions
 async function loadMetadata() {
   const possiblePaths = [`${CONFIG.DATA_URL}/trips_metadata.json`, '/trips_metadata.json', './trips_metadata.json', 'trips_metadata.json'];
   
@@ -200,6 +211,7 @@ async function loadAveragedSegments() {
   return null;
 }
 
+// Statistics calculator (ie: for aggregated stats)
 function getTripStats(tripId) {
   if (!tripsMetadata) {
     console.warn('⚠️ No metadata loaded');
@@ -222,6 +234,7 @@ function getTripStats(tripId) {
   const gnssLine = meta['GNSS'];
   if (!gnssLine) return null;
   
+  // Parse GNSS line (comma-separated values)
   const parts = gnssLine.split(',');
   return {
     duration: parts[1],
@@ -260,6 +273,7 @@ function formatDuration(seconds) {
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 }
 
+// Trip selection functions
 function resetSelection() {
   console.log('Resetting selection');
   selectedTrip = null;
@@ -269,6 +283,7 @@ function resetSelection() {
     currentPopup = null;
   }
   
+  // Reset all trip layers to default style
   tripLayers.forEach(layerId => {
     try {
       map.setPaintProperty(layerId, 'line-opacity', 0.7);
@@ -286,6 +301,7 @@ function resetSelection() {
     }
   });
   
+  // Reset UI
   document.getElementById('resetButton').style.display = 'none';
   document.getElementById('selectedTripRow').style.display = 'none';
   document.getElementById('statTripRow').style.display = 'flex';
@@ -320,6 +336,7 @@ function searchAndHighlightTrip(searchTerm) {
     console.log('🎯 Found trip:', matchingTrip);
     selectedTrip = matchingTrip;
     
+    // Highlight selected trip, dim others
     tripLayers.forEach(id => {
       try {
         if (id === matchingTrip) {
@@ -337,6 +354,7 @@ function searchAndHighlightTrip(searchTerm) {
     
     showSelection(matchingTrip);
     
+    // Zoom to selected trip
     try {
       const features = map.querySourceFeatures('trips', { sourceLayer: matchingTrip });
       if (features.length > 0) {
@@ -354,6 +372,7 @@ function searchAndHighlightTrip(searchTerm) {
   }
 }
 
+// Layer update functions
 function updateTrafficLightColors() {
   console.log('🎨 Updating traffic light colors, mode:', analysisMode);
   if (!map.getLayer('verkeerslichten')) {
@@ -378,6 +397,7 @@ function updateAveragedSegmentColors() {
   console.log('🎨 Updated averaged segment colors to:', averagedSegmentMode);
 }
 
+// Map layer setup
 async function setupAveragedSegments() {
   console.log('📡 Loading averaged road segments...');
   const segmentsData = await loadAveragedSegments();
@@ -386,7 +406,10 @@ async function setupAveragedSegments() {
     return;
   }
   
+  // Add GeoJSON source
   map.addSource('averaged-segments', { type: 'geojson', data: segmentsData });
+  
+  // Add line layer (initially hidden)
   map.addLayer({
     id: 'averaged-segments',
     type: 'line',
@@ -401,6 +424,7 @@ async function setupAveragedSegments() {
   
   console.log('✅ Averaged segments layer added');
   
+  // Click handler to show segment details
   map.on('click', 'averaged-segments', (e) => {
     e.preventDefault();
     if (e.originalEvent) e.originalEvent.stopPropagation();
@@ -421,10 +445,12 @@ async function setupAveragedSegments() {
     `).addTo(map);
   });
   
+  // Cursor changes
   map.on('mouseenter', 'averaged-segments', () => { map.getCanvas().style.cursor = 'pointer'; });
   map.on('mouseleave', 'averaged-segments', () => { map.getCanvas().style.cursor = ''; });
 }
 
+// Map event handlers (ie: initializing all data and layers)
 map.on('error', (e) => { console.error('❌ Map error:', e); });
 
 map.on('load', async () => {
@@ -434,6 +460,7 @@ map.on('load', async () => {
   try {
     console.log('📡 Loading bike trips from:', CONFIG.PMTILES_URL);
     
+    // Setup PMTiles protocol
     const protocol = new pmtiles.Protocol();
     mapboxgl.addProtocol('pmtiles', protocol.tile);
     
@@ -448,8 +475,10 @@ map.on('load', async () => {
     tripLayers = layers.map(l => l.id);
     console.log('📊 Found', tripLayers.length, 'trips');
     
+    // Add trips source
     map.addSource('trips', { type: 'vector', url: `pmtiles://${pmtilesUrl}`, attribution: 'Bike sensor data' });
     
+    // Add a layer for each trip
     tripLayers.forEach(layerId => {
       map.addLayer({
         id: layerId,
@@ -462,6 +491,7 @@ map.on('load', async () => {
 
     console.log('✅ All trips loaded and visible');
     
+    // Load traffic lights with pre-computed analysis
     console.log('📡 Loading traffic light analysis...');
     
     try {
@@ -486,6 +516,7 @@ map.on('load', async () => {
       if (!trafficLightsData) {
         console.error('❌ Could not load traffic light analysis');
       } else {
+        // Add traffic lights source and layer
         map.addSource('verkeerslichten', { type: 'geojson', data: trafficLightsData });
         map.addLayer({
           id: 'verkeerslichten',
@@ -503,6 +534,7 @@ map.on('load', async () => {
 
         console.log('✅ Traffic lights layer added');
 
+        // Click handler for traffic lights
         map.on('click', 'verkeerslichten', (e) => {
           e.preventDefault();
           if (e.originalEvent) e.originalEvent.stopPropagation();
@@ -542,6 +574,7 @@ map.on('load', async () => {
           new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`<strong>🚦 Verkeerslicht</strong><br>${props.Kruispunt || 'Geen locatie beschikbaar'}${analysisHTML}`).addTo(map);
         });
 
+
         map.on('mouseenter', 'verkeerslichten', () => { map.getCanvas().style.cursor = 'pointer'; });
         map.on('mouseleave', 'verkeerslichten', () => { map.getCanvas().style.cursor = ''; });
       }
@@ -572,13 +605,12 @@ function updateLegendPositions() {
   ].filter(legend => legend.el && legend.el.style.display === 'block');
   
   // Position from right to left, accounting for each legend's width
-  let cumulativeOffset = 10; // Start at 10px from right edge
+  let cumulativeOffset = 10; 
   
   legends.forEach((legend, index) => {
     legend.el.style.right = `${cumulativeOffset}px`;
-    // Add this legend's width + gap for next legend
-    const legendWidth = legend.el.offsetWidth || 220; // fallback to 220px
-    cumulativeOffset += legendWidth + 10; // 10px gap between legends
+    const legendWidth = legend.el.offsetWidth || 220; 
+    cumulativeOffset += legendWidth + 10; 
   });
 }
 
