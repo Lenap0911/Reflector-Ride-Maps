@@ -5241,12 +5241,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 332,
+        "total_points": 364,
         "sudden_brakes": 2,
-        "extended_stops": 26,
+        "extended_stops": 28,
         "safety_score": 30,
-        "efficiency_score": 15.66,
-        "overall_score": 24.27
+        "efficiency_score": 15.38,
+        "overall_score": 24.15
       }
     },
     {
@@ -6393,12 +6393,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 94,
+        "total_points": 98,
         "sudden_brakes": 2,
         "extended_stops": 2,
         "safety_score": 30,
-        "efficiency_score": 4.26,
-        "overall_score": 19.7
+        "efficiency_score": 4.08,
+        "overall_score": 19.63
       }
     },
     {
@@ -10681,12 +10681,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 170,
+        "total_points": 184,
         "sudden_brakes": 0,
         "extended_stops": 10,
         "safety_score": 0,
-        "efficiency_score": 11.76,
-        "overall_score": 4.71
+        "efficiency_score": 10.87,
+        "overall_score": 4.35
       }
     },
     {
@@ -11609,12 +11609,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 320,
+        "total_points": 346,
         "sudden_brakes": 0,
-        "extended_stops": 14,
+        "extended_stops": 16,
         "safety_score": 0,
-        "efficiency_score": 8.75,
-        "overall_score": 3.5
+        "efficiency_score": 9.25,
+        "overall_score": 3.7
       }
     },
     {
@@ -14777,12 +14777,12 @@
         "Foto": "http://beeldbank.amsterdam.nl/afbeelding/010028000803",
         "Weblink": "",
         "has_data": true,
-        "total_points": 122,
+        "total_points": 140,
         "sudden_brakes": 0,
         "extended_stops": 5,
         "safety_score": 0,
-        "efficiency_score": 8.2,
-        "overall_score": 3.28
+        "efficiency_score": 7.14,
+        "overall_score": 2.86
       }
     },
     {
@@ -14809,12 +14809,12 @@
         "Foto": "",
         "Weblink": "",
         "has_data": true,
-        "total_points": 174,
+        "total_points": 198,
         "sudden_brakes": 4,
-        "extended_stops": 13,
+        "extended_stops": 15,
         "safety_score": 60,
-        "efficiency_score": 14.94,
-        "overall_score": 41.98
+        "efficiency_score": 15.15,
+        "overall_score": 42.06
       }
     },
     {
