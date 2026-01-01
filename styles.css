@@ -145,6 +145,7 @@ input[type="radio"] {
 .legend {
   position: absolute;
   bottom: 10px;
+  right: 10px;
   background: rgba(255,255,255,0.95);
   padding: 12px;
   border-radius: 8px;
@@ -154,20 +155,19 @@ input[type="radio"] {
 }
 
 #speedLegend {
-  left: 20px;
+  right: 10px;
 }
 
 #roadQualityLegend {
-  left: 240px; 
+  right: 230px; 
 }
 
 #averagedSegmentsLegend {
-  left: 460px;
+  right: 450px;
 } 
 
 #trafficLightLegend {
-  right: 20px;
-  left: auto;
+  right: 10px;
 }
 
 .legend h4 {
