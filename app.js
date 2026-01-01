@@ -799,6 +799,22 @@ map.on('load', async () => {
   }
 });
 
+function updateLegendPositions() {
+  // Get all visible legends
+  const legends = [
+    { id: 'speedLegend', el: document.getElementById('speedLegend') },
+    { id: 'roadQualityLegend', el: document.getElementById('roadQualityLegend') },
+    { id: 'trafficLightLegend', el: document.getElementById('trafficLightLegend') },
+    { id: 'averagedSegmentsLegend', el: document.getElementById('averagedSegmentsLegend') }
+  ].filter(legend => legend.el && legend.el.style.display === 'block');
+  
+  // Position them from right to left
+  legends.forEach((legend, index) => {
+    const offset = index * 240; // 240px spacing between legends
+    legend.el.style.right = `${10 + offset}px`;
+  });
+}
+
 function setupAveragedSegmentControls() {
   const avgSegmentsCheckbox = document.getElementById('averagedSegmentsCheckbox');
   if (avgSegmentsCheckbox) {
@@ -835,6 +851,8 @@ function setupAveragedSegmentControls() {
         
         console.log('📊 Averaged segments OFF');
       }
+      
+      updateLegendPositions();
     });
   }
   
@@ -901,6 +919,8 @@ function setupControls() {
         speedLegend.style.display = 'none';
         speedModeGroup.style.display = 'none';
       }
+      
+      updateLegendPositions();
     });
   }
 
@@ -931,6 +951,8 @@ function setupControls() {
         });
         roadQualityLegend.style.display = 'none';
       }
+      
+      updateLegendPositions();
     });
   }
 
@@ -976,6 +998,8 @@ function setupControls() {
         if (analysisLegend) analysisLegend.style.display = 'none';
         console.log('🚦 Traffic lights OFF');
       }
+      
+      updateLegendPositions();
     });
   }
 
