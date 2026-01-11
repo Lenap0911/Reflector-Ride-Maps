@@ -4,7 +4,7 @@ const manualToggleBtn = document.getElementById('manualToggleBtn');
 const manualCloseBtn = document.getElementById('manualCloseBtn');
 
 manualToggleBtn.addEventListener('click', () => {
-  manualPanel.classList.add('open');
+  manualPanel.classList.toggle('open');
 });
 
 manualCloseBtn.addEventListener('click', () => {
